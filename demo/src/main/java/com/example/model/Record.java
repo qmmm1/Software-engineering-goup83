@@ -11,7 +11,7 @@ public class Record {
     private String payee;
 
     // 构造方法
-    public Record(String paymentId, Date paymentDate, double amount, String category, String paymentMethod, String description, String payee) {
+    public Record(String paymentId, Date paymentDate, double amount, String category,String payee) {
         this.paymentId = paymentId;
         this.paymentDate = paymentDate;
         this.amount = amount;
@@ -71,19 +71,19 @@ public class Record {
         this.amount = amount;
     }
 
-    public String getcategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setcategory(String category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public String getpayee() {
+    public String getPayee() {
         return payee;
     }
 
-    public void setpayee(String payee) {
+    public void setPayee(String payee) {
         this.payee = payee;
     }
 }
