@@ -36,9 +36,9 @@ public class Record {
     public boolean validatePayment() {
        if (amount <= 0 )
             return false;
-        else if(category.equals("food") || category.equals("transportation") || category.equals("entertainment")|| category.equals("education")|| category.equals("living expenses")|| category.equals("other"))
+        else if(!category.equals("food") &&!category.equals("transportation") &&!category.equals("entertainment")&&! category.equals("education")&&!  category.equals("living expenses")&&! category.equals("other"))
             return false;
-        else if(paymentDate.after(Calendar.getInstance().getTime()))
+        else if(paymentDate.after(Calendar.getInstance().getTime())||paymentDate == null)
             return false;
         else if(payee.equals(""))
             return false;

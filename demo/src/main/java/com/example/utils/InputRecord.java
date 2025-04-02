@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Date;
 import com.example.model.Record;
@@ -36,4 +38,24 @@ public class InputRecord {
 
         return Records;
      }
+    public static int findMaxId(List<Record> records) {
+        if (records == null || records.isEmpty()) {
+            return 0;
+        }
+        return Integer.parseInt(Collections.max(records, Comparator.comparingInt(record -> Integer.parseInt(record.getPaymentId()))).getPaymentId());
+    }
+    public static List<Record> insertRecord(List<Record> records,Date paymentDate, double amount, String category,String payee) {
+        if (records == null) {
+            records = new ArrayList<>();
+        }
+        int maxId = findMaxId(records);
+        String newPaymentId = String.valueOf(maxId + 1);
+        Record newRecord = new Record(newPaymentId, paymentDate, amount, category, payee);
+        if(!newRecord.validatePayment())
+        {
+            throw new IllegalArgumentException("Invalid payment record");
+        }
+        records.add(newRecord);
+        return records;
+    }
 }
