@@ -13,6 +13,7 @@ public class mainWindows extends JFrame {
     private DefaultPieDataset dataset;
     private JProgressBar progressBar;
     private double today_expense = 100; // 测试变量
+    private JButton btnImportData; // 声明按钮变量
 
     static class RoundButton extends JButton {
         public RoundButton(String text) {
@@ -59,7 +60,7 @@ public class mainWindows extends JFrame {
 
         JButton btnTodayExpense = createButton("Today Expense", String.valueOf(today_expense) + "元");
         JButton btnBudget = createButton("Budget", "+");
-        JButton btnImportData = createButton("Import Data", "");
+        btnImportData = createButton("Import Data", ""); // 初始化按钮
 
         topPanel.add(btnTodayExpense);
         topPanel.add(btnBudget);
@@ -151,7 +152,7 @@ public class mainWindows extends JFrame {
         // 设置按钮点击事件
         btnHomepage.addActionListener(e -> {
             // 添加具体的点击处理逻辑
-            JOptionPane.showMessageDialog(this, "Homepage按钮已点击");
+            JOptionPane.showMessageDialog(this, "已返回主界面");
         });
 
         // 统一按钮样式
@@ -179,6 +180,8 @@ public class mainWindows extends JFrame {
         gbc.insets = new Insets(5, 0, 5, 0); // 减少底部边距
         add(bottomButtonPanel, gbc);
 
+        // 初始化进度条的值和文本
+        updateExpenseBudgetDisplay(1000, 3000); // 示例赋值
 
         setVisible(true);
     }
@@ -215,10 +218,8 @@ public class mainWindows extends JFrame {
         progressBar.setString("Expense/Budget : " + String.format("%.2f", percentage) + "%");
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            mainWindows frame = new mainWindows();
-            frame.updateExpenseBudgetDisplay(1000, 3000); // 示例赋值
-        });
+    // 提供获取按钮的方法
+    public JButton getBtnImportData() {
+        return btnImportData;
     }
 }
