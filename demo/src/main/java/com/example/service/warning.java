@@ -46,7 +46,7 @@ public class warning {
             }
         }
         
-        if (recordCount >= setting.getsequent_payment_warning()) {
+        if (recordCount >= setting.getSequent_payment_warning()) {
             System.out.println("You have made a lot of payments recently");
  }
 }
