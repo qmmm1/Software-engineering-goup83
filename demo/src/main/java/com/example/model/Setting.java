@@ -7,7 +7,7 @@ public class Setting {
     private double budegt_ratewarning_high;
     private double budegt_ratewarning_max;
     private int large_amount_warning;
-    private int small_amount_warning;
+    private int sequent_payment_warning;
     private int same_amount_warning;
     private double amount;
     private int duration;
@@ -46,12 +46,12 @@ public class Setting {
         this.large_amount_warning = large_amount_warning;
     }
 
-    public int getSmall_amount_warning() {
-        return small_amount_warning;
+    public int getSequent_payment_warning() {
+        return sequent_payment_warning;
     }
 
-    public void setSmall_amount_warning(int small_amount_warning) {
-        this.small_amount_warning = small_amount_warning;
+    public void setSequent_payment_warning(int sequent_payment_warning) {
+        this.sequent_payment_warning = sequent_payment_warning;
     }
 
     public int getSame_amount_warning() {
