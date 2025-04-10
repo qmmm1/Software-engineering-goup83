@@ -25,4 +25,5 @@ public class budgetCount {
 
         return (totalConsumed / setting.getAmount()) * 100;
     }
+    
 }
