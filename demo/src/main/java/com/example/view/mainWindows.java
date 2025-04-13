@@ -15,6 +15,8 @@ public class mainWindows extends JFrame {
     private double today_expense = 100; // 测试变量
     private JButton btnImportData; // 声明按钮变量
     private JButton btnRecordsView; // 声明 Records View 按钮
+    private JButton btnAIAssistant;
+    private JButton btnBudget;
 
     static class RoundButton extends JButton {
         public RoundButton(String text) {
@@ -60,7 +62,7 @@ public class mainWindows extends JFrame {
         topPanel.setPreferredSize(new Dimension(800, 100)); // 增加高度以适应两行文本
 
         JButton btnTodayExpense = createButton("Today Expense", String.valueOf(today_expense) + "元");
-        JButton btnBudget = createButton("Budget", "+");
+        btnBudget = createButton("Budget", "+");
         btnImportData = createButton("Import Data", ""); // 初始化按钮
 
         topPanel.add(btnTodayExpense);
@@ -89,9 +91,10 @@ public class mainWindows extends JFrame {
         JPanel legendPanel = new JPanel(new GridLayout(2, 5, 10, 10));
         legendPanel.setBackground(Color.WHITE);
 
-        String[] categories = {"Food costs", "Hospitalization costs", "Utilities costs", "Transportation costs", "Other"};
-        double[] categoryValues = {10, 50, 30, 15, 25};
-        Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY};
+        String[] categories = { "Food costs", "Hospitalization costs", "Utilities costs", "Transportation costs",
+                "Other" };
+        double[] categoryValues = { 10, 50, 30, 15, 25 };
+        Color[] colors = { Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY };
 
         double total = 0;
         for (double value : categoryValues) {
@@ -100,7 +103,8 @@ public class mainWindows extends JFrame {
 
         for (int i = 0; i < categories.length; i++) {
             double percentage = (categoryValues[i] / total) * 100;
-            JLabel categoryLabel = new JLabel(categories[i] + ": " + String.format("%.2f", percentage) + "%", JLabel.CENTER);
+            JLabel categoryLabel = new JLabel(categories[i] + ": " + String.format("%.2f", percentage) + "%",
+                    JLabel.CENTER);
             categoryLabel.setBackground(colors[i]);
             legendPanel.add(categoryLabel);
         }
@@ -146,7 +150,7 @@ public class mainWindows extends JFrame {
         btnGbc.fill = GridBagConstraints.NONE;
 
         // 创建按钮（增大尺寸）
-        JButton btnAIAssistant = new JButton("AI assistant");
+        btnAIAssistant = new JButton("AI assistant");
         RoundButton btnHomepage = new RoundButton("Homepage");
         btnRecordsView = new JButton("Records View"); // 初始化 Records View 按钮
 
@@ -176,7 +180,7 @@ public class mainWindows extends JFrame {
         // ===== 布局调整 =====
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.weighty = 0.15;  // 减少空间分配
+        gbc.weighty = 0.15; // 减少空间分配
         gbc.anchor = GridBagConstraints.SOUTH;
         gbc.insets = new Insets(5, 0, 5, 0); // 减少底部边距
         add(bottomButtonPanel, gbc);
@@ -195,21 +199,24 @@ public class mainWindows extends JFrame {
     }
 
     private void updateChart() {
-        String[] categories = {"Food costs", "Hospitalization costs", "Utilities costs", "Transportation costs", "Other"};
-        double[] categoryValues = {10, 50, 30, 15, 25};
+        String[] categories = { "Food costs", "Hospitalization costs", "Utilities costs", "Transportation costs",
+                "Other" };
+        double[] categoryValues = { 10, 50, 30, 15, 25 };
 
         for (int i = 0; i < categories.length; i++) {
             dataset.setValue(categories[i], categoryValues[i]);
         }
 
-        JFreeChart chart = ChartFactory.createPieChart("Proportion of Expenses by Category", dataset, true, true, false);
+        JFreeChart chart = ChartFactory.createPieChart("Proportion of Expenses by Category", dataset, true, true,
+                false);
         PiePlot plot = (PiePlot) chart.getPlot();
         plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {1} ({2})")); // 设置标签格式为百分比
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(500, 500)); // 增加饼图的大小
 
-        getContentPane().add(chartPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        getContentPane().add(chartPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         pack();
     }
 
@@ -226,6 +233,14 @@ public class mainWindows extends JFrame {
 
     public JButton getBtnRecordsView() {
         return btnRecordsView;
+    }
+
+    public JButton getBtnBudget() {
+        return btnBudget;
+    }
+
+    public JButton getBtnAIAssistant() {
+        return btnAIAssistant;
     }
 
     public static void main(String[] args) {

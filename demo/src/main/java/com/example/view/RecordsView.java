@@ -5,11 +5,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordsView extends JFrame {
-    private JButton btnHomePage;  // 确保有一个引用指向按钮
-    private mainWindows mainFrame;  // 引用主窗口实例
+public class recordsView extends JFrame {
+    private JButton btnHomePage; // 确保有一个引用指向按钮
+    private mainWindows mainFrame; // 引用主窗口实例
 
-    private final List<String> allRecords = new ArrayList<>();  // 所有记录数据
+    private final List<String> allRecords = new ArrayList<>(); // 所有记录数据
     private int currentPage = 0; // 当前页数
     private static final int RECORDS_PER_PAGE = 10; // 每页显示的记录条数
 
@@ -17,8 +17,8 @@ public class RecordsView extends JFrame {
     private JScrollPane scrollPane; // 用来包裹记录面板的滚动面板
 
     // 修改构造函数，接收主窗口实例
-    public RecordsView(mainWindows mainFrame) {
-        this.mainFrame = mainFrame;  // 保持对主窗口实例的引用
+    public recordsView(mainWindows mainFrame) {
+        this.mainFrame = mainFrame; // 保持对主窗口实例的引用
 
         setTitle("Records View");
         setSize(800, 600);
@@ -27,7 +27,8 @@ public class RecordsView extends JFrame {
 
         // 生成测试记录，模拟100条记录
         for (int i = 1; i <= 100; i++) {
-            allRecords.add(String.format("   At 10:00 on 9 April 2025, you paid ￥%d to Category X, on category Category Y", i * 100));
+            allRecords.add(String.format(
+                    "   At 10:00 on 9 April 2025, you paid ￥%d to Category X, on category Category Y", i * 100));
         }
 
         // 创建顶部标签
@@ -41,7 +42,7 @@ public class RecordsView extends JFrame {
 
         // 使用滚动面板来包含记录
         scrollPane = new JScrollPane(recordsPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // 始终显示垂直滚动条
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // 始终显示垂直滚动条
         add(scrollPane, BorderLayout.CENTER);
 
         // 创建底部按钮面板
@@ -82,12 +83,13 @@ public class RecordsView extends JFrame {
         add(bottomButtonPanel, BorderLayout.SOUTH);
 
         // 初始加载10条记录
-        updateRecordsPanel(RECORDS_PER_PAGE);  
+        updateRecordsPanel(RECORDS_PER_PAGE);
 
         // 添加滚动条监听
         scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
-            if (scrollPane.getVerticalScrollBar().getValue() + scrollPane.getVerticalScrollBar().getVisibleAmount() >= scrollPane.getVerticalScrollBar().getMaximum()) {
-                loadNextPage();  // 滚动到底部时加载更多记录
+            if (scrollPane.getVerticalScrollBar().getValue() + scrollPane.getVerticalScrollBar()
+                    .getVisibleAmount() >= scrollPane.getVerticalScrollBar().getMaximum()) {
+                loadNextPage(); // 滚动到底部时加载更多记录
             }
         });
     }
@@ -98,7 +100,7 @@ public class RecordsView extends JFrame {
         recordsPanel.removeAll();
 
         // 设置字体大小
-        Font recordFont = new Font("Serif", Font.PLAIN, 22);  // 设置字体为Serif，大小为16
+        Font recordFont = new Font("Serif", Font.PLAIN, 22); // 设置字体为Serif，大小为16
 
         // 填充当前页的记录
         for (int i = 0; i < recordCount && i < allRecords.size(); i++) {
@@ -107,7 +109,7 @@ public class RecordsView extends JFrame {
 
             // 创建记录标签
             JLabel recordLabel = new JLabel(allRecords.get(i), JLabel.CENTER);
-            recordLabel.setFont(recordFont);  // 设置字体
+            recordLabel.setFont(recordFont); // 设置字体
             recordsPanel.add(recordLabel);
 
             // 添加横线分割
@@ -130,7 +132,7 @@ public class RecordsView extends JFrame {
         if ((currentPage + 1) * RECORDS_PER_PAGE < allRecords.size()) {
             currentPage++;
             // 只加载10条记录，并保证页面最大显示10条
-            updateRecordsPanel(Math.min((currentPage + 1) * RECORDS_PER_PAGE, allRecords.size()));  
+            updateRecordsPanel(Math.min((currentPage + 1) * RECORDS_PER_PAGE, allRecords.size()));
         }
     }
 
