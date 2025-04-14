@@ -75,6 +75,9 @@ public class setBudget extends JFrame {
     gbc.weightx = 1;
     gbc.weighty = 0;
 
+    // set font
+    Font regularFont = new Font("Serif", Font.BOLD, 24);
+
     // set format of date
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
 
@@ -110,7 +113,7 @@ public class setBudget extends JFrame {
     GridBagConstraints cylotGbc = new GridBagConstraints();
     // show the sentence "Choose your length of time:"
     JLabel lblCYLOT = new JLabel("Choose your length of time:");
-    lblCYLOT.setFont(new Font("Serif", Font.BOLD, 24));
+    lblCYLOT.setFont(regularFont);
     cylotGbc.gridx = 0;
     cylotGbc.gridy = 0;
     cylotGbc.gridwidth = 2;
@@ -119,7 +122,7 @@ public class setBudget extends JFrame {
     cylotPanel.add(lblCYLOT, cylotGbc);
     // one week button
     btnOneWeek = new JButton("One Week");
-    btnOneWeek.setFont(new Font("Serif", Font.BOLD, 24));
+    btnOneWeek.setFont(regularFont);
     cylotGbc.gridx = 0;
     cylotGbc.gridy = 1;
     cylotGbc.gridwidth = 1;
@@ -129,7 +132,7 @@ public class setBudget extends JFrame {
     cylotPanel.add(btnOneWeek, cylotGbc);
     // one month button
     btnOneMonth = new JButton("One Month");
-    btnOneMonth.setFont(new Font("Serif", Font.BOLD, 24));
+    btnOneMonth.setFont(regularFont);
     cylotGbc.gridx = 1;
     cylotGbc.gridy = 1;
     cylotGbc.anchor = GridBagConstraints.WEST;
@@ -137,37 +140,33 @@ public class setBudget extends JFrame {
     // add panel to frame
     gbc.gridx = 0;
     gbc.gridy = 1;
-    add(cylotPanel, gbc);
 
     /**
      * So Your End Date Is
      */
 
-    JPanel syediPanel = new JPanel(new GridBagLayout());
-    GridBagConstraints syediGbc = new GridBagConstraints();
     // show the sentence "So your end date is:"
     JLabel lblSYEDI = new JLabel("So your end date is:");
-    lblSYEDI.setFont(new Font("Serif", Font.BOLD, 24));
-    syediGbc.gridx = 0;
-    syediGbc.gridy = 0;
-    syediGbc.gridwidth = 2;
-    syediGbc.weightx = 0.5;
-    syediGbc.anchor = GridBagConstraints.WEST;
-    syediGbc.insets = new Insets(15, 30, 10, 0);
-    syediPanel.add(lblSYEDI, syediGbc);
+    lblSYEDI.setFont(regularFont);
+    cylotGbc.gridx = 0;
+    cylotGbc.gridy = 2;
+    cylotGbc.gridwidth = 2;
+    cylotGbc.weightx = 0.5;
+    cylotGbc.insets = new Insets(15, 30, 10, 0);
+    cylotPanel.add(lblSYEDI, cylotGbc);
     // end date label
     lblEndDate = new JLabel("  MONTH   DAY   YEAR  "); // initial placeholder
     lblEndDate.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     lblEndDate.setFont(new Font("Serif", Font.PLAIN, 24));
-    syediGbc.gridx = 0;
-    syediGbc.gridy = 1;
-    syediGbc.anchor = GridBagConstraints.CENTER;
-    syediGbc.insets = new Insets(10, 0, 10, 0);
-    syediPanel.add(lblEndDate, syediGbc);
+    cylotGbc.gridx = 0;
+    cylotGbc.gridy = 3;
+    cylotGbc.anchor = GridBagConstraints.CENTER;
+    cylotGbc.insets = new Insets(10, 0, 10, 0);
+    cylotPanel.add(lblEndDate, cylotGbc);
     // add panel to frame
     gbc.gridx = 0;
     gbc.gridy = 2;
-    add(syediPanel, gbc);
+    add(cylotPanel, gbc);
 
     /**
      * Set Your Budget Below
@@ -177,7 +176,7 @@ public class setBudget extends JFrame {
     GridBagConstraints sybbGbc = new GridBagConstraints();
     // show the sentence "Set your Budget below"
     JLabel lblSYBB = new JLabel("Set your Budget below:");
-    lblSYBB.setFont(new Font("Serif", Font.BOLD, 24));
+    lblSYBB.setFont(regularFont);
     sybbGbc.gridx = 0;
     sybbGbc.gridy = 0;
     sybbGbc.gridwidth = 2;

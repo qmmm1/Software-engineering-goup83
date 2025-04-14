@@ -16,7 +16,6 @@ public class nearBudgetWarning {
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setSize(450, 400);
     frame.setLocationRelativeTo(null);
-
     // build panel
     JPanel panel = new JPanel(new GridBagLayout());
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
@@ -27,6 +26,8 @@ public class nearBudgetWarning {
     gbc.insets = new Insets(5, 5, 5, 5);
     gbc.anchor = GridBagConstraints.WEST;
     gbc.gridx = 0;
+    // set font
+    Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
     /**
      * Warning Content
@@ -34,13 +35,13 @@ public class nearBudgetWarning {
 
     // Dear client
     JLabel lblDC = new JLabel("Dear client,");
-    lblDC.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblDC.setFont(regularFont);
     panel.add(lblDC, gbc);
     // This week/month you have spent
     gbc.gridy = 1;
     String periodText = is_Week_Month == 0 ? "week" : "month";
     JLabel lblYHS = new JLabel("This " + periodText + " you have spent");
-    lblYHS.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblYHS.setFont(regularFont);
     panel.add(lblYHS, gbc);
     // __ %
     gbc.gridy = 2;
@@ -52,7 +53,7 @@ public class nearBudgetWarning {
     gbc.gridy = 3;
     // gbc.anchor = GridBagConstraints.WEST;
     JLabel lblOYB = new JLabel("of your budget");
-    lblOYB.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblOYB.setFont(regularFont);
     panel.add(lblOYB, gbc);
 
     // set visible

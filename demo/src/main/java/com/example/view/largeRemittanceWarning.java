@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class largeRemittanceWarning {
 
-  public static void showWarning(String moneyAmount) {
+  public static void showWarning(double moneyAmount) {
     // build a frame
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -23,6 +23,7 @@ public class largeRemittanceWarning {
     gbc.gridx = 0;
     // set font
     Color redColor = new Color(200, 50, 30);
+    Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
     /**
      * Warning Content
@@ -30,12 +31,12 @@ public class largeRemittanceWarning {
 
     // Dear client
     JLabel lblDC = new JLabel("Dear client,");
-    lblDC.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblDC.setFont(regularFont);
     panel.add(lblDC, gbc);
     // You have made
     gbc.gridy = 1;
     JLabel lblYHM = new JLabel("You have made");
-    lblYHM.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblYHM.setFont(regularFont);
     panel.add(lblYHM, gbc);
     // A large remittance
     gbc.gridy = 2;
@@ -45,18 +46,18 @@ public class largeRemittanceWarning {
     panel.add(lblALR, gbc);
     // In the amount of __
     gbc.gridy = 3;
-    JLabel lblITAO = new JLabel("In the amount of " + moneyAmount);
-    lblITAO.setFont(new Font("Serif", Font.PLAIN, 28));
+    JLabel lblITAO = new JLabel("In the amount of  ¥" + moneyAmount);
+    lblITAO.setFont(regularFont);
     panel.add(lblITAO, gbc);
     // Please make sure about that
     gbc.gridy = 4;
     JLabel lblPMSAT = new JLabel("Please make sure about that.");
-    lblPMSAT.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblPMSAT.setFont(regularFont);
     panel.add(lblPMSAT, gbc);
     // Check to see if you have
     gbc.gridy = 5;
     JLabel lblCTSIYH = new JLabel("Check to see if you have");
-    lblCTSIYH.setFont(new Font("Serif", Font.PLAIN, 28));
+    lblCTSIYH.setFont(regularFont);
     panel.add(lblCTSIYH, gbc);
     // Encountered a scam
     gbc.gridy = 6;
@@ -71,7 +72,7 @@ public class largeRemittanceWarning {
 
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-      showWarning("$10,000");
+      showWarning(10000);
     });
   }
 }
