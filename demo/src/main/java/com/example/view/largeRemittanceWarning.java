@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class largeRemittanceWarning {
 
-  public void showWarning(String moneyAmount) {
+  public static void showWarning(String moneyAmount) {
     // build a frame
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -14,13 +14,13 @@ public class largeRemittanceWarning {
     // build a panel
     JPanel panel = new JPanel(new GridBagLayout());
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    panel.setBackground(Color.WHITE);
     frame.setContentPane(panel);
     // set layout
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.insets = new Insets(5, 5, 5, 5);
     gbc.anchor = GridBagConstraints.WEST;
     gbc.gridx = 0;
-    gbc.gridwidth = 2;
     // set font
     Color redColor = new Color(200, 50, 30);
 
@@ -71,8 +71,7 @@ public class largeRemittanceWarning {
 
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-      largeRemittanceWarning warning = new largeRemittanceWarning();
-      warning.showWarning("$10,000");
+      showWarning("$10,000");
     });
   }
 }

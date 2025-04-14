@@ -51,6 +51,7 @@ public class setBudget extends JFrame {
   private JTextField txtInputBudget;
   private LocalDate endDate; // calculate the end date
   private double userBudget = 0.0; // store user's budget
+  private int is_Week_Month = 0; // 0-week, 1-month
 
   private JButton btnAIAssistant;
   private RoundButton btnHomepage;
@@ -256,6 +257,7 @@ public class setBudget extends JFrame {
       endDate = LocalDate.now().plusWeeks(1);
       // show the end date
       updateEndDateLabel();
+      is_Week_Month = 0;
 
       lblSYEDI.requestFocus();
     });
@@ -269,6 +271,7 @@ public class setBudget extends JFrame {
       endDate = LocalDate.now().plusMonths(1);
       // show the end date
       updateEndDateLabel();
+      is_Week_Month = 1;
 
       lblSYEDI.requestFocus();
     });
@@ -362,6 +365,16 @@ public class setBudget extends JFrame {
   // btnAIAssistant getter
   public JButton getBtnRecordsView() {
     return btnRecordsView;
+  }
+
+  // get week or month
+  public int get_is_Week_Month() {
+    return is_Week_Month;
+  }
+
+  // budget getter
+  public double getUserBudget() {
+    return userBudget;
   }
 
   /**
