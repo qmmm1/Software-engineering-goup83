@@ -8,6 +8,8 @@ import java.util.List;
 public class recordsView extends JFrame {
     private JButton btnHomePage; // 确保有一个引用指向按钮
     private mainWindows mainFrame; // 引用主窗口实例
+    private JButton btnAIAssistant;
+    private JButton btnRecordsView;
 
     private final List<String> allRecords = new ArrayList<>(); // 所有记录数据
     private int currentPage = 0; // 当前页数
@@ -47,9 +49,9 @@ public class recordsView extends JFrame {
 
         // 创建底部按钮面板
         JPanel bottomButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton btnAIAssistant = new JButton("AI Assistant");
+        btnAIAssistant = new JButton("AI Assistant");
         btnHomePage = new JButton("Homepage");
-        JButton btnRecordsView = new JButton("Records View");
+        btnRecordsView = new JButton("Records View");
 
         // 设置按钮样式
         btnAIAssistant.setPreferredSize(new Dimension(200, 60));
@@ -136,8 +138,9 @@ public class recordsView extends JFrame {
         }
     }
 
-    // Getter method for Homepage button
-    public JButton getBtnHomePage() {
+    // Getter method for Ho
+    public JButton getBtnHomepage() {
         return btnHomePage;
     }
+
 }
