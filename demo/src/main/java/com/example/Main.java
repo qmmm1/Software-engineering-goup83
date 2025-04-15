@@ -1,41 +1,122 @@
 package com.example;
 
 import com.example.view.mainWindows;
+import com.example.view.setBudget;
 import com.example.view.importData;
-import com.example.view.RecordsView; // 引入 RecordsView
+import com.example.view.recordsView;
 
 public class Main {
+    private static mainWindows mainFrame;
+    private static importData importFrame;
+    private static setBudget budgetFrame;
+    private static recordsView recordsFrame;
+
     public static void main(String[] args) {
-        // 启动主窗口
-        mainWindows mainFrame = new mainWindows();
+        initMainWindow(); // initialize mainWindows & build listeners
+        mainFrame.setVisible(true); // run
+    }
 
-        // 页面跳转逻辑：主窗口 -> 导入数据界面
+    /**
+     * Page Navigation Logic for mainWindows
+     */
+
+    private static void initMainWindow() {
+        mainFrame = new mainWindows();
+
+        // main -> importData
         mainFrame.getBtnImportData().addActionListener(e -> {
-            // 隐藏主窗口
+            if (importFrame == null)
+                initImportData();
             mainFrame.setVisible(false);
-
-            // 显示导入数据界面，并传递主窗口实例
-            importData importFrame = new importData();
-           
-
-            // 页面跳转逻辑：导入数据界面 -> 主窗口
-            importFrame.getBtnHomepage().addActionListener(e1 -> {
-                // 隐藏导入数据界面
-                importFrame.setVisible(false);
-
-                // 显示主窗口
-                mainFrame.setVisible(true);
-            });
+            importFrame.setVisible(true);
         });
 
-        // 页面跳转逻辑：主窗口 -> records view 页面
-        mainFrame.getBtnRecordsView().addActionListener(e -> {
-            // 隐藏主窗口
+        // main -> setBudget
+        mainFrame.getBtnBudget().addActionListener(e -> {
+            if (budgetFrame == null)
+                initBudgetFrame();
             mainFrame.setVisible(false);
-        
-            // 创建并显示 RecordsView 页面，并传递主窗口实例
-            RecordsView recordsFrame = new RecordsView(mainFrame); // 将 mainFrame 传递给 RecordsView
+            budgetFrame.setVisible(true);
+        });
+
+        // main -> recordsView
+        mainFrame.getBtnRecordsView().addActionListener(e -> {
+            if (recordsFrame == null)
+                initRecordsView();
+            mainFrame.setVisible(false);
             recordsFrame.setVisible(true);
+        });
+
+        // main -> aiAssistant
+        mainFrame.getBtnAIAssistant().addActionListener(e -> {
+            // TODO: 实现 AI Assistant 页面
+        });
+    }
+
+    /**
+     * Page Navigation Logic for importData
+     */
+
+    private static void initImportData() {
+        importFrame = new importData();
+
+        // importData -> main
+        importFrame.getBtnHomepage().addActionListener(e -> {
+            importFrame.setVisible(false);
+            mainFrame.setVisible(true);
+        });
+
+        // importData -> recordsView
+        importFrame.getBtnRecordsView().addActionListener(e -> {
+            if (recordsFrame == null)
+                initRecordsView();
+            importFrame.setVisible(false);
+            recordsFrame.setVisible(true);
+        });
+
+        // importData -> aiAssistant
+        importFrame.getBtnAIAssistant().addActionListener(e -> {
+            // TODO: 添加 AI Assistant 页面跳转
+        });
+    }
+
+    /**
+     * Page Navigation Logic for setBudget
+     */
+
+    private static void initBudgetFrame() {
+        budgetFrame = new setBudget();
+
+        // budget -> main
+        budgetFrame.getBtnHomepage().addActionListener(e -> {
+            budgetFrame.setVisible(false);
+            mainFrame.setVisible(true);
+        });
+
+        // budget -> recordsView
+        budgetFrame.getBtnRecordsView().addActionListener(e -> {
+            if (recordsFrame == null)
+                initRecordsView();
+            budgetFrame.setVisible(false);
+            recordsFrame.setVisible(true);
+        });
+
+        // budget -> aiAssistant
+        budgetFrame.getBtnAIAssistant().addActionListener(e -> {
+            // TODO: 添加 AI Assistant 页面跳转
+        });
+    }
+
+    /**
+     * Page Navigation Logic for setBudget
+     */
+
+    private static void initRecordsView() {
+        recordsFrame = new recordsView(mainFrame);
+
+        recordsFrame.getBtnHomepage().addActionListener(e -> {
+            recordsFrame.setVisible(false);
+            mainFrame.setVisible(true);
         });
     }
 }

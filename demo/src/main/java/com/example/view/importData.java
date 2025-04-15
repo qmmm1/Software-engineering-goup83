@@ -9,6 +9,8 @@ public class importData extends JFrame {
     private JTextField largeAmountField;
     private JTextField frequentPaymentField;
     private JButton btnHomepage; // 声明按钮变量
+    private JButton btnRecordsView;
+    private JButton btnAIAssistant;
 
     public importData() {
         Font largerFont = new Font("Serif", Font.PLAIN, 20);
@@ -23,8 +25,7 @@ public class importData extends JFrame {
         frequentPaymentField.setFont(largerFont);
         frequentPaymentField.setPreferredSize(new Dimension(
                 frequentPaymentField.getPreferredSize().width,
-                30
-        ));
+                30));
 
         setTitle("Import Data");
 
@@ -84,15 +85,23 @@ public class importData extends JFrame {
                 JTextField yearField = new JTextField(10);
 
                 JPanel panel = new JPanel(new GridLayout(4, 2, 5, 5));
-                panel.add(new JLabel("At (e.g.  14:00)")); panel.add(timeField);
-                panel.add(new JLabel("on Day ")); panel.add(dayField);
-                panel.add(new JLabel("Month ")); panel.add(monthField);
-                panel.add(new JLabel("Year ")); panel.add(yearField);
-                panel.add(new JLabel(", you paid ¥")); panel.add(amountField);
-                panel.add(new JLabel("to ")); panel.add(recipientField);
-                panel.add(new JLabel(", on category ")); panel.add(categoryField);
+                panel.add(new JLabel("At (e.g.  14:00)"));
+                panel.add(timeField);
+                panel.add(new JLabel("on Day "));
+                panel.add(dayField);
+                panel.add(new JLabel("Month "));
+                panel.add(monthField);
+                panel.add(new JLabel("Year "));
+                panel.add(yearField);
+                panel.add(new JLabel(", you paid ¥"));
+                panel.add(amountField);
+                panel.add(new JLabel("to "));
+                panel.add(recipientField);
+                panel.add(new JLabel(", on category "));
+                panel.add(categoryField);
 
-                int result = JOptionPane.showConfirmDialog(null, panel, "Payment Information", JOptionPane.OK_CANCEL_OPTION);
+                int result = JOptionPane.showConfirmDialog(null, panel, "Payment Information",
+                        JOptionPane.OK_CANCEL_OPTION);
                 if (result == JOptionPane.OK_OPTION) {
                     String time = timeField.getText();
                     String day = dayField.getText();
@@ -109,7 +118,8 @@ public class importData extends JFrame {
         });
 
         // 大金额提醒部分
-        JLabel largeAmountLabel = new JLabel("Fill in the figure that you think is a large amount so that we can remind you");
+        JLabel largeAmountLabel = new JLabel(
+                "Fill in the figure that you think is a large amount so that we can remind you");
         largeAmountLabel.setFont(largerFont); // 设置字体
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -125,7 +135,8 @@ public class importData extends JFrame {
         add(largeAmountField, gbc);
 
         // 频繁支付提醒部分
-        JLabel frequentPaymentLabel = new JLabel("Fill in the figure that you think is the number of times you make payments too often so that we can remind you");
+        JLabel frequentPaymentLabel = new JLabel(
+                "Fill in the figure that you think is the number of times you make payments too often so that we can remind you");
         frequentPaymentLabel.setFont(largerFont); // 设置字体
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -152,9 +163,9 @@ public class importData extends JFrame {
         btnGbc.weightx = 1.0;
         btnGbc.fill = GridBagConstraints.NONE;
 
-        JButton btnAIAssistant = new JButton("AI assistant");
+        btnAIAssistant = new JButton("AI assistant");
         btnHomepage = new RoundButton("Homepage");
-        JButton btnRecordsView = new JButton("Records View");
+        btnRecordsView = new JButton("Records View");
 
         btnHomepage.addActionListener(new ActionListener() {
             @Override
@@ -181,7 +192,7 @@ public class importData extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 8;
-        gbc.weighty = 0.15;  // 减少空间分配
+        gbc.weighty = 0.15; // 减少空间分配
         gbc.anchor = GridBagConstraints.SOUTH;
         gbc.insets = new Insets(5, 0, 5, 0); // 减少底部边距
         add(bottomButtonPanel, gbc);
@@ -220,6 +231,14 @@ public class importData extends JFrame {
     // 提供获取按钮的方法
     public JButton getBtnHomepage() {
         return btnHomepage;
+    }
+
+    public JButton getBtnRecordsView() {
+        return btnRecordsView;
+    }
+
+    public JButton getBtnAIAssistant() {
+        return btnAIAssistant;
     }
 
     public static void main(String[] args) {
