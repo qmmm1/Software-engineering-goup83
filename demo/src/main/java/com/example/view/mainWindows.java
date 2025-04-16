@@ -150,7 +150,7 @@ public class mainWindows extends JFrame {
         btnGbc.fill = GridBagConstraints.NONE;
 
         // 创建按钮（增大尺寸）
-        btnAIAssistant = new JButton("AI assistant");
+        btnAIAssistant = new JButton("AI Assistant");
         RoundButton btnHomepage = new RoundButton("Homepage");
         btnRecordsView = new JButton("Records View"); // 初始化 Records View 按钮
 
