@@ -16,16 +16,11 @@ public class importData extends JFrame {
         Font largerFont = new Font("Serif", Font.PLAIN, 20);
         largeAmountField = new JTextField(20);
         largeAmountField.setFont(largerFont);
-        largeAmountField.setPreferredSize(new Dimension(
-                largeAmountField.getPreferredSize().width, // 保持原宽度
-                30 // 增加高度到30像素
-        ));
+
 
         frequentPaymentField = new JTextField(20);
         frequentPaymentField.setFont(largerFont);
-        frequentPaymentField.setPreferredSize(new Dimension(
-                frequentPaymentField.getPreferredSize().width,
-                30));
+
 
         setTitle("Import Data");
 
@@ -120,36 +115,58 @@ public class importData extends JFrame {
         // 大金额提醒部分
         JLabel largeAmountLabel = new JLabel(
                 "Fill in the figure that you think is a large amount so that we can remind you");
-        largeAmountLabel.setFont(largerFont); // 设置字体
+        largeAmountLabel.setFont(largerFont);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
         add(largeAmountLabel, gbc);
 
-        largeAmountField = new JTextField(20);
+// 创建包含文本框和按钮的面板
+        JPanel largeAmountPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        largeAmountField = new JTextField(60);  // 缩短文本框
+        largeAmountPanel.add(largeAmountField);
+
+// 调整 Confirm 按钮高度与文本框一致，减小字体大小，并减小按钮内边距
+        JButton confirmLargeAmount = new JButton("Confirm");
+        confirmLargeAmount.setFont(new Font("Serif", Font.PLAIN, 18)); // 减小字体大小
+        confirmLargeAmount.setPreferredSize(new Dimension(80, largeAmountField.getPreferredSize().height)); // 设置按钮高度与文本框一致
+        confirmLargeAmount.setMargin(new Insets(1, 2, 1, 2)); // 减小按钮内边距（上下2像素，左右5像素）
+        largeAmountPanel.add(confirmLargeAmount);
+
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
-        add(largeAmountField, gbc);
+        add(largeAmountPanel, gbc);  // 添加面板替代原文本框
 
-        // 频繁支付提醒部分
+// 频繁支付提醒部分
         JLabel frequentPaymentLabel = new JLabel(
                 "Fill in the figure that you think is the number of times you make payments too often so that we can remind you");
-        frequentPaymentLabel.setFont(largerFont); // 设置字体
+        frequentPaymentLabel.setFont(largerFont);
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
         add(frequentPaymentLabel, gbc);
 
-        frequentPaymentField = new JTextField(20);
+// 创建包含文本框和按钮的面板
+        JPanel frequentPaymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        frequentPaymentField = new JTextField(60);  // 缩短文本框
+        frequentPaymentPanel.add(frequentPaymentField);
+
+// 调整 Confirm 按钮高度与文本框一致，减小字体大小，并减小按钮内边距
+        JButton confirmFrequentPayment = new JButton("Confirm");
+        confirmFrequentPayment.setFont(new Font("Serif", Font.PLAIN, 18)); // 减小字体大小
+        confirmFrequentPayment.setPreferredSize(new Dimension(80, frequentPaymentField.getPreferredSize().height)); // 设置按钮高度与文本框一致
+        confirmFrequentPayment.setMargin(new Insets(1, 2, 1, 2)); // 减小按钮内边距（上下2像素，左右5像素）
+        frequentPaymentPanel.add(confirmFrequentPayment);
+
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
-        add(frequentPaymentField, gbc);
+        add(frequentPaymentPanel, gbc);  // 添加面板替代原文本框
 
         // 底部导航按钮
         JPanel bottomButtonPanel = new JPanel(new GridBagLayout()) {
