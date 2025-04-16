@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import com.example.Main; // 新增导入
 
 public class setBudget extends JFrame {
 
@@ -297,24 +298,18 @@ public class setBudget extends JFrame {
       String userInput = txtInputBudget.getText();
 
       if (userInput.isEmpty() || userInput.equals("The amount of money")) {
-        // if the input is empty, back to "The amount of money"
         txtInputBudget.setText("The amount of money");
         return;
       }
-      // if the input is not empty
-      // try to convert it to a double (i.e.the budget).
+
       try {
         userBudget = Double.parseDouble(userInput);
-        lblSYBB.requestFocus();
+        Main.updateBudgetButtonText(userInput); // 调用Main的静态方法
         JOptionPane.showMessageDialog(null, "Budget set to: " + userBudget);
       } catch (NumberFormatException ex) {
-        // if it can not be convert to double, remind user to input a valid number
         JOptionPane.showMessageDialog(null, "Please enter a valid number.");
-        // also back to "The amount of money"
-        lblSYBB.requestFocus();
         txtInputBudget.setText("The amount of money");
       }
-
     });
 
     // listener for btnHomepage
