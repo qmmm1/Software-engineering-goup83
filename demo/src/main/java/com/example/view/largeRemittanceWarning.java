@@ -30,6 +30,7 @@ public class largeRemittanceWarning {
      */
 
     // Dear client
+    gbc.gridy = 0;
     JLabel lblDC = new JLabel("Dear client,");
     lblDC.setFont(regularFont);
     panel.add(lblDC, gbc);

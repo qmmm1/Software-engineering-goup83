@@ -163,7 +163,7 @@ public class importData extends JFrame {
         btnGbc.weightx = 1.0;
         btnGbc.fill = GridBagConstraints.NONE;
 
-        btnAIAssistant = new JButton("AI assistant");
+        btnAIAssistant = new JButton("AI Assistant");
         btnHomepage = new RoundButton("Homepage");
         btnRecordsView = new JButton("Records View");
 

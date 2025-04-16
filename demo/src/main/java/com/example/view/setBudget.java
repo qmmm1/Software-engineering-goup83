@@ -49,6 +49,8 @@ public class setBudget extends JFrame {
   private JButton btnOneWeek, btnOneMonth;
   private JLabel lblEndDate;
   private JTextField txtInputBudget;
+
+  private LocalDate startDate;
   private LocalDate endDate; // calculate the end date
   private double userBudget = 0.0; // store user's budget
   private int is_Week_Month = 0; // 0-week, 1-month
@@ -94,7 +96,8 @@ public class setBudget extends JFrame {
     tdGbc.anchor = GridBagConstraints.CENTER;
     tdGbc.insets = new Insets(20, 0, 5, 0);
     // define a label
-    lblTodayDate = new JLabel("Today is " + LocalDate.now().format(formatter));
+    startDate = LocalDate.now();
+    lblTodayDate = new JLabel("Today is " + startDate.format(formatter));
     lblTodayDate.setFont(new Font("Serif", Font.BOLD, 30));
     // add label to panel
     todayDatePanel.add(lblTodayDate, tdGbc);
@@ -192,6 +195,11 @@ public class setBudget extends JFrame {
     sybbGbc.anchor = GridBagConstraints.CENTER;
     sybbGbc.insets = new Insets(0, 0, 10, 0);
     sybbPanel.add(txtInputBudget, sybbGbc);
+    // press enter to confirm
+    JLabel lblPETC = new JLabel("(press enter to confirm)");
+    lblPETC.setFont(new Font("Serif", Font.PLAIN, 20));
+    sybbGbc.gridy = 2;
+    sybbPanel.add(lblPETC, sybbGbc);
     // add panel to frame
     gbc.gridx = 0;
     gbc.gridy = 3;
@@ -374,6 +382,16 @@ public class setBudget extends JFrame {
   // budget getter
   public double getUserBudget() {
     return userBudget;
+  }
+
+  // start date getter
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  // start date getter
+  public LocalDate getEndDate() {
+    return endDate;
   }
 
   /**
