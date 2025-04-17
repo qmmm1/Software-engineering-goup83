@@ -108,10 +108,6 @@ public class Main {
         });
     }
 
-    /**
-     * Page Navigation Logic for setBudget
-     */
-
     private static void initRecordsView() {
         recordsFrame = new recordsView(mainFrame);
 
@@ -120,10 +116,11 @@ public class Main {
             mainFrame.setVisible(true);
         });
     }
-    public static void updateBudgetButtonText(String text) {
+
+    public static void updateBudgetButtonText(double userBudget) {
         if (mainFrame != null) {
-            mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + text + "</center></html>");
-            mainFrame.updateExpenseBudgetDisplay(1000); // 假设当前支出为 1000，需替换为实际值
+            mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
+            mainFrame.updateExpenseBudgetDisplay(1000, userBudget); // 假设当前支出为 1000，需替换为实际值
         }
     }
 }

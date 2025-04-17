@@ -186,7 +186,7 @@ public class mainWindows extends JFrame {
         add(bottomButtonPanel, gbc);
 
         // 初始化进度条的值和文本
-        updateExpenseBudgetDisplay(1000); // 实际值应从数据源获取
+        updateExpenseBudgetDisplay(1000, 3000); // 实际值应从数据源获取
 
         setVisible(true);
     }
@@ -221,31 +221,11 @@ public class mainWindows extends JFrame {
     }
 
     // 修改后的方法（移除 budget 参数）
-    public void updateExpenseBudgetDisplay(double expense) {
-        // 从 Budget 按钮的文本中提取预算值
-        String buttonText = btnBudget.getText();
-        String budgetValue = "0";
+    public void updateExpenseBudgetDisplay(double expense, double userBudget) {
+        double percentage = (expense / userBudget) * 100;
+        progressBar.setValue((int) percentage);
+        progressBar.setString("Expense/Budget : " + String.format("%.2f", percentage) + "%");
 
-        // 解析 HTML 格式的按钮文本
-        try {
-            budgetValue = buttonText.split("<br><center>")[1].replace("</center></html>", "").trim();
-            if (budgetValue.equals("+")) {
-                budgetValue = "0"; // 未设置预算时的默认值
-            }
-        } catch (Exception e) {
-            budgetValue = "0";
-        }
-
-        // 转换为 double
-        try {
-            double budget = Double.parseDouble(budgetValue);
-            double percentage = (expense / budget) * 100;
-            progressBar.setValue((int) percentage);
-            progressBar.setString("Expense/Budget : " + String.format("%.2f", percentage) + "%");
-        } catch (NumberFormatException ex) {
-            progressBar.setValue(0);
-            progressBar.setString("Error: Invalid Budget Value");
-        }
     }
 
     // 提供获取按钮的方法

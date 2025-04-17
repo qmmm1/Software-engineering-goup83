@@ -304,7 +304,7 @@ public class setBudget extends JFrame {
 
       try {
         userBudget = Double.parseDouble(userInput);
-        Main.updateBudgetButtonText(userInput); // 调用Main的静态方法
+        Main.updateBudgetButtonText(userBudget); // call method from main
         JOptionPane.showMessageDialog(null, "Budget set to: " + userBudget);
       } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(null, "Please enter a valid number.");
