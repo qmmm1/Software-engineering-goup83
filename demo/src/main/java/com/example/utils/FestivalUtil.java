@@ -52,7 +52,7 @@ public class FestivalUtil {
    * Method to tell Thanksgiving
    * the 4th Wednesday of November
    */
-  private static LocalDate getThanksgivingDate(int year) {
+  static LocalDate getThanksgivingDate(int year) {
     return LocalDate.of(year, Month.NOVEMBER, 1)
         .with(TemporalAdjusters.dayOfWeekInMonth(4, DayOfWeek.THURSDAY));
   }

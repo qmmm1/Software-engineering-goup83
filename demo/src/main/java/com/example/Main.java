@@ -4,6 +4,7 @@ import com.example.view.mainWindows;
 import com.example.view.setBudget;
 import com.example.view.importData;
 import com.example.view.recordsView;
+import javax.swing.JButton; // 新增导入
 
 public class Main {
     private static mainWindows mainFrame;
@@ -118,5 +119,11 @@ public class Main {
             recordsFrame.setVisible(false);
             mainFrame.setVisible(true);
         });
+    }
+    public static void updateBudgetButtonText(String text) {
+        if (mainFrame != null) {
+            mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + text + "</center></html>");
+            mainFrame.updateExpenseBudgetDisplay(1000); // 假设当前支出为 1000，需替换为实际值
+        }
     }
 }
