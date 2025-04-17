@@ -5,8 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class frequentPaymentsWarning {
-
+public class sameAmountWarning {
   private static JButton btnRecordsView;
 
   public static void showWarning(List<String> frequentRecords) {
@@ -44,18 +43,18 @@ public class frequentPaymentsWarning {
     JLabel lblDCWN = new JLabel("Dear client, we noticed");
     lblDCWN.setFont(regularFont);
     contentPanel.add(lblDCWN, Cgbc);
-    // frequent payments
+    // multiple payments of the same amount
     Cgbc.gridy = 1;
-    JLabel lblFP = new JLabel("Frequent Payments");
-    lblFP.setFont(new Font("Serif", Font.BOLD, 32));
-    lblFP.setForeground(redColor);
-    contentPanel.add(lblFP, Cgbc);
-    // from your account.
+    JLabel lblMPOTSA = new JLabel("Multiple Payments of the Same Amount ");
+    lblMPOTSA.setFont(new Font("Serif", Font.BOLD, 32));
+    lblMPOTSA.setForeground(redColor);
+    contentPanel.add(lblMPOTSA, Cgbc);
+    // to the same recipient.
     Cgbc.gridy = 2;
     Cgbc.gridx = 0;
-    JLabel lblFYA = new JLabel("from your account.");
-    lblFYA.setFont(regularFont);
-    contentPanel.add(lblFYA, Cgbc);
+    JLabel lblTTSR = new JLabel("to the same recipient.");
+    lblTTSR.setFont(regularFont);
+    contentPanel.add(lblTTSR, Cgbc);
     // Kindly confirm their validity.
     Cgbc.gridy = 3;
     JLabel lblKCTV = new JLabel("Kindly confirm their validity.");
