@@ -17,13 +17,13 @@ public class FestivalUtil {
     FIXED_FESTIVALS.put("12-25", "Christmas");
     FIXED_FESTIVALS.put("10-31", "Halloween");
     FIXED_FESTIVALS.put("02-14", "Valentine's Day");
+    FIXED_FESTIVALS.put("04-04", "Qingming Festival");
 
     // Lunar calendar festival（LMM-dd）
     FIXED_FESTIVALS.put("L01-01", "Chinese New Year");
     FIXED_FESTIVALS.put("L01-15", "Lantern Festival");
     FIXED_FESTIVALS.put("L05-05", "Dragon Boat Festival");
     FIXED_FESTIVALS.put("L08-15", "Mid-Autumn Festival");
-    FIXED_FESTIVALS.put("L04-04", "Qingming Festival"); // 注意清明节的处理可能需要改进
   }
 
   public static String getFestivalName(LocalDate date) {

@@ -11,14 +11,15 @@ public class recordsView extends JFrame {
     private mainWindows mainFrame;
     private JButton btnAIAssistant;
     private JButton btnRecordsView;
-    private JButton btnHomePage;  // 新增成员变量
+    private JButton btnHomePage;
 
     private final List<String> allRecords = new ArrayList<>();
     private JPanel recordsPanel;
     private JScrollPane scrollPane;
 
     // 类别选项
-    private String[] categoryOptions = {"Category 1", "Category 2", "Category 3", "Category 4", "Category 5", "Others"};
+    private String[] categoryOptions = { "Category 1", "Category 2", "Category 3", "Category 4", "Category 5",
+            "Others" };
 
     public recordsView(mainWindows mainFrame) {
         this.mainFrame = mainFrame;
@@ -27,7 +28,7 @@ public class recordsView extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-        btnHomePage = new RoundButton("Homepage");  // 原局部变量改为成员变量
+        btnHomePage = new RoundButton("Homepage"); // 原局部变量改为成员变量
 
         // 初始化所有记录
         for (int i = 1; i <= 100; i++) {
@@ -86,8 +87,8 @@ public class recordsView extends JFrame {
 
         // 设置滚动条的滚动速度
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setUnitIncrement(20);  // 设置每次滚动的单位增量
-        verticalScrollBar.setBlockIncrement(100);  // 设置每次滚动的块增量
+        verticalScrollBar.setUnitIncrement(20); // 设置每次滚动的单位增量
+        verticalScrollBar.setBlockIncrement(100); // 设置每次滚动的块增量
     }
 
     private void loadAllRecords() {
@@ -164,7 +165,7 @@ public class recordsView extends JFrame {
         // 显示弹窗
         String dialogTitle = "Records Details";
 
-        Object[] options = {"OK", "Cancel"};
+        Object[] options = { "OK", "Cancel" };
         int option = JOptionPane.showOptionDialog(
                 this,
                 detailPanel,
@@ -173,8 +174,7 @@ public class recordsView extends JFrame {
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 options,
-                options[0]
-        );
+                options[0]);
         if (option == 0) {
             String newTime = timeField.getText();
             String newDate = dateField.getText();
