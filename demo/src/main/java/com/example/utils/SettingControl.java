@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import com.example.model.Setting;
 
 public class SettingControl {
+    //从resources目录下读取setting.txt文件，应用开启时应调用。
     public static Setting readSettingFromFile() throws IOException {
     Setting setting = new Setting();
     InputStream inputStream = SettingControl.class.getClassLoader().getResourceAsStream("setting.txt");
@@ -66,6 +67,7 @@ public class SettingControl {
     br.close();
     return setting;
 }
+//将Setting对象写入setting.txt文件，setting发生变化时应调用。
 public static void writeSettingToFile(Setting setting) throws IOException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     // 获取资源文件的路径

@@ -23,6 +23,7 @@ import com.opencsv.exceptions.CsvValidationException;
 
 public class RecordControl {
 
+    // 从CSV文件中导入记录,并重命名为“record.csv”到resources文件夹
     public static List<Record> importRecordsFromCsv(String filePath) {
         List<Record> records = new ArrayList<>();
          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 修改日期格式为"yyyy-MM-dd HH:mm"
@@ -56,6 +57,7 @@ public class RecordControl {
 
         return records;
      }
+     // 从资源文件夹中的“record.csv”读取记录，应用开启时调用。
     public static List<Record> readRecordFromResource(){
         List<Record> records = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 修改日期格式为"yyyy-MM-dd HH:mm"
@@ -87,12 +89,14 @@ public class RecordControl {
 
        return records;
     }
+    // 用于查找最大的paymentId
     public static int findMaxId(List<Record> records) {
         if (records == null || records.isEmpty()) {
             return 0;
         }
         return Integer.parseInt(Collections.max(records, Comparator.comparingInt(record -> Integer.parseInt(record.getPaymentId()))).getPaymentId());
     }
+    //插入单个record
     public static List<Record> insertRecord(List<Record> records,Date paymentDate, double amount, String category,String payee) {
         if (records == null) {
             records = new ArrayList<>();
@@ -107,6 +111,7 @@ public class RecordControl {
         records.add(newRecord);
         return records;
     }
+    //删除单个record
     public static List<Record> deleteRecord(List<Record> records, String paymentId) {
         if (records == null || records.isEmpty()) {
             return null;
@@ -119,6 +124,7 @@ public class RecordControl {
     }
     return records;
 }
+// 用于更新记录到CSV文件，记录修改时调用
     public static void updateRecordsToCsv(List<Record> records) {
    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 精确到分钟
 

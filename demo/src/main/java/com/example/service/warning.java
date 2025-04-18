@@ -8,27 +8,38 @@ import java.util.ArrayList;
 import com.example.model.Setting;
 import com.example.model.Record;
 public class warning {
-    public void budgetWarning(Setting setting,double percentage){
+  //预算警告
+    public static String budgetWarning(Setting setting,double percentage){
       if(percentage>setting.getBudegt_ratewarning_max())
       {
         System.out.println("You have run out of budget");
+        return "max";
       }
       else if(percentage>setting.getBudegt_ratewarning_high())
       {
         System.out.println("You are approaching the limit of your budget");
+        return "high";
       }
       else if(percentage>setting.getBudegt_ratewarning_low())
       {
         System.out.println("You have used a lot of your budget");
+        return "low";
+    }
+    else{
+      return "normal";
     }
 } 
- public void large_amount_warning(Setting setting,Record record){
+//大额交易警告
+ public String large_amount_warning(Setting setting,Record record){
      if(record.getAmount()>=setting.getLarge_amount_warning())
      {
         System.out.println("You have spent a large amount of money");
+        return "catch";
      }
+     return "normal";
 }
- public void small_amount_warning(Setting setting, List<Record> records){
+//相同金额交易警告
+ public String sequent_amount_warning(Setting setting, List<Record> records){
       int recordCount = 0;
         
         // 获取当前时间
@@ -48,9 +59,12 @@ public class warning {
         
         if (recordCount >= setting.getSequent_payment_warning()) {
             System.out.println("You have made a lot of payments recently");
+            return "catch";
  }
+    return "normal";
 }
- public void same_amount_warning(Setting setting, List<Record> records){
+//相同金额交易警告
+ public String same_amount_warning(Setting setting, List<Record> records){
     Calendar calendar = Calendar.getInstance();
     Date currentTime = calendar.getTime();
     List<Record> newRecords = new ArrayList<>();
@@ -71,9 +85,10 @@ public class warning {
          if(newRecords.get(i).getAmount()==newRecords.get(j).getAmount())
          {
             System.out.println("You have made the same amount of money in the past ");
-            return ;
+            return "catch";
       }
    }
  }
+ return "normal";
 }
 }

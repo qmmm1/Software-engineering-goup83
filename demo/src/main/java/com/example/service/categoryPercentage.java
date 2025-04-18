@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.example.model.Record;
 
 public class categoryPercentage {
+    // 计算指定时间段内每种类型的占比
     public Map<String, Double> caculatePercentage(List<Record> records,int duration) {
    if (records.isEmpty()) {
             return Collections.emptyMap();
@@ -36,6 +37,7 @@ public class categoryPercentage {
 
         return categoryPercentages;
 }
+//计算指定时间段内每种类型的数量
 public Map<String, Long> getCategoryCounts(List<Record> records, int duration) {
     if (records.isEmpty()) {
         return Collections.emptyMap();
@@ -50,6 +52,7 @@ public Map<String, Long> getCategoryCounts(List<Record> records, int duration) {
             .filter(record -> !record.getPaymentDate().before(startTime) && !record.getPaymentDate().after(currentTime))
             .collect(Collectors.groupingBy(Record::getCategory, Collectors.counting()));
 }
+//当天的记录的金额总和
 public double getDailyAmountSum(List<Record> records) {
     if (records.isEmpty()) {
         return 0.0;
