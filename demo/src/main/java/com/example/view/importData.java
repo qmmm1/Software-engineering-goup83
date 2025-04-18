@@ -4,6 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.example.utils.InputRecord;
+import com.example.model.Record;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.io.File;
+import java.text.SimpleDateFormat;
+
+
 
 public class importData extends JFrame {
     private JTextField largeAmountField;
@@ -11,8 +21,11 @@ public class importData extends JFrame {
     private JButton btnHomepage; // 声明按钮变量
     private JButton btnRecordsView;
     private JButton btnAIAssistant;
+    private List<Record> records = new ArrayList<>();
+     
 
     public importData() {
+
         Font largerFont = new Font("Serif", Font.PLAIN, 20);
         largeAmountField = new JTextField(20);
         largeAmountField.setFont(largerFont);
@@ -49,8 +62,34 @@ public class importData extends JFrame {
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
         add(csvButton, gbc);
+        
+        
+        csvButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(importData.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    List<Record> imported = InputRecord.importRecordsFromCsv(selectedFile.getAbsolutePath());
 
-        // 添加支付历史记录部分
+                    if (imported != null && !imported.isEmpty()) {
+                        records.addAll(imported); // 把新导入的记录加入总列表
+                        JOptionPane.showMessageDialog(importData.this,
+                                "Successfully imported " + imported.size() + " records.",
+                                "Import Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(importData.this,
+                                "No records were imported. Please check your file.",
+                                "Import Failed", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+
+
+     // 添加支付历史记录部分
         JLabel paymentLabel = new JLabel("You can add payments history below:");
         paymentLabel.setFont(largerFont); // 设置字体
 
@@ -68,49 +107,55 @@ public class importData extends JFrame {
         gbc.weighty = 0.1;
         add(paymentInfoButton, gbc);
 
-        paymentInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTextField timeField = new JTextField(10);
-                JTextField amountField = new JTextField(10);
-                JTextField recipientField = new JTextField(10);
-                JTextField categoryField = new JTextField(10);
-                JTextField dayField = new JTextField(10);
-                JTextField monthField = new JTextField(10);
-                JTextField yearField = new JTextField(10);
+        paymentInfoButton.addActionListener(e -> {
+            // 输入字段
+            JTextField timeField = new JTextField(5); // 时间：14:00
+            JTextField dayField = new JTextField(2);
+            JTextField monthField = new JTextField(2);
+            JTextField yearField = new JTextField(4);
+            JTextField amountField = new JTextField(10);
+            JTextField payeeField = new JTextField(10);
+            JTextField categoryField = new JTextField(10);
 
-                JPanel panel = new JPanel(new GridLayout(4, 2, 5, 5));
-                panel.add(new JLabel("At (e.g.  14:00)"));
-                panel.add(timeField);
-                panel.add(new JLabel("on Day "));
-                panel.add(dayField);
-                panel.add(new JLabel("Month "));
-                panel.add(monthField);
-                panel.add(new JLabel("Year "));
-                panel.add(yearField);
-                panel.add(new JLabel(", you paid ¥"));
-                panel.add(amountField);
-                panel.add(new JLabel("to "));
-                panel.add(recipientField);
-                panel.add(new JLabel(", on category "));
-                panel.add(categoryField);
+            JPanel panel = new JPanel(new GridLayout(0, 2));
+            panel.add(new JLabel("Hour:Minute (e.g. 14:00)")); panel.add(timeField);
+            panel.add(new JLabel("Day")); panel.add(dayField);
+            panel.add(new JLabel("Month")); panel.add(monthField);
+            panel.add(new JLabel("Year")); panel.add(yearField);
+            panel.add(new JLabel("Amount")); panel.add(amountField);
+            panel.add(new JLabel("Payee")); panel.add(payeeField);
+            panel.add(new JLabel("Category")); panel.add(categoryField);
 
-                int result = JOptionPane.showConfirmDialog(null, panel, "Payment Information",
-                        JOptionPane.OK_CANCEL_OPTION);
-                if (result == JOptionPane.OK_OPTION) {
-                    String time = timeField.getText();
-                    String day = dayField.getText();
-                    String month = monthField.getText();
-                    String year = yearField.getText();
-                    String amt = amountField.getText();
-                    String rec = recipientField.getText();
-                    String cat = categoryField.getText();
+            int result = JOptionPane.showConfirmDialog(null, panel, "Add Payment Info", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    String dateTimeStr = yearField.getText().trim() + "-" +
+                                         monthField.getText().trim() + "-" +
+                                         dayField.getText().trim() + " " +
+                                         timeField.getText().trim();
 
-                    JOptionPane.showMessageDialog(null, "Time: " + time + " " + day + "/" + month + "/" + year +
-                            "\nAmount: " + amt + "\nRecipient: " + rec + "\nCategory: " + cat);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date paymentDate = sdf.parse(dateTimeStr);
+
+                    double amount = Double.parseDouble(amountField.getText().trim());
+                    String payee = payeeField.getText().trim();
+                    String category = categoryField.getText().trim();
+
+                    // 调用后端添加记录
+                    records = InputRecord.insertRecord(records, paymentDate, amount, category, payee);
+                    records.addAll(records);  // 添加到 imported 列表中
+
+                    JOptionPane.showMessageDialog(this, "Payment added. Total records: " + records.size());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
                 }
             }
         });
+
+
+
+
 
         // 大金额提醒部分
         JLabel largeAmountLabel = new JLabel(
