@@ -15,9 +15,12 @@ public class Main {
     private static mainWindows mainFrame;
     private static importData importFrame;
     private static setBudget budgetFrame;
-    private static recordsView recordsFrame;
+    public static recordsView recordsFrame;
+    private static List<Record> originRecords;
 
     public static void main(String[] args) {
+        List<Record> resourceRecord = RecordControl.readRecordFromResource();
+        originRecords = resourceRecord;
         initMainWindow(); // initialize mainWindows & build listeners
         mainFrame.setVisible(true); // run
     }
@@ -64,7 +67,7 @@ public class Main {
      */
 
     private static void initImportData() {
-        importFrame = new importData();
+        importFrame = new importData(originRecords);
 
         // importData -> main
         importFrame.getBtnHomepage().addActionListener(e -> {
@@ -113,11 +116,8 @@ public class Main {
         });
     }
 
-    private static void initRecordsView() {
-    	List<Record> importedRecords = RecordControl.readRecordFromResource();
-    	recordsFrame= new recordsView(mainFrame, importedRecords);
-    	recordsFrame.setVisible(true);
-        
+    public static void initRecordsView() {
+    	recordsFrame= new recordsView(mainFrame,originRecords );
 
         recordsFrame.getBtnHomepage().addActionListener(e -> {
             recordsFrame.setVisible(false);

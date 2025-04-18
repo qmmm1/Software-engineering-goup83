@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.example.utils.RecordControl;
+import com.example.Main;
 import com.example.model.Record;
 
 import java.util.ArrayList;
@@ -24,12 +25,13 @@ public class importData extends JFrame {
     private List<Record> records = new ArrayList<>();
      
 
-    public importData() {
+    public importData(List<Record> originRecords) {
 
+        records=originRecords;
         Font largerFont = new Font("Serif", Font.PLAIN, 20);
         largeAmountField = new JTextField(20);
         largeAmountField.setFont(largerFont);
-
+        
 
         frequentPaymentField = new JTextField(20);
         frequentPaymentField.setFont(largerFont);
@@ -144,6 +146,7 @@ public class importData extends JFrame {
                     records = RecordControl.insertRecord(records, paymentDate, amount, category, payee);
                     RecordControl.updateRecordsToCsv(records);
                     JOptionPane.showMessageDialog(this, "Payment added. Total records: " + records.size());
+                    Main.recordsFrame.updateTableData(records);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
@@ -299,11 +302,5 @@ public class importData extends JFrame {
 
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            importData frame = new importData();
-        });
     }
 }

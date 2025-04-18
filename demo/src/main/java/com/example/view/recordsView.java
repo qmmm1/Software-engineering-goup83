@@ -213,7 +213,12 @@ public class recordsView extends JFrame {
         @Override
         protected void paintBorder(Graphics g) {}
     }
-
+    public void updateTableData(List<Record> records) {
+        this.recordList.clear();
+        this.recordList.addAll(records);
+        System.out.println("1");
+        loadRecordObjects();
+    }
     public JButton getBtnHomepage() {
         return btnHomePage;
     }
