@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import com.example.utils.InputRecord;
+import com.example.utils.RecordControl;
 import com.example.model.Record;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class importData extends JFrame {
                 int result = fileChooser.showOpenDialog(importData.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    List<Record> imported = InputRecord.importRecordsFromCsv(selectedFile.getAbsolutePath());
+                    List<Record> imported = RecordControl.importRecordsFromCsv(selectedFile.getAbsolutePath());
 
                     if (imported != null && !imported.isEmpty()) {
                         records.addAll(imported); // 把新导入的记录加入总列表
@@ -140,11 +140,9 @@ public class importData extends JFrame {
                     double amount = Double.parseDouble(amountField.getText().trim());
                     String payee = payeeField.getText().trim();
                     String category = categoryField.getText().trim();
-
                     // 调用后端添加记录
-                    records = InputRecord.insertRecord(records, paymentDate, amount, category, payee);
-                    records.addAll(records);  // 添加到 imported 列表中
-
+                    records = RecordControl.insertRecord(records, paymentDate, amount, category, payee);
+                    RecordControl.updateRecordsToCsv(records);
                     JOptionPane.showMessageDialog(this, "Payment added. Total records: " + records.size());
                 } catch (Exception ex) {
                     ex.printStackTrace();
