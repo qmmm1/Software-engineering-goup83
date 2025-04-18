@@ -2,9 +2,11 @@ package com.example.utils;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,10 +17,11 @@ import java.util.List;
 import java.util.Date;
 import com.example.model.Record;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
 
-public class InputRecord {
+public class RecordControl {
 
     public static List<Record> importRecordsFromCsv(String filePath) {
         List<Record> records = new ArrayList<>();
@@ -26,7 +29,7 @@ public class InputRecord {
 
          try {
             // 获取资源文件夹的路径
-            Path resourcePath = new File(InputRecord.class.getClassLoader().getResource("").getPath()).toPath();
+            Path resourcePath = new File(RecordControl.class.getClassLoader().getResource("").getPath()).toPath();
             Path targetFilePath = resourcePath.resolve("record.csv");
 
             // 将源文件复制到资源文件夹并重命名为record.csv
@@ -59,7 +62,7 @@ public class InputRecord {
 
         try {
            // 获取资源文件夹的路径
-           Path resourcePath = new File(InputRecord.class.getClassLoader().getResource("").getPath()).toPath();
+           Path resourcePath = new File(RecordControl.class.getClassLoader().getResource("").getPath()).toPath();
            Path targetFilePath = resourcePath.resolve("record.csv");
 
 
@@ -104,4 +107,45 @@ public class InputRecord {
         records.add(newRecord);
         return records;
     }
+    public static List<Record> deleteRecord(List<Record> records, String paymentId) {
+        if (records == null || records.isEmpty()) {
+            return null;
+        }
+        for (Record record : records) {
+            if (record.getPaymentId().equals(paymentId)) {
+                records.remove(record);
+                return records;
+            }
+    }
+    return records;
+}
+    public static void updateRecordsToCsv(List<Record> records) {
+   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 精确到分钟
+
+        // 获取资源文件夹的路径
+        Path resourcePath = Paths.get(RecordControl.class.getClassLoader().getResource("record.csv").getPath());
+        
+        // 将源文件复制到目标文件路径
+        String filePath = resourcePath.toString();
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
+            // 写入表头
+            String[] header = {"Payment ID", "Payment Date", "Amount", "Category", "Payee"};
+            writer.writeNext(header);
+
+            // 遍历records列表并写入每一行数据
+            for (Record record : records) {
+                String paymentId = record.getPaymentId();
+                String paymentDate = dateFormat.format(record.getPaymentDate());
+                double amount = record.getAmount();
+                String category = record.getCategory();
+                String payee = record.getPayee();
+
+                String[] data = {paymentId, paymentDate, String.valueOf(amount), category, payee};
+                writer.writeNext(data);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+}
 }

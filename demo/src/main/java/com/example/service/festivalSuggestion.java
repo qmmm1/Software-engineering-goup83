@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import com.github.heqiao2010.lunar.LunarCalendar;
 
 public class festivalSuggestion {
     private Map<Date, String> festivals = new HashMap<>();
@@ -14,7 +15,12 @@ public class festivalSuggestion {
     }
     private Date getDate(int month, int day) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set( month, day);
+        calendar.set( 2024,month, day);
+        return calendar.getTime();
+    }
+    private Date getLunarDate(int lunarMonth, int lunarDay) {
+        LunarCalendar calendar = new LunarCalendar();
+        calendar.set(2024, lunarMonth, lunarDay);
         return calendar.getTime();
     }
     private void initializeFestivals() {
@@ -23,6 +29,10 @@ public class festivalSuggestion {
         festivals.put(getDate( 2, 8), "妇女节");
         festivals.put(getDate(4, 1), "劳动节");
         festivals.put(getDate( 9, 1), "国庆节");
+        // 添加农历节日示例，假设今天的年份是2023年
+        festivals.put(getLunarDate( 1, 1), "春节");
+        festivals.put(getLunarDate( 5,5), "端午节");
+        festivals.put(getLunarDate( 8, 15), "中秋节");
         // 根据需要添加更多节日
     }
     private boolean isSameDay(Date date1, Date date2) {
