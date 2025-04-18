@@ -4,7 +4,12 @@ import com.example.view.mainWindows;
 import com.example.view.setBudget;
 import com.example.view.importData;
 import com.example.view.recordsView;
+
+import java.util.List;
+
 import javax.swing.JButton; // 新增导入
+import com.example.utils.InputRecord;
+import com.example.model.Record;
 
 public class Main {
     private static mainWindows mainFrame;
@@ -109,7 +114,10 @@ public class Main {
     }
 
     private static void initRecordsView() {
-        recordsFrame = new recordsView(mainFrame);
+    	List<Record> importedRecords = InputRecord.readRecordFromResource();
+    	recordsFrame= new recordsView(mainFrame, importedRecords);
+    	recordsFrame.setVisible(true);
+        
 
         recordsFrame.getBtnHomepage().addActionListener(e -> {
             recordsFrame.setVisible(false);
