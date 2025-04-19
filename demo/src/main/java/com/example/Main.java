@@ -9,7 +9,9 @@ import java.util.List;
 
 import javax.swing.JButton; // 新增导入
 import com.example.utils.RecordControl;
+import com.example.utils.SettingControl;
 import com.example.model.Record;
+import com.example.model.Setting;
 
 public class Main {
     private static mainWindows mainFrame;
