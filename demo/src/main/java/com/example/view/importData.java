@@ -146,7 +146,7 @@ public class importData extends JFrame {
                     records = RecordControl.insertRecord(records, paymentDate, amount, category, payee);
                     RecordControl.updateRecordsToCsv(records);
                     JOptionPane.showMessageDialog(this, "Payment added. Total records: " + records.size());
-                    Main.recordsFrame.updateTableData(records);
+                    
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
