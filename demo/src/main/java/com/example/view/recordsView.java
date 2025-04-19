@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.example.model.Record;
+import com.example.utils.RecordControl;
 
 public class recordsView extends JFrame {
     private mainWindows mainFrame;
@@ -182,6 +183,7 @@ public class recordsView extends JFrame {
                 record.setCategory((String) categoryComboBox.getSelectedItem());
 
                 loadRecordObjects(); // refresh
+                RecordControl.updateRecordsToCsv(recordList);
             } catch (ParseException | NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Failed to update record. Check your input format.");
             }

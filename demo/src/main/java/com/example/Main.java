@@ -50,7 +50,6 @@ public class Main {
 
         // main -> recordsView
         mainFrame.getBtnRecordsView().addActionListener(e -> {
-            if (recordsFrame == null)
                 initRecordsView();
             mainFrame.setVisible(false);
             recordsFrame.setVisible(true);
@@ -77,7 +76,6 @@ public class Main {
 
         // importData -> recordsView
         importFrame.getBtnRecordsView().addActionListener(e -> {
-            if (recordsFrame == null)
                 initRecordsView();
             importFrame.setVisible(false);
             recordsFrame.setVisible(true);
@@ -104,7 +102,6 @@ public class Main {
 
         // budget -> recordsView
         budgetFrame.getBtnRecordsView().addActionListener(e -> {
-            if (recordsFrame == null)
                 initRecordsView();
             budgetFrame.setVisible(false);
             recordsFrame.setVisible(true);
