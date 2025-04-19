@@ -50,8 +50,8 @@ public class Main {
 
         // main -> recordsView
         mainFrame.getBtnRecordsView().addActionListener(e -> {
-            if (recordsFrame == null)
-                initRecordsView();
+            
+            initRecordsView();
             mainFrame.setVisible(false);
             recordsFrame.setVisible(true);
         });
