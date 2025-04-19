@@ -41,7 +41,7 @@ public class Main {
      */
 
     private static void initMainWindow() {
-        mainFrame = new mainWindows();
+        mainFrame = new mainWindows(originRecords,setting);
 
         // main -> importData
         mainFrame.getBtnImportData().addActionListener(e -> {
@@ -136,7 +136,7 @@ public class Main {
     public static void updateBudgetButtonText(double userBudget) {
         if (mainFrame != null) {
             mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
-            mainFrame.updateExpenseBudgetDisplay(1000, userBudget); // 假设当前支出为 1000，需替换为实际值
+            mainFrame.updateExpenseBudgetDisplay(); // 假设当前支出为 1000，需替换为实际值
         }
     }
 }

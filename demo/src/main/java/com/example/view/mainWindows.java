@@ -73,7 +73,7 @@ public class mainWindows extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 80, 10)); // 增加水平和垂直间距
         topPanel.setPreferredSize(new Dimension(800, 100)); // 增加高度以适应两行文本
 
-        JButton btnTodayExpense = createButton("Today Expense", String.valueOf(today_expense) + "元");
+        JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records)+ "元");
         btnBudget = createButton("Budget", "+");
         btnImportData = createButton("Import Data", ""); // 初始化按钮
 
