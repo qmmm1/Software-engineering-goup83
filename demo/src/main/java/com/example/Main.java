@@ -4,6 +4,7 @@ import com.example.view.mainWindows;
 import com.example.view.setBudget;
 import com.example.view.importData;
 import com.example.view.recordsView;
+import java.io.IOException;
 
 import java.util.List;
 
@@ -19,10 +20,15 @@ public class Main {
     private static setBudget budgetFrame;
     public static recordsView recordsFrame;
     private static List<Record> originRecords;
+    private static Setting setting;
 
     public static void main(String[] args) {
         List<Record> resourceRecord = RecordControl.readRecordFromResource();
         originRecords = resourceRecord;
+        try{setting = SettingControl.readSettingFromFile();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         initMainWindow(); // initialize mainWindows & build listeners
         mainFrame.setVisible(true); // run
     }
@@ -32,7 +38,7 @@ public class Main {
      */
 
     private static void initMainWindow() {
-        mainFrame = new mainWindows();
+        mainFrame = new mainWindows(originRecords,setting);
 
         // main -> importData
         mainFrame.getBtnImportData().addActionListener(e -> {
@@ -127,7 +133,7 @@ public class Main {
     public static void updateBudgetButtonText(double userBudget) {
         if (mainFrame != null) {
             mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
-            mainFrame.updateExpenseBudgetDisplay(1000, userBudget); // 假设当前支出为 1000，需替换为实际值
+            mainFrame.updateExpenseBudgetDisplay(); // 假设当前支出为 1000，需替换为实际值
         }
     }
 }

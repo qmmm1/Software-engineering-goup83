@@ -12,7 +12,7 @@ import com.example.model.Record;
 
 public class categoryPercentage {
     // 计算指定时间段内每种类型的占比
-    public Map<String, Double> calculatePercentage(List<Record> records, int duration) {
+    public static Map<String, Double> calculatePercentage(List<Record> records, int duration) {
         if (records.isEmpty()) {
             return Collections.emptyMap();
         }
@@ -38,7 +38,7 @@ public class categoryPercentage {
         return categoryPercentages;
     }
 //计算指定时间段内每种类型的数量
-public Map<String, Double> getCategoryCounts(List<Record> records, int duration) {
+public static Map<String, Double> getCategoryCounts(List<Record> records, int duration) {
     if (records.isEmpty()) {
         return Collections.emptyMap();
     }
@@ -53,7 +53,7 @@ public Map<String, Double> getCategoryCounts(List<Record> records, int duration)
     .collect(Collectors.groupingBy(Record::getCategory, Collectors.summingDouble(Record::getAmount)));
 }
 //当天的记录的金额总和
-public double getDailyAmountSum(List<Record> records) {
+public static double getDailyAmountSum(List<Record> records) {
     if (records.isEmpty()) {
         return 0.0;
     }
