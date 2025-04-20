@@ -10,7 +10,7 @@ import com.example.model.Record;
 
 public class budgetCount {
     //返回预算消耗百分比
-    public static double calculateBudget(Setting setting, List<Record> records) {
+    public double calculateBudget(Setting setting, List<Record> records) {
            double totalConsumed = 0.0;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(setting.getStartDate());

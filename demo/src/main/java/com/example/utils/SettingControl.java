@@ -6,9 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -18,10 +15,10 @@ public class SettingControl {
     //从resources目录下读取setting.txt文件，应用开启时应调用。
     public static Setting readSettingFromFile() throws IOException {
     Setting setting = new Setting();
-            String projectRoot = System.getProperty("user.dir");
-        // 构建完整文件路径
-        Path filePath = Paths.get(projectRoot, "demo","data", "setting.txt");
-    InputStream inputStream = Files.newInputStream(filePath);
+    InputStream inputStream = SettingControl.class.getClassLoader().getResourceAsStream("setting.txt");
+    if (inputStream == null) {
+        throw new IOException("无法找到资源文件 setting.txt");
+    }
     BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
     String line;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -43,7 +40,7 @@ public class SettingControl {
                 case "large_amount_warning":
                     setting.setLarge_amount_warning(Integer.parseInt(value));
                     break;
-                case "sequent_amount_warning":
+                case "small_amount_warning":
                     setting.setSequent_payment_warning(Integer.parseInt(value));
                     break;
                 case "same_amount_warning":
@@ -74,9 +71,7 @@ public class SettingControl {
 public static void writeSettingToFile(Setting setting) throws IOException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     // 获取资源文件的路径
-    String projectRoot = System.getProperty("user.dir");
-    // 构建完整文件路径
-    String filePath = Paths.get(projectRoot, "demo","data", "setting.txt").toString();
+    String filePath = SettingControl.class.getClassLoader().getResource("setting.txt").getFile();
     BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
     
     bw.write("budegt_ratewarning_low=" + setting.getBudegt_ratewarning_low());
@@ -87,7 +82,7 @@ public static void writeSettingToFile(Setting setting) throws IOException {
     bw.newLine();
     bw.write("large_amount_warning=" + setting.getLarge_amount_warning());
     bw.newLine();
-    bw.write("sequent_amount_warning=" + setting.getSequent_payment_warning());
+    bw.write("small_amount_warning=" + setting.getSequent_payment_warning());
     bw.newLine();
     bw.write("same_amount_warning=" + setting.getSame_amount_warning());
     bw.newLine();

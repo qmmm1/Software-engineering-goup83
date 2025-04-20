@@ -4,14 +4,12 @@ import com.example.view.mainWindows;
 import com.example.view.setBudget;
 import com.example.view.importData;
 import com.example.view.recordsView;
-import java.io.IOException;
+
 import java.util.List;
 
 import javax.swing.JButton; // 新增导入
 import com.example.utils.RecordControl;
-import com.example.utils.SettingControl;
 import com.example.model.Record;
-import com.example.model.Setting;
 
 public class Main {
     private static mainWindows mainFrame;
@@ -19,18 +17,8 @@ public class Main {
     private static setBudget budgetFrame;
     public static recordsView recordsFrame;
     private static List<Record> originRecords;
-    private static Setting setting;
-    
 
     public static void main(String[] args) {
-    	
-    	try {
-    	    setting = SettingControl.readSettingFromFile();
-            System.out.println("1");
-    	} catch (IOException e) {
-    	    setting = new Setting();
-    	    System.out.println("No existing setting found, creating new setting.");
-    	}
         List<Record> resourceRecord = RecordControl.readRecordFromResource();
         originRecords = resourceRecord;
         initMainWindow(); // initialize mainWindows & build listeners
@@ -42,7 +30,7 @@ public class Main {
      */
 
     private static void initMainWindow() {
-        mainFrame = new mainWindows(originRecords,setting);
+        mainFrame = new mainWindows();
 
         // main -> importData
         mainFrame.getBtnImportData().addActionListener(e -> {
@@ -104,7 +92,7 @@ public class Main {
      */
 
     private static void initBudgetFrame() {
-        budgetFrame = new setBudget(setting);
+        budgetFrame = new setBudget();
 
         // budget -> main
         budgetFrame.getBtnHomepage().addActionListener(e -> {
@@ -137,7 +125,7 @@ public class Main {
     public static void updateBudgetButtonText(double userBudget) {
         if (mainFrame != null) {
             mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
-            mainFrame.updateExpenseBudgetDisplay(); // 假设当前支出为 1000，需替换为实际值
+            mainFrame.updateExpenseBudgetDisplay(1000, userBudget); // 假设当前支出为 1000，需替换为实际值
         }
     }
 }

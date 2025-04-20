@@ -4,18 +4,10 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
-
-import com.example.service.budgetCount;
-import com.example.service.categoryPercentage;
-
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
-import java.util.List;
-import com.example.model.Record;
-import com.example.model.Setting;
 
 public class mainWindows extends JFrame {
     private DefaultPieDataset dataset;
@@ -25,8 +17,6 @@ public class mainWindows extends JFrame {
     private JButton btnRecordsView; // 声明 Records View 按钮
     private JButton btnAIAssistant;
     private JButton btnBudget;
-    private List<Record> records; // 原始数据集
-    private Setting setting; // 全局设置
 
     static class RoundButton extends JButton {
         public RoundButton(String text) {
@@ -56,9 +46,7 @@ public class mainWindows extends JFrame {
         }
     }
 
-    public mainWindows(List<Record> records, Setting setting) {
-        this.records = records;
-        this.setting = setting;
+    public mainWindows() {
         setTitle("记账软件");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 1000);
@@ -73,7 +61,7 @@ public class mainWindows extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 80, 10)); // 增加水平和垂直间距
         topPanel.setPreferredSize(new Dimension(800, 100)); // 增加高度以适应两行文本
 
-        JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records)+ "元");
+        JButton btnTodayExpense = createButton("Today Expense", String.valueOf(today_expense) + "元");
         btnBudget = createButton("Budget", "+");
         btnImportData = createButton("Import Data", ""); // 初始化按钮
 
@@ -103,9 +91,9 @@ public class mainWindows extends JFrame {
         JPanel legendPanel = new JPanel(new GridLayout(2, 5, 10, 10));
         legendPanel.setBackground(Color.WHITE);
 
-        Map<String, Double> categoryCounts = categoryPercentage.getCategoryCounts(records, 30);
-        String[] categories = categoryCounts.keySet().toArray(new String[0]);
-        double[] categoryValues = categoryCounts.values().stream().mapToDouble(Double::doubleValue).toArray();
+        String[] categories = { "Food costs", "Hospitalization costs", "Utilities costs", "Transportation costs",
+                "Other" };
+        double[] categoryValues = { 10, 50, 30, 15, 25 };
         Color[] colors = { Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY };
 
         double total = 0;
@@ -198,7 +186,7 @@ public class mainWindows extends JFrame {
         add(bottomButtonPanel, gbc);
 
         // 初始化进度条的值和文本
-        updateExpenseBudgetDisplay(); // 实际值应从数据源获取
+        //updateExpenseBudgetDisplay(1000, 3000); // 实际值应从数据源获取
 
         setVisible(true);
     }
@@ -211,9 +199,9 @@ public class mainWindows extends JFrame {
     }
 
     private void updateChart() {
-        Map<String, Double> categoryCounts = categoryPercentage.getCategoryCounts(records, 300);
-        String[] categories = categoryCounts.keySet().toArray(new String[0]);
-        double[] categoryValues = categoryCounts.values().stream().mapToDouble(Double::doubleValue).toArray();
+        String[] categories = { "Food costs", "Hospitalization costs", "Utilities costs", "Transportation costs",
+                "Other" };
+        double[] categoryValues = { 10, 50, 30, 15, 25 };
 
         for (int i = 0; i < categories.length; i++) {
             dataset.setValue(categories[i], categoryValues[i]);
@@ -233,8 +221,8 @@ public class mainWindows extends JFrame {
     }
 
     // 修改后的方法（移除 budget 参数）
-    public void updateExpenseBudgetDisplay() {
-        double percentage = budgetCount.calculateBudget(setting, records);
+    public void updateExpenseBudgetDisplay(double expense, double userBudget) {
+        double percentage = (expense / userBudget) * 100;
         progressBar.setValue((int) percentage);
         progressBar.setString("Expense/Budget : " + String.format("%.2f", percentage) + "%");
 
@@ -255,5 +243,9 @@ public class mainWindows extends JFrame {
 
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new mainWindows());
     }
 }
