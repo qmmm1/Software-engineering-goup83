@@ -30,8 +30,9 @@ public class RecordControl {
 
          try {
             // 获取资源文件夹的路径
-            Path resourcePath = new File(RecordControl.class.getClassLoader().getResource("").getPath()).toPath();
-            Path targetFilePath = resourcePath.resolve("record.csv");
+            String projectRoot = System.getProperty("user.dir");
+            // 构建完整文件路径
+            Path targetFilePath = Paths.get(projectRoot, "demo","data", "record.csv");
 
             // 将源文件复制到资源文件夹并重命名为record.csv
             Files.copy(new File(filePath).toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
@@ -64,8 +65,9 @@ public class RecordControl {
 
         try {
            // 获取资源文件夹的路径
-           Path resourcePath = new File(RecordControl.class.getClassLoader().getResource("").getPath()).toPath();
-           Path targetFilePath = resourcePath.resolve("record.csv");
+         String projectRoot = System.getProperty("user.dir");
+        // 构建完整文件路径
+        Path targetFilePath = Paths.get(projectRoot, "demo","data", "record.csv"    );
 
 
            // 从目标文件路径读取CSV文件
@@ -128,9 +130,9 @@ public class RecordControl {
     public static void updateRecordsToCsv(List<Record> records) {
    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 精确到分钟
 
-        // 获取资源文件夹的路径
-        Path resourcePath = new File(RecordControl.class.getClassLoader().getResource("").getPath()).toPath();
-        Path targetFilePath = resourcePath.resolve("record.csv");
+        String projectRoot = System.getProperty("user.dir");
+        // 构建完整文件路径
+        Path targetFilePath = Paths.get(projectRoot, "demo","data", "record.csv");
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(targetFilePath.toFile()))){
             // 写入表头
