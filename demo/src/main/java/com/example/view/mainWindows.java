@@ -186,7 +186,7 @@ public class mainWindows extends JFrame {
         add(bottomButtonPanel, gbc);
 
         // 初始化进度条的值和文本
-        updateExpenseBudgetDisplay(1000, 3000); // 实际值应从数据源获取
+        //updateExpenseBudgetDisplay(1000, 3000); // 实际值应从数据源获取
 
         setVisible(true);
     }

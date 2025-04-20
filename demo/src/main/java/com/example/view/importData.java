@@ -23,6 +23,9 @@ public class importData extends JFrame {
     private JButton btnRecordsView;
     private JButton btnAIAssistant;
     private List<Record> records = new ArrayList<>();
+    private String[] categoryOptions = {
+            "food", "transportation", "entertainment", "education", "living expenses", "others"
+    };
      
 
     public importData(List<Record> originRecords) {
@@ -117,7 +120,9 @@ public class importData extends JFrame {
             JTextField yearField = new JTextField(4);
             JTextField amountField = new JTextField(10);
             JTextField payeeField = new JTextField(10);
-            JTextField categoryField = new JTextField(10);
+            JComboBox<String> categoryComboBox = new JComboBox<>(categoryOptions);
+            categoryComboBox.setSelectedIndex(5); // 默认选中第一项
+
 
             JPanel panel = new JPanel(new GridLayout(0, 2));
             panel.add(new JLabel("Hour:Minute (e.g. 14:00)")); panel.add(timeField);
@@ -126,10 +131,22 @@ public class importData extends JFrame {
             panel.add(new JLabel("Year")); panel.add(yearField);
             panel.add(new JLabel("Amount")); panel.add(amountField);
             panel.add(new JLabel("Payee")); panel.add(payeeField);
-            panel.add(new JLabel("Category")); panel.add(categoryField);
+            // 修改面板中的组件：
+            panel.add(new JLabel("Category"));
+            panel.add(categoryComboBox); // 替换原来的 categoryField
 
-            int result = JOptionPane.showConfirmDialog(null, panel, "Add Payment Info", JOptionPane.OK_CANCEL_OPTION);
-            if (result == JOptionPane.OK_OPTION) {
+            Object[] options = {"OK", "Cancel"}; // 自定义按钮文本
+            int result = JOptionPane.showOptionDialog(
+                    null,
+                    panel,
+                    "Add Payment Info",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options, // 传入自定义按钮数组
+                    options[0] // 默认选中第一个按钮（OK）
+            );
+            if (result == JOptionPane.YES_OPTION) {
                 try {
                     String dateTimeStr = yearField.getText().trim() + "-" +
                                          monthField.getText().trim() + "-" +
@@ -141,7 +158,7 @@ public class importData extends JFrame {
 
                     double amount = Double.parseDouble(amountField.getText().trim());
                     String payee = payeeField.getText().trim();
-                    String category = categoryField.getText().trim();
+                    String category = categoryComboBox.getSelectedItem().toString();
                     // 调用后端添加记录
                     records = RecordControl.insertRecord(records, paymentDate, amount, category, payee);
                     RecordControl.updateRecordsToCsv(records);
