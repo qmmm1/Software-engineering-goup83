@@ -40,7 +40,7 @@ public class SettingControl {
                 case "large_amount_warning":
                     setting.setLarge_amount_warning(Integer.parseInt(value));
                     break;
-                case "small_amount_warning":
+                case "sequent_amount_warning":
                     setting.setSequent_payment_warning(Integer.parseInt(value));
                     break;
                 case "same_amount_warning":
@@ -82,7 +82,7 @@ public static void writeSettingToFile(Setting setting) throws IOException {
     bw.newLine();
     bw.write("large_amount_warning=" + setting.getLarge_amount_warning());
     bw.newLine();
-    bw.write("small_amount_warning=" + setting.getSequent_payment_warning());
+    bw.write("sequent_amount_warning=" + setting.getSequent_payment_warning());
     bw.newLine();
     bw.write("same_amount_warning=" + setting.getSame_amount_warning());
     bw.newLine();

@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -129,12 +128,10 @@ public class RecordControl {
    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 精确到分钟
 
         // 获取资源文件夹的路径
-        Path resourcePath = Paths.get(RecordControl.class.getClassLoader().getResource("record.csv").getPath());
-        
-        // 将源文件复制到目标文件路径
-        String filePath = resourcePath.toString();
+        Path resourcePath = new File(RecordControl.class.getClassLoader().getResource("").getPath()).toPath();
+        Path targetFilePath = resourcePath.resolve("record.csv");
 
-        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(targetFilePath.toFile()))){
             // 写入表头
             String[] header = {"Payment ID", "Payment Date", "Amount", "Category", "Payee"};
             writer.writeNext(header);
