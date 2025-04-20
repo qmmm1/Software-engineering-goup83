@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -15,10 +18,10 @@ public class SettingControl {
     //从resources目录下读取setting.txt文件，应用开启时应调用。
     public static Setting readSettingFromFile() throws IOException {
     Setting setting = new Setting();
-    InputStream inputStream = SettingControl.class.getClassLoader().getResourceAsStream("setting.txt");
-    if (inputStream == null) {
-        throw new IOException("无法找到资源文件 setting.txt");
-    }
+            String projectRoot = System.getProperty("user.dir");
+        // 构建完整文件路径
+        Path filePath = Paths.get(projectRoot, "demo","data", "setting.txt");
+    InputStream inputStream = Files.newInputStream(filePath);
     BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
     String line;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,7 +74,9 @@ public class SettingControl {
 public static void writeSettingToFile(Setting setting) throws IOException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     // 获取资源文件的路径
-    String filePath = SettingControl.class.getClassLoader().getResource("setting.txt").getFile();
+    String projectRoot = System.getProperty("user.dir");
+    // 构建完整文件路径
+    String filePath = Paths.get(projectRoot, "demo","data", "setting.txt").toString();
     BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
     
     bw.write("budegt_ratewarning_low=" + setting.getBudegt_ratewarning_low());
