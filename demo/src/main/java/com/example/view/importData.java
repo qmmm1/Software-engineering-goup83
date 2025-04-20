@@ -24,7 +24,7 @@ public class importData extends JFrame {
     private JButton btnAIAssistant;
     private List<Record> records = new ArrayList<>();
     private String[] categoryOptions = {
-            "food", "transportation", "entertainment", "education", "living expenses", "others"
+            "food", "transportation", "entertainment", "education", "living expenses", "other"
     };
      
 

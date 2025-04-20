@@ -24,7 +24,7 @@ public class recordsView extends JFrame {
     private JScrollPane scrollPane;
 
     private String[] categoryOptions = {
-            "food", "transportation", "entertainment", "education", "living expenses", "others"
+            "food", "transportation", "entertainment", "education", "living expenses", "other"
     };
 
     public recordsView(mainWindows mainFrame, List<Record> recordList) {
