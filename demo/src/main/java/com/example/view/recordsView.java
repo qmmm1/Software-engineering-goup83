@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -98,6 +99,7 @@ public class recordsView extends JFrame {
 
         for (Record record : recordList) {
             String displayText = String.format(
+                    Locale.ENGLISH,
                     "At %tR on %<te %<tB %<tY, you paid ￥%.2f to %s, on category %s",
                     record.getPaymentDate(), record.getAmount(), record.getPayee(), record.getCategory());
 
