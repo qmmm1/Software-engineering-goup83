@@ -132,8 +132,9 @@ public class recordsView extends JFrame {
     }
 
     private void showRecordDetail(Record record) {
-        String time = String.format("%tR", record.getPaymentDate());
-        String date = String.format("%te %<tB %<tY", record.getPaymentDate());
+        // 使用 Locale.ENGLISH 格式化日期和时间
+        String time = String.format(Locale.ENGLISH, "%tR", record.getPaymentDate());
+        String date = String.format(Locale.ENGLISH, "%te %<tB %<tY", record.getPaymentDate());
         String amount = String.format("%.2f", record.getAmount());
         String recipient = record.getPayee();
         String category = record.getCategory();
@@ -176,7 +177,9 @@ public class recordsView extends JFrame {
                 String newTime = timeField.getText();
                 String newDate = dateField.getText();
                 String dateTimeStr = newTime + " " + newDate;
-                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm d MMMM yyyy");
+
+                // 确保解析时的格式与显示的格式一致
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm d MMMM yyyy", Locale.ENGLISH);
                 Date parsedDate = formatter.parse(dateTimeStr);
 
                 record.setPaymentDate(parsedDate);
@@ -184,7 +187,7 @@ public class recordsView extends JFrame {
                 record.setPayee(recipientField.getText());
                 record.setCategory((String) categoryComboBox.getSelectedItem());
 
-                loadRecordObjects(); // refresh
+                loadRecordObjects(); // 刷新显示
                 RecordControl.updateRecordsToCsv(recordList);
             } catch (ParseException | NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Failed to update record. Check your input format.");
