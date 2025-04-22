@@ -329,7 +329,6 @@ public class setBudget extends JFrame {
 
             // 更新并保存设置到 setting.txt 文件
             SettingControl.writeSettingToFile(this.setting);
-            System.out.println("1");
 
             // 更新界面按钮显示等
             Main.updateBudgetButtonText(userBudget); 

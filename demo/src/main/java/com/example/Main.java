@@ -26,7 +26,6 @@ public class Main {
     	
     	try {
     	    setting = SettingControl.readSettingFromFile();
-            System.out.println("1");
     	} catch (IOException e) {
     	    setting = new Setting();
     	    System.out.println("No existing setting found, creating new setting.");

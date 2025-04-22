@@ -14,6 +14,17 @@ public class Setting {
     private Date startDate;
 
 
+    public boolean isValid() {
+   if(large_amount_warning<=0||sequent_payment_warning<=0||same_amount_warning<=0)
+        return false;
+    if(budegt_ratewarning_low>=budegt_ratewarning_high||budegt_ratewarning_high>=budegt_ratewarning_max)
+        return false;
+    if(amount<=0)
+        return false;
+    if(duration<=0)
+        return false;
+    return true;
+    }
     public double getBudegt_ratewarning_low() {
         return budegt_ratewarning_low;
     }

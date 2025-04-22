@@ -38,7 +38,7 @@ public class warning {
      }
      return "normal";
 }
-//相同金额交易警告
+//频繁交易警告
  public String sequent_amount_warning(Setting setting, List<Record> records){
       int recordCount = 0;
         
