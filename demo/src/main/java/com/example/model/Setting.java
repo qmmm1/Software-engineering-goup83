@@ -2,6 +2,21 @@ package com.example.model;
 
 import java.util.Date;
 
+/**
+ * @className Setting
+ * @Description
+ * This class represents the setting of the user.
+ * It contains the following attributes:
+ * 1. budget_rate_warning_low: the low budget rate warning
+ * 2. budget_rate_warning_high: the high budget rate warning
+ * 3. budget_rate_warning_max: the maximum budget rate warning
+ * 4. large_amount_warning: the warning amount for large amount
+ * 5. sequent_payment_warning: the warning number of sequent payments
+ * 6. same_amount_warning: the warning time duration of same amount payments
+ * 7. amount: the amount of the budget
+ * 8. duration: the duration of the budget
+ * 9. startDate: the start date of the budget
+ */
 public class Setting {
     private double budegt_ratewarning_low;
     private double budegt_ratewarning_high;

@@ -21,23 +21,32 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
 
+/**
+ * @className RecordControl
+ * @description Tool class for managing Record objects
+ */
 public class RecordControl {
 
-    // 从CSV文件中导入记录,并重命名为“record.csv”到resources文件夹
+    /**
+     * @methodName importRecordsFromCsv
+     * @description Import records from CSV file and rename them to "record. csv" in the resources folder
+     * @param filePath CSV file path
+     * @return List of Record objects
+     */
     public static List<Record> importRecordsFromCsv(String filePath) {
         List<Record> records = new ArrayList<>();
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 修改日期格式为"yyyy-MM-dd HH:mm"
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // Change the date format to 'yyyy MM dd HH: mm'
 
          try {
-            // 获取资源文件夹的路径
+            // Get the path of the resource folder
             String projectRoot = System.getProperty("user.dir");
-            // 构建完整文件路径
+            // Build a complete file path
             Path targetFilePath = Paths.get(projectRoot, "demo","data", "record.csv");
 
-            // 将源文件复制到资源文件夹并重命名为record.csv
+            // Copy the source file to the resource folder and rename it to record.csv
             Files.copy(new File(filePath).toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // 从目标文件路径读取CSV文件
+            // Read CSV file from the target file path
             try (CSVReader reader = new CSVReader(new FileReader(targetFilePath.toFile()))) {
                 String[] line;
                 reader.readNext(); // Skip the header line
@@ -58,22 +67,23 @@ public class RecordControl {
 
         return records;
      }
-     // 从资源文件夹中的“record.csv”读取记录，应用开启时调用。
+    /**
+     * @methodName readRecordFromResource
+     * @description Read records from the data folder and return a list of Record objects, When the application is launched, it should be called
+     * @return List of Record objects from the data folder
+     */
     public static List<Record> readRecordFromResource(){
         List<Record> records = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 修改日期格式为"yyyy-MM-dd HH:mm"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //Change the date format to 'yyyy MM dd HH: mm'
 
         try {
-           // 获取资源文件夹的路径
          String projectRoot = System.getProperty("user.dir");
-        // 构建完整文件路径
         Path targetFilePath = Paths.get(projectRoot, "demo","data", "record.csv"    );
 
 
-           // 从目标文件路径读取CSV文件
            try (CSVReader reader = new CSVReader(new FileReader(targetFilePath.toFile()))) {
                String[] line;
-               reader.readNext(); // Skip the header line
+               reader.readNext(); 
                while ((line = reader.readNext()) != null) {
                    String paymentId = line[0];
                    Date paymentDate = dateFormat.parse(line[1]);
@@ -91,14 +101,23 @@ public class RecordControl {
 
        return records;
     }
-    // 用于查找最大的paymentId
+    // Used to find the largest paymentId
     public static int findMaxId(List<Record> records) {
         if (records == null || records.isEmpty()) {
             return 0;
         }
         return Integer.parseInt(Collections.max(records, Comparator.comparingInt(record -> Integer.parseInt(record.getPaymentId()))).getPaymentId());
     }
-    //插入单个record
+    /**
+     * @methodName insertRecord
+     * @description Insert a new record to the records list and return the updated list
+     * @param records original records list
+     * @param paymentDate 
+     * @param amount
+     * @param category
+     * @param payee
+     * @return List of Record objects with the new record added
+     */
     public static List<Record> insertRecord(List<Record> records,Date paymentDate, double amount, String category,String payee) {
         if (records == null) {
             records = new ArrayList<>();
@@ -113,7 +132,13 @@ public class RecordControl {
         records.add(newRecord);
         return records;
     }
-    //删除单个record
+    /**
+     * @methodName deleteRecord
+     * @description Delete a record from the records list and return the updated list
+     * @param records
+     * @param paymentId paymentId of the record to be deleted
+     * @return List of Record objects with the deleted record removed
+     */
     public static List<Record> deleteRecord(List<Record> records, String paymentId) {
         if (records == null || records.isEmpty()) {
             return null;
@@ -126,20 +151,21 @@ public class RecordControl {
     }
     return records;
 }
-// 用于更新记录到CSV文件，记录修改时调用
+/**
+ * @methodName updateRecord
+ * @dscrpition Update records and store them in the data folder, After modifying the billing record, it should be called
+ * @param records Global records list
+ */
     public static void updateRecordsToCsv(List<Record> records) {
-   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); // 精确到分钟
+   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 
         String projectRoot = System.getProperty("user.dir");
-        // 构建完整文件路径
         Path targetFilePath = Paths.get(projectRoot, "demo","data", "record.csv");
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(targetFilePath.toFile()))){
-            // 写入表头
             String[] header = {"Payment ID", "Payment Date", "Amount", "Category", "Payee"};
             writer.writeNext(header);
 
-            // 遍历records列表并写入每一行数据
             for (Record record : records) {
                 String paymentId = record.getPaymentId();
                 String paymentDate = dateFormat.format(record.getPaymentDate());

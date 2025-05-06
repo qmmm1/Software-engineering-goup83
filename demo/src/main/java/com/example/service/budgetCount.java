@@ -7,9 +7,18 @@ import java.util.Date;
 import com.example.model.Setting;
 import com.example.model.Record;
 
-
-public class budgetCount {
-    //返回预算消耗百分比
+/**
+ * @className budgetCount
+ * @Description Budget consumption percentage calculation category
+ */
+    public class budgetCount {
+/**
+ * @methodName calculateBudget
+ * @Description Calculate the percentage of budget consumption
+ * @param setting User Settings
+ * @param records Global billing records
+ * @return Budget consumption percentage
+ */
     public static double calculateBudget(Setting setting, List<Record> records) {
            double totalConsumed = 0.0;
         Calendar calendar = Calendar.getInstance();

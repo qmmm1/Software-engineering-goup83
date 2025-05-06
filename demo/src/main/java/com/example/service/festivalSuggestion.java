@@ -6,11 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 import com.github.heqiao2010.lunar.LunarCalendar;
 
+/**
+ * @className: festivalSuggestion
+ * @description: Discriminant function for holiday reminder pop ups
+ */
 public class festivalSuggestion {
     private Map<Date, String> festivals = new HashMap<>();
 
     public festivalSuggestion() {
-        // 初始化节日数据
+        // Initialize holiday data
         initializeFestivals();
     }
     private Date getDate(int month, int day) {
@@ -24,16 +28,15 @@ public class festivalSuggestion {
         return calendar.getTime();
     }
     private void initializeFestivals() {
-        // 添加一些节日示例
-        festivals.put(getDate( 0, 1), "新年"); // 注意：月份从0开始计数
-        festivals.put(getDate( 2, 8), "妇女节");
-        festivals.put(getDate(4, 1), "劳动节");
-        festivals.put(getDate( 9, 1), "国庆节");
-        // 添加农历节日示例，假设今天的年份是2023年
-        festivals.put(getLunarDate( 1, 1), "春节");
-        festivals.put(getLunarDate( 5,5), "端午节");
-        festivals.put(getLunarDate( 8, 15), "中秋节");
-        // 根据需要添加更多节日
+        // Add some holiday examples
+        festivals.put(getDate( 0, 1), "New Year"); // Note: The month starts counting from 0
+        festivals.put(getDate( 2, 8), "Women's Day");
+        festivals.put(getDate(4, 1), "labour day");
+        festivals.put(getDate( 9, 1), "National Day");
+        // Add examples of lunar festivals
+        festivals.put(getLunarDate( 1, 1), "the Spring Festival");
+        festivals.put(getLunarDate( 5,5), "Loong Boat Festival");
+        festivals.put(getLunarDate( 8, 15), "Mid- Autumn Festival");
     }
     private boolean isSameDay(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
@@ -44,6 +47,12 @@ public class festivalSuggestion {
         return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
     }
+/**
+ * @methodName getSuggestionForToday
+ * @description Discriminant function for holiday reminder pop ups
+ * @param percentage the percentage of budget used 
+ * @return the suggestion for today
+ */
     public String getSuggestionForToday(double percentage) {
         Date today = new Date();
         String festival = null;

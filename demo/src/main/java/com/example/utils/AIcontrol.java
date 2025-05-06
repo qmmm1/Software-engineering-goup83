@@ -11,7 +11,20 @@ import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 
 import com.example.model.Record;
+/**
+ * @className AIcontrol
+ * @description AI control class, used to call AI models and obtain classification results
+ */
 public class AIcontrol {
+/**
+ * @methodName categoryAppCall
+ * @description call AI model to classify payee information
+ * @param text payee information
+ * @return classification result of payee information
+ * @throws ApiException
+ * @throws NoApiKeyException
+ * @throws InputRequiredException
+ */
     public static String categoryAppCall(String text)
     throws ApiException, NoApiKeyException, InputRequiredException {
 ApplicationParam param = ApplicationParam.builder()
@@ -25,6 +38,16 @@ Application application = new Application("https://dashscope.aliyuncs.com/api/v1
 ApplicationResult result = application.call(param);
 return  result.getOutput().getText();
 }
+/**
+ * @methodName suggestionAppCall
+ * @description call AI model to suggest
+ * @param records Global billing records
+ * @param suggestion suggestion request
+ * @return suggestion result
+ * @throws ApiException
+ * @throws NoApiKeyException
+ * @throws InputRequiredException
+ */
 public static String suggestionAppCall(List<Record> records,String suggestion) throws ApiException, NoApiKeyException, InputRequiredException{
     String text=records.stream()
                 .map(Record::getDetails)

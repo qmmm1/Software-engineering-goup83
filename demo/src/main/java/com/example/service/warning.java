@@ -7,8 +7,18 @@ import java.util.ArrayList;
 
 import com.example.model.Setting;
 import com.example.model.Record;
+/**
+ * @className warning
+ * @description Warning pop-up recognition
+ */
 public class warning {
-  //预算警告
+  /**
+   * @methodName budgetWarning
+   * @description Budget warning detection
+   * @param setting User Settings
+   * @param percentage Percentage of budget used
+   * @return budget warning level
+   */
     public static String budgetWarning(Setting setting,double percentage){
       if(percentage>setting.getBudegt_ratewarning_max())
       {
@@ -29,8 +39,14 @@ public class warning {
       return "normal";
     }
 } 
-//大额交易警告
- public String large_amount_warning(Setting setting,Record record){
+/**
+ * @methodName large_amount_warning
+ * @description Large amount warning detection
+ * @param setting User Settings
+ * @param record signal import record
+ * @return whether large amount warning catched
+ */
+ public static String large_amount_warning(Setting setting,Record record){
      if(record.getAmount()>=setting.getLarge_amount_warning())
      {
         System.out.println("You have spent a large amount of money");
@@ -38,8 +54,14 @@ public class warning {
      }
      return "normal";
 }
-//频繁交易警告
- public String sequent_amount_warning(Setting setting, List<Record> records){
+/**
+ * @methodName sequent_amount_warning
+ * @description Sequent payment warning detection
+ * @param setting User Settings
+ * @param records Global billing records
+ * @return whether sequent payment warning catched
+ */
+ public static String sequent_amount_warning(Setting setting, List<Record> records){
       int recordCount = 0;
         
         // 获取当前时间
@@ -63,8 +85,14 @@ public class warning {
  }
     return "normal";
 }
-//相同金额交易警告
- public String same_amount_warning(Setting setting, List<Record> records){
+/**
+ * @methodName same_amount_warning
+ * @description Same amount warning detection
+ * @param setting User Settings
+ * @param records Global billing records
+ * @return whether same amount warning catched
+ */
+ public static String same_amount_warning(Setting setting, List<Record> records){
     Calendar calendar = Calendar.getInstance();
     Date currentTime = calendar.getTime();
     List<Record> newRecords = new ArrayList<>();

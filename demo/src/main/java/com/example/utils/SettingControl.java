@@ -14,8 +14,17 @@ import java.text.SimpleDateFormat;
 
 import com.example.model.Setting;
 
+/**
+ * @className SettingControl
+ * @description Used to read the settings. txt file and write the Setting object to the settings. txt file.
+ */
 public class SettingControl {
-    //从resources目录下读取setting.txt文件，应用开启时应调用。
+    /**
+     * @methodName readSettingFromFile
+     * @description Read the Setting object from the data/settings. txt file, which should be called when the application is launched.
+     * @return Setting object
+     * @throws IOException
+     */
     public static Setting readSettingFromFile() throws IOException {
     Setting setting = new Setting();
             String projectRoot = System.getProperty("user.dir");
@@ -70,7 +79,12 @@ public class SettingControl {
     br.close();
     return setting;
 }
-//将Setting对象写入setting.txt文件，setting发生变化时应调用。
+/**
+ * @methodName writeSettingToFile
+ * @description Write the Setting object to the data/settings. txt file.When the setting is modified, it should be called.
+ * @param setting 
+ * @throws IOException
+ */
 public static void writeSettingToFile(Setting setting) throws IOException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     // 获取资源文件的路径

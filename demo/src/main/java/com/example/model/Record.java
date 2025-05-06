@@ -3,6 +3,13 @@ package com.example.model;
 import java.util.Date;
 import java.util.Calendar;
 
+
+/**
+ * @className Record.java
+ * @Dsecription This class represents a record of a payment made by a user.
+ * It contains the payment ID, payment date, amount, category, and payee.
+ * It also provides methods to get and update the payment details, and to validate the payment information.
+ */
 public class Record {
     private String paymentId;
     private Date paymentDate;
