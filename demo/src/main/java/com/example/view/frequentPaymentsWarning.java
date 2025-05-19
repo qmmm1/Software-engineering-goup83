@@ -2,14 +2,26 @@ package com.example.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
+
+import com.example.model.Record;
 
 public class frequentPaymentsWarning {
 
   private static JButton btnRecordsView;
 
-  public static void showWarning(List<String> frequentRecords) {
+  public static void showWarning(List<Record> frequentRecords) {
+    // convert frequentRecords to String
+    List<String> frequentRecords_String = new ArrayList<>();
+    for (Record record : frequentRecords) {
+      String displayText = String.format(
+          Locale.ENGLISH,
+          "At %tR on %<te %<tB %<tY, you paid ￥%.2f to %s, on category %s",
+          record.getPaymentDate(), record.getAmount(), record.getPayee(), record.getCategory());
+      frequentRecords_String.add(displayText);
+    }
+
     // build a frame
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -82,7 +94,7 @@ public class frequentPaymentsWarning {
     // set font
     Font recordFont = new Font("Serif", Font.PLAIN, 18);
     // show records
-    for (String record : frequentRecords) {
+    for (String record : frequentRecords_String) {
       JLabel recordLabel = new JLabel(record);
       recordLabel.setFont(recordFont);
       recordLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
@@ -127,12 +139,24 @@ public class frequentPaymentsWarning {
     frame.setVisible(true);
   }
 
+  /**
+   * Test
+   */
   public static void main(String[] args) {
-    List<String> frequentRecords = new ArrayList<>();
+    List<Record> frequentRecords = new ArrayList<>();
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(2025, Calendar.APRIL, 9, 10, 0);
+    Date fixedDate = calendar.getTime();
+
     for (int i = 1; i <= 10; i++) {
-      frequentRecords.add(String.format(
-          "At 10:00 on 9 April 2025, you paid ￥%d to Recipient %d, on category Category %d",
-          i * 100, i, i));
+      String paymentId = "ID" + i;
+      double amount = i * 100;
+      String category = "Category " + i;
+      String payee = "Recipient " + i;
+
+      Record record = new Record(paymentId, fixedDate, amount, category, payee);
+      frequentRecords.add(record);
     }
     showWarning(frequentRecords);
   }

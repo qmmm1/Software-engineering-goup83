@@ -31,7 +31,6 @@ public class recordsView extends JFrame {
     public recordsView(mainWindows mainFrame, List<Record> recordList) {
         this.mainFrame = mainFrame;
         this.recordList = (recordList != null) ? recordList : new ArrayList<>();
-        
 
         setTitle("Records View");
         setSize(800, 600);
@@ -218,14 +217,17 @@ public class recordsView extends JFrame {
         }
 
         @Override
-        protected void paintBorder(Graphics g) {}
+        protected void paintBorder(Graphics g) {
+        }
     }
+
     public void updateTableData(List<Record> records) {
         this.recordList.clear();
         this.recordList.addAll(records);
         System.out.println("1");
         loadRecordObjects();
     }
+
     public JButton getBtnHomepage() {
         return btnHomePage;
     }

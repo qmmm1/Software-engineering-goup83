@@ -2,13 +2,27 @@ package com.example.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+
+import com.example.model.Record;
 
 public class sameAmountWarning {
   private static JButton btnRecordsView;
 
-  public static void showWarning(List<String> frequentRecords) {
+  public static void showWarning(List<Record> sameAmountRecords) {
+    // convert frequentRecords to String
+    List<String> sameAmountRecords_String = new ArrayList<>();
+    for (Record record : sameAmountRecords) {
+      String displayText = String.format(
+          Locale.ENGLISH,
+          "At %tR on %<te %<tB %<tY, you paid ￥%.2f to %s, on category %s",
+          record.getPaymentDate(), record.getAmount(), record.getPayee(), record.getCategory());
+      sameAmountRecords_String.add(displayText);
+    }
     // build a frame
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -81,7 +95,7 @@ public class sameAmountWarning {
     // set font
     Font recordFont = new Font("Serif", Font.PLAIN, 18);
     // show records
-    for (String record : frequentRecords) {
+    for (String record : sameAmountRecords_String) {
       JLabel recordLabel = new JLabel(record);
       recordLabel.setFont(recordFont);
       recordLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
@@ -127,12 +141,21 @@ public class sameAmountWarning {
   }
 
   public static void main(String[] args) {
-    List<String> frequentRecords = new ArrayList<>();
+    List<Record> sameAmountRecords = new ArrayList<>();
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(2025, Calendar.APRIL, 9, 10, 0);
+    Date fixedDate = calendar.getTime();
+
     for (int i = 1; i <= 10; i++) {
-      frequentRecords.add(String.format(
-          "At 10:00 on 9 April 2025, you paid ￥%d to Recipient %d, on category Category %d",
-          i * 100, i, i));
+      String paymentId = "ID" + i;
+      double amount = i * 100;
+      String category = "Category " + i;
+      String payee = "Recipient " + i;
+
+      Record record = new Record(paymentId, fixedDate, amount, category, payee);
+      sameAmountRecords.add(record);
     }
-    showWarning(frequentRecords);
+    showWarning(sameAmountRecords);
   }
 }
