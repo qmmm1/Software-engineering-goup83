@@ -4,14 +4,19 @@ import com.example.view.mainWindows;
 import com.example.view.setBudget;
 import com.example.view.importData;
 import com.example.view.recordsView;
-import java.io.IOException;
-import java.util.List;
+import com.example.view.happyFestival;
 
-import javax.swing.JButton; // 新增导入
 import com.example.utils.RecordControl;
 import com.example.utils.SettingControl;
+
 import com.example.model.Record;
 import com.example.model.Setting;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.JButton; // 新增导入
+import javax.swing.SwingUtilities;
 
 public class Main {
     private static mainWindows mainFrame;
@@ -20,20 +25,26 @@ public class Main {
     public static recordsView recordsFrame;
     private static List<Record> originRecords;
     private static Setting setting;
-    
 
     public static void main(String[] args) {
-    	
-    	try {
-    	    setting = SettingControl.readSettingFromFile();
-    	} catch (IOException e) {
-    	    setting = new Setting();
-    	    System.out.println("No existing setting found, creating new setting.");
-    	}
+
+        try {
+            setting = SettingControl.readSettingFromFile();
+        } catch (IOException e) {
+            setting = new Setting();
+            System.out.println("No existing setting found, creating new setting.");
+        }
         List<Record> resourceRecord = RecordControl.readRecordFromResource();
         originRecords = resourceRecord;
+
         initMainWindow(); // initialize mainWindows & build listeners
         mainFrame.setVisible(true); // run
+
+        SwingUtilities.invokeLater(() -> {
+            // logic to show happyFestival
+            happyFestival.showReminder(LocalDate.now());
+            // happyFestival.showReminder(LocalDate.of(2025, 2, 13)); // logic test
+        });
     }
 
     /**
@@ -41,7 +52,7 @@ public class Main {
      */
 
     private static void initMainWindow() {
-        mainFrame = new mainWindows(originRecords,setting);
+        mainFrame = new mainWindows(originRecords, setting);
 
         // main -> importData
         mainFrame.getBtnImportData().addActionListener(e -> {
@@ -61,7 +72,7 @@ public class Main {
 
         // main -> recordsView
         mainFrame.getBtnRecordsView().addActionListener(e -> {
-                initRecordsView();
+            initRecordsView();
             mainFrame.setVisible(false);
             recordsFrame.setVisible(true);
         });
@@ -87,7 +98,7 @@ public class Main {
 
         // importData -> recordsView
         importFrame.getBtnRecordsView().addActionListener(e -> {
-                initRecordsView();
+            initRecordsView();
             importFrame.setVisible(false);
             recordsFrame.setVisible(true);
         });
@@ -113,7 +124,7 @@ public class Main {
 
         // budget -> recordsView
         budgetFrame.getBtnRecordsView().addActionListener(e -> {
-                initRecordsView();
+            initRecordsView();
             budgetFrame.setVisible(false);
             recordsFrame.setVisible(true);
         });
@@ -125,7 +136,7 @@ public class Main {
     }
 
     public static void initRecordsView() {
-    	recordsFrame= new recordsView(mainFrame,originRecords );
+        recordsFrame = new recordsView(mainFrame, originRecords);
 
         recordsFrame.getBtnHomepage().addActionListener(e -> {
             recordsFrame.setVisible(false);
