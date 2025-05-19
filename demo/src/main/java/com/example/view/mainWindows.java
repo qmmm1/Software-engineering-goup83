@@ -73,7 +73,7 @@ public class mainWindows extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 80, 10)); // 增加水平和垂直间距
         topPanel.setPreferredSize(new Dimension(800, 100)); // 增加高度以适应两行文本
 
-        JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records)+ "元");
+        JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records) + "元");
         btnBudget = createButton("Budget", "+");
         btnImportData = createButton("Import Data", ""); // 初始化按钮
 
@@ -106,7 +106,7 @@ public class mainWindows extends JFrame {
         Map<String, Double> categoryCounts = categoryPercentage.getCategoryCounts(records, 30);
         String[] categories = categoryCounts.keySet().toArray(new String[0]);
         double[] categoryValues = categoryCounts.values().stream().mapToDouble(Double::doubleValue).toArray();
-        Color[] colors = { Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY };
+        Color[] colors = { Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.LIGHT_GRAY, Color.PINK };
 
         double total = 0;
         for (double value : categoryValues) {

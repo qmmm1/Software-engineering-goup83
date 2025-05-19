@@ -14,7 +14,6 @@ import com.example.Main; // 新增导入
 import com.example.utils.SettingControl;
 
 public class setBudget extends JFrame {
-	 
 
   /**
    * Define a RoundButton for Homepage Button
@@ -66,10 +65,9 @@ public class setBudget extends JFrame {
   private RoundButton btnHomepage;
   private JButton btnRecordsView;
   private Setting setting;
-  
 
   public setBudget(Setting orignSetting) {
-	 this.setting = orignSetting;
+    this.setting = orignSetting;
 
     /**
      * Set the Frame
@@ -304,46 +302,50 @@ public class setBudget extends JFrame {
     });
 
     txtInputBudget.addActionListener(e -> {
-        String userInput = txtInputBudget.getText();
+      String userInput = txtInputBudget.getText();
 
-        if (userInput.isEmpty() || userInput.equals("The amount of money")) {
-            txtInputBudget.setText("The amount of money");
-            return;
+      if (userInput.isEmpty() || userInput.equals("The amount of money")) {
+        txtInputBudget.setText("The amount of money");
+        return;
+      }
+
+      try {
+        userBudget = Double.parseDouble(userInput);
+        // budget must > 0
+        if (userBudget <= 0) {
+          JOptionPane.showMessageDialog(null, "Please enter a positive number.");
+          txtInputBudget.setText("The amount of money");
+          return;
         }
 
-        try {
-            userBudget = Double.parseDouble(userInput);
+        // 设置预算到 Setting 中
+        this.setting.setAmount(userBudget);
 
-            // 设置预算到 Setting 中
-            this.setting.setAmount(userBudget);
-
-            // 设置周期
-            if (is_Week_Month == 0) {
-                this.setting.setduration_week();
-            } else {
-                this.setting.setduration_month();
-            }
-
-            Date startDateConverted = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            this.setting.setStartDate(startDateConverted);
-
-            // 更新并保存设置到 setting.txt 文件
-            SettingControl.writeSettingToFile(this.setting);
-
-            // 更新界面按钮显示等
-            Main.updateBudgetButtonText(userBudget); 
-
-            JOptionPane.showMessageDialog(null, "Budget set to: " + userBudget);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid number.");
-            txtInputBudget.setText("The amount of money");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error saving settings to file.");
-            ex.printStackTrace();
+        // 设置周期
+        if (is_Week_Month == 0) {
+          this.setting.setduration_week();
+        } else {
+          this.setting.setduration_month();
         }
+
+        Date startDateConverted = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.setting.setStartDate(startDateConverted);
+
+        // 更新并保存设置到 setting.txt 文件
+        SettingControl.writeSettingToFile(this.setting);
+
+        // 更新界面按钮显示等
+        Main.updateBudgetButtonText(userBudget);
+
+        JOptionPane.showMessageDialog(null, "Budget set to: " + userBudget);
+      } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(null, "Please enter a valid number.");
+        txtInputBudget.setText("The amount of money");
+      } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Error saving settings to file.");
+        ex.printStackTrace();
+      }
     });
-
-
 
     // listener for btnHomepage
     btnHomepage.addActionListener(new ActionListener() {
@@ -425,7 +427,5 @@ public class setBudget extends JFrame {
   /**
    * Main Entry
    */
-
-  
 
 }
