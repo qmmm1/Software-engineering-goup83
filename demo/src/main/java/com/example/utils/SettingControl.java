@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import com.example.model.Setting;
 
@@ -75,6 +77,13 @@ public class SettingControl {
                     System.err.println("未知属性：" + key);
             }
         }
+    }
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(setting.getStartDate());
+    calendar.add(Calendar.DAY_OF_MONTH, setting.getDuration());
+    Date endDate = calendar.getTime();
+    if (endDate.before(Calendar.getInstance().getTime())) {
+        System.err.println("Budget expired, please set a new budget.");
     }
     br.close();
     return setting;
