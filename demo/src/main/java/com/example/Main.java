@@ -5,6 +5,7 @@ import com.example.view.setBudget;
 import com.example.view.importData;
 import com.example.view.recordsView;
 import com.example.view.happyFestival;
+import com.example.view.aiAssistant;
 
 import com.example.utils.RecordControl;
 import com.example.utils.SettingControl;
@@ -79,8 +80,11 @@ public class Main {
 
         // main -> aiAssistant
         mainFrame.getBtnAIAssistant().addActionListener(e -> {
-            // TODO: 实现 AI Assistant 页面
+            aiAssistant aiFrame = new aiAssistant(mainFrame);
+            mainFrame.setVisible(false);
+            aiFrame.setVisible(true);
         });
+
     }
 
     /**
@@ -105,8 +109,11 @@ public class Main {
 
         // importData -> aiAssistant
         importFrame.getBtnAIAssistant().addActionListener(e -> {
-            // TODO: 添加 AI Assistant 页面跳转
+            aiAssistant aiFrame = new aiAssistant(mainFrame);
+            importFrame.setVisible(false);
+            aiFrame.setVisible(true);
         });
+
     }
 
     /**
@@ -131,7 +138,9 @@ public class Main {
 
         // budget -> aiAssistant
         budgetFrame.getBtnAIAssistant().addActionListener(e -> {
-            // TODO: 添加 AI Assistant 页面跳转
+            aiAssistant aiFrame = new aiAssistant(mainFrame);
+            budgetFrame.setVisible(false);
+            aiFrame.setVisible(true);
         });
     }
 
