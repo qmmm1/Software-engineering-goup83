@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.example.model.Setting;
 import com.example.model.Record;
+
 /**
  * @className warning
  * @description Warning pop-up recognition
@@ -15,30 +16,25 @@ public class warning {
     /**
      * @methodName budgetWarning
      * @description Budget warning detection
-     * @param setting User Settings
+     * @param setting    User Settings
      * @param percentage Percentage of budget used
      * @return budget warning level
      */
-    public static String budgetWarning(Setting setting,double percentage){
-        if(percentage>setting.getBudegt_ratewarning_max())
-        {
+    public static String budgetWarning(Setting setting, double percentage) {
+        if (percentage > setting.getBudegt_ratewarning_max()) {
             System.out.println("You have run out of budget");
             return "max";
-        }
-        else if(percentage>setting.getBudegt_ratewarning_high())
-        {
+        } else if (percentage > setting.getBudegt_ratewarning_high()) {
             System.out.println("You are approaching the limit of your budget");
             return "high";
-        }
-        else if(percentage>setting.getBudegt_ratewarning_low())
-        {
+        } else if (percentage > setting.getBudegt_ratewarning_low()) {
             System.out.println("You have used a lot of your budget");
             return "low";
-        }
-        else{
+        } else {
             return "normal";
         }
     }
+
     /**
      * @methodName large_amount_warning
      * @description Large amount warning detection
@@ -46,30 +42,31 @@ public class warning {
      * @param records signal import record
      * @return whether large amount warning catched
      */
-    public static Map<String,Object> large_amount_warning(Setting setting,List<Record> records){
-        Map<String,Object> result=new HashMap<>();
-        List<Double> amountList=new ArrayList<>();
+    public static Map<String, Object> large_amount_warning(Setting setting, List<Record> records) {
+        Map<String, Object> result = new HashMap<>();
+        List<Double> amountList = new ArrayList<>();
 
-        result.put("code","normal");
-        result.put("amountList",amountList);
+        result.put("code", "normal");
+        result.put("amountList", amountList);
 
-         for (Record record : records) {
-            if(record.getAmount()>=setting.getLarge_amount_warning())
-            {
+        for (Record record : records) {
+            if (record.getAmount() >= setting.getLarge_amount_warning()) {
                 amountList.add(record.getAmount());
             }
         }
 
-         if(!amountList.isEmpty()){
-             result.put("code","catch");
-             result.put("amountList",amountList);
-             return result;
-         }
+        if (!amountList.isEmpty()) {
+            result.put("code", "catch");
+            result.put("amountList", amountList);
+            return result;
+        }
 
         return result;
     }
+
     /**
      * 高频
+     * 
      * @methodName sequent_amount_warning
      * @description Sequent payment warning detection
      * @param setting User Settings
@@ -77,9 +74,11 @@ public class warning {
      * @return whether sequent payment warning catched
      */
 
-    public static Map<String, Object> sequent_amount_warning(Setting setting, List<Record> records) {
+    public static Map<String, Object> sequent_amount_warning(Setting setting, List<Record> newRecords,
+            List<Record> oldRecords) {
         Map<String, Object> result = new HashMap<>();
         result.put("code", "normal");
+        List<Record> records = new ArrayList<>();
         Set<Record> recordSet = new LinkedHashSet<>(); // 使用 Set 去重，保持顺序
 
         int threshold = setting.getSequent_payment_warning();
@@ -87,8 +86,25 @@ public class warning {
             return result;
         }
 
-        // 按时间排序
-        records.sort(Comparator.comparing(Record::getPaymentDate));
+        // sort according to time
+        newRecords.sort(Comparator.comparing(Record::getPaymentDate));
+        records.addAll(newRecords);
+        // get records 5min ago, merge with newRecords
+        if (!oldRecords.isEmpty()) {
+            Date endmin = newRecords.get(0).getPaymentDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(endmin);
+            calendar.add(Calendar.MINUTE, -5);
+            Date startmin = calendar.getTime();
+            for (Record r : oldRecords) {
+                Date nowTime = r.getPaymentDate();
+                if (nowTime.after(startmin) || nowTime.equals(startmin)) {
+                    records.add(r);
+                }
+            }
+            records.sort(Comparator.comparing(Record::getPaymentDate));
+
+        }
 
         // 滑动窗口：检测连续 threshold+1 次支付是否在 5 分钟内
         int start = 0;
@@ -98,9 +114,9 @@ public class warning {
             // 移动左指针，确保窗口内时间差 ≤5 分钟
             while (start <= end) {
                 Instant startTime = records.get(start).getPaymentDate().toInstant();
-                long secondsDiff  = ChronoUnit.SECONDS.between(startTime, currentTime);
-                //300秒
-                if (secondsDiff  >300) {
+                long secondsDiff = ChronoUnit.SECONDS.between(startTime, currentTime);
+                // 300秒
+                if (secondsDiff > 300) {
                     start++;
                 } else {
                     break;
@@ -121,6 +137,7 @@ public class warning {
         }
         return result;
     }
+
     /**
      * @methodName same_amount_warning
      * @description Same amount warning detection
@@ -128,19 +145,38 @@ public class warning {
      * @param records Global billing records
      * @return whether same amount warning catched
      */
-    public static Map<String,Object>  same_amount_warning(Setting setting, List<Record> records){
+    public static Map<String, Object> same_amount_warning(Setting setting, List<Record> newRecords,
+            List<Record> oldRecords) {
 
-        Map<String,Object> result=new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         Set<Record> recordSet = new LinkedHashSet<>();
+        List<Record> records = new ArrayList<>();
 
+        // sort according to time
+        newRecords.sort(Comparator.comparing(Record::getPaymentDate));
+        records.addAll(newRecords);
+        // get records tmin ago, merge with newRecords
+        if (!oldRecords.isEmpty()) {
+            Date endmin = newRecords.get(0).getPaymentDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(endmin);
+            calendar.add(Calendar.MINUTE, -setting.getSame_amount_warning());
+            Date startmin = calendar.getTime();
+            for (Record r : oldRecords) {
+                Date nowTime = r.getPaymentDate();
+                if (nowTime.after(startmin) || nowTime.equals(startmin)) {
+                    records.add(r);
+                }
+            }
+            records.sort(Comparator.comparing(Record::getPaymentDate));
+        }
 
         Map<String, Map<Double, List<Record>>> groupedRecords = records.stream()
                 .collect(Collectors.groupingBy(
                         Record::getPayee,
-                        Collectors.groupingBy(Record::getAmount)
-                ));
+                        Collectors.groupingBy(Record::getAmount)));
 
-            //  遍历每个分组，检查时间窗口
+        // 遍历每个分组，检查时间窗口
         for (Map<Double, List<Record>> amountGroup : groupedRecords.values()) {
             for (List<Record> group : amountGroup.values()) {
                 // 按支付时间排序
@@ -152,9 +188,10 @@ public class warning {
 
                     Instant startTime = group.get(start).getPaymentDate().toInstant();
                     Instant currentTime = group.get(end).getPaymentDate().toInstant();
-                    // 动态调整窗口左边界，确保时间差 ≤5 分钟
+                    // 动态调整窗口左边界，确保时间差 ≤t 分钟
                     while (start < end &&
-                            ChronoUnit.SECONDS.between(startTime, currentTime)>(setting.getSame_amount_warning()*60)) {
+                            ChronoUnit.SECONDS.between(startTime,
+                                    currentTime) > (setting.getSame_amount_warning() * 60)) {
                         start++;
                     }
 
@@ -168,15 +205,14 @@ public class warning {
             }
         }
 
-
-        if(recordSet.size()!=0){
+        if (recordSet.size() != 0) {
             System.out.println("You have made the same amount of money in the past ");
-            result.put("code","catch");
-            result.put("records",new ArrayList<>(recordSet));
+            result.put("code", "catch");
+            result.put("records", new ArrayList<>(recordSet));
             return result;
         }
 
-        result.put("code","normal");
+        result.put("code", "normal");
         return result;
     }
 }

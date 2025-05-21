@@ -6,9 +6,7 @@ import java.text.DecimalFormat;
 
 public class nearBudgetWarning {
 
-  public static void showWarning(int is_Week_Month, double userBudget, double haveSpent) {
-    // calculate %
-    double percentage = (haveSpent / userBudget) * 100;
+  public static void showWarning(int is_Week_Month, double percentage) {
     DecimalFormat df = new DecimalFormat("0.0");
 
     // build frame
