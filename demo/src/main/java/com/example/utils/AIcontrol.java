@@ -1,5 +1,7 @@
 package com.example.utils;
 
+import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,14 +63,44 @@ public static String suggestionAppCall(List<Record> records,String suggestion) t
     ApplicationResult result = application.call(param);
     return  result.getOutput().getText();
    }
- public static void AIcategory(List<Record> records){
+/**
+ * @methodName singalAIcategory
+ * @description call AI model to classify payee information for a single record
+ * @param record single record to be classified
+ */
+public static void singalAIcategory(Record record){
     try{
-    for (Record record : records) {
         String result = categoryAppCall(record.getPayee());
         JSONObject jsonResult = new JSONObject(result);
         String category = jsonResult.getString("Label");
         record.setCategory(category);
     }
+    catch (ApiException  | NoApiKeyException  | InputRequiredException e) {
+        e.printStackTrace();
+    }
+}
+/**
+ * @methodName AIcategory
+ * @description call AI model to classify payee information for records within a certain duration
+ * @param records Global billing records
+ * @param duration duration of records to be classified
+ */
+ public static void AIcategory(List<Record> records,int duration){
+    try{
+        Calendar calendar = Calendar.getInstance();
+        // 减去duration天
+        calendar.add(Calendar.DAY_OF_YEAR, -duration);
+        Date startDate = calendar.getTime();
+    for (Record record : records) {
+
+        Date recordDate = record.getPaymentDate();
+         if (recordDate.after(startDate) || recordDate.equals(startDate)){
+        String result = categoryAppCall(record.getPayee());
+        JSONObject jsonResult = new JSONObject(result);
+        String category = jsonResult.getString("Label");
+        record.setCategory(category);
+    }
+}
 } catch (ApiException  | NoApiKeyException  | InputRequiredException e) {
     e.printStackTrace();
  }
