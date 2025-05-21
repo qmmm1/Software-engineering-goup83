@@ -79,7 +79,8 @@ public class importData extends JFrame {
                     List<Record> imported = RecordControl.importRecordsFromCsv(selectedFile.getAbsolutePath());
 
                     if (imported != null && !imported.isEmpty()) {
-                        records.addAll(imported); // 把新导入的记录加入总列表
+                        records=imported; // 把新导入的记录替换原有列表
+                        RecordControl.updateRecordsToCsv(records);
                         JOptionPane.showMessageDialog(importData.this,
                                 "Successfully imported " + imported.size() + " records.",
                                 "Import Success", JOptionPane.INFORMATION_MESSAGE);
