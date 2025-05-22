@@ -184,21 +184,21 @@ public class Main {
         List<Record> oldRecords = new ArrayList<>(importFrame.getOldRecords());
         List<Record> records = new ArrayList<>(RecordControl.readRecordFromResource());
 
-        System.out.println("New Records:");
-        for (Record record : newRecords) {
-            System.out.println(record.getPaymentId() +
-                    ", " + record.getPaymentDate() +
-                    ", " + record.getAmount() +
-                    ", " + record.getPayee());
-        }
+        // System.out.println("New Records:");
+        // for (Record record : newRecords) {
+        // System.out.println(record.getPaymentId() +
+        // ", " + record.getPaymentDate() +
+        // ", " + record.getAmount() +
+        // ", " + record.getPayee());
+        // }
 
-        System.out.println("Old Records:");
-        for (Record record : oldRecords) {
-            System.out.println(record.getPaymentId() +
-                    ", " + record.getPaymentDate() +
-                    ", " + record.getAmount() +
-                    ", " + record.getPayee());
-        }
+        // System.out.println("Old Records:");
+        // for (Record record : oldRecords) {
+        // System.out.println(record.getPaymentId() +
+        // ", " + record.getPaymentDate() +
+        // ", " + record.getAmount() +
+        // ", " + record.getPayee());
+        // }
 
         Map<String, Object> largeAmountResult = warning.large_amount_warning(setting, newRecords);
         Map<String, Object> sequentAmountResult = warning.sequent_amount_warning(setting, newRecords, oldRecords);
@@ -289,21 +289,21 @@ public class Main {
 
         importFrame.clearNewRecords();
 
-        System.out.println("New Records:");
-        for (Record record : newRecords) {
-            System.out.println(record.getPaymentId() +
-                    ", " + record.getPaymentDate() +
-                    ", " + record.getAmount() +
-                    ", " + record.getPayee());
-        }
+        // System.out.println("New Records:");
+        // for (Record record : newRecords) {
+        // System.out.println(record.getPaymentId() +
+        // ", " + record.getPaymentDate() +
+        // ", " + record.getAmount() +
+        // ", " + record.getPayee());
+        // }
 
-        System.out.println("Old Records:");
-        for (Record record : oldRecords) {
-            System.out.println(record.getPaymentId() +
-                    ", " + record.getPaymentDate() +
-                    ", " + record.getAmount() +
-                    ", " + record.getPayee());
-        }
+        // System.out.println("Old Records:");
+        // for (Record record : oldRecords) {
+        // System.out.println(record.getPaymentId() +
+        // ", " + record.getPaymentDate() +
+        // ", " + record.getAmount() +
+        // ", " + record.getPayee());
+        // }
     }
 
     // method for checking
