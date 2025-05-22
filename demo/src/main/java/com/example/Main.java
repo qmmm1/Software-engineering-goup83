@@ -81,7 +81,8 @@ public class Main {
 
         // main -> aiAssistant
         mainFrame.getBtnAIAssistant().addActionListener(e -> {
-            aiFrame = new aiAssistant(mainFrame);
+            if (aiFrame == null)
+                initAIAssistant();
             mainFrame.setVisible(false);
             aiFrame.setVisible(true);
         });
@@ -113,7 +114,8 @@ public class Main {
 
         // importData -> aiAssistant
         importFrame.getBtnAIAssistant().addActionListener(e -> {
-            aiFrame = new aiAssistant(mainFrame);
+            if (aiFrame == null)
+                initAIAssistant();
             importFrame.setVisible(false);
             aiFrame.setVisible(true);
             showWarningsIfNeeded();
@@ -144,7 +146,8 @@ public class Main {
 
         // budget -> aiAssistant
         budgetFrame.getBtnAIAssistant().addActionListener(e -> {
-            aiFrame = new aiAssistant(mainFrame);
+            if (aiFrame == null)
+                initAIAssistant();
             budgetFrame.setVisible(false);
             aiFrame.setVisible(true);
         });
@@ -167,6 +170,15 @@ public class Main {
             mainFrame.refreshAll(); // 新增刷新
             mainFrame.setVisible(true);
         });
+
+        // recordsView -> aiAssistant
+        recordsFrame.getBtnAIAssistant().addActionListener(e -> {
+            if (aiFrame == null)
+                initAIAssistant();
+            recordsFrame.setVisible(false);
+            aiFrame.setVisible(true);
+        });
+
     }
 
     public static void updateBudgetButtonText(double userBudget) {
@@ -174,6 +186,29 @@ public class Main {
             mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
             mainFrame.updateExpenseBudgetDisplay(); // 假设当前支出为 1000，需替换为实际值
         }
+    }
+
+    /**
+     * Page Navigation Logic for aiAssistant
+     */
+
+    public static void initAIAssistant() {
+        aiFrame = new aiAssistant(mainFrame);
+
+        // aiAssistant -> main
+        aiFrame.getBtnHomePage().addActionListener(e -> {
+            aiFrame.setVisible(false);
+            mainFrame.refreshAll();
+            mainFrame.setVisible(true);
+        });
+
+        // aiAssistant -> recordView
+        aiFrame.getBtnRecordsView().addActionListener(e -> {
+            initRecordsView();
+            aiFrame.setVisible(false);
+            recordsFrame.setVisible(true);
+        });
+
     }
 
     /**

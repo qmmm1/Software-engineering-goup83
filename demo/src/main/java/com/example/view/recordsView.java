@@ -187,7 +187,7 @@ public class recordsView extends JFrame {
         // 创建包含垂直间距和按钮的面板
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
-        bottomPanel.add(Box.createVerticalStrut(25));  // 增大垂直间距至25像素
+        bottomPanel.add(Box.createVerticalStrut(25)); // 增大垂直间距至25像素
         bottomPanel.add(buttonPanel);
 
         // 主面板布局
@@ -263,7 +263,15 @@ public class recordsView extends JFrame {
         loadRecordObjects();
     }
 
+    /*
+     * Getter for Buttons
+     */
+
     public JButton getBtnHomepage() {
         return btnHomePage;
+    }
+
+    public JButton getBtnAIAssistant() {
+        return btnAIAssistant;
     }
 }

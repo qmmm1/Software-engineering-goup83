@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 import com.example.service.economySuggestion;
 
-
 public class aiAssistant extends JFrame {
     private mainWindows mainFrame;
     private JTextArea outputArea;
-
+    private RoundButton btnHomePage;
+    private JButton btnRecordsView;
+    private JButton btnAIAssistant;
 
     public aiAssistant(mainWindows mainFrame) {
         this.mainFrame = mainFrame;
-
 
         setTitle("AI Assistant");
         setSize(800, 600);
@@ -41,11 +41,11 @@ public class aiAssistant extends JFrame {
         subTitleLabel.setFont(new Font("Serif", Font.PLAIN, 20));
         subTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        titlePanel.add(Box.createVerticalStrut(15));  // 上边距增加到15px
+        titlePanel.add(Box.createVerticalStrut(15)); // 上边距增加到15px
         titlePanel.add(titleLabel);
-        titlePanel.add(Box.createVerticalStrut(15));  // 主副标题间距增加到15px
+        titlePanel.add(Box.createVerticalStrut(15)); // 主副标题间距增加到15px
         titlePanel.add(subTitleLabel);
-        titlePanel.add(Box.createVerticalStrut(15));  // 下边距增加到15px
+        titlePanel.add(Box.createVerticalStrut(15)); // 下边距增加到15px
 
         add(titlePanel, BorderLayout.NORTH);
 
@@ -87,14 +87,11 @@ public class aiAssistant extends JFrame {
         add(bottomPanel, BorderLayout.SOUTH);
 
         // Button Listeners
-        String monthlyAnalysis =
-                "Monthly Budget Analysis: \n- Total Budget: ￥5000\n- Remaining: ￥3200";
-        String savingProgress =
-                "Saving Goal Progress: \n- Target: ￥20000\n- Achieved: ￥12500";
-        String costCutSuggestions =
-                "Cost-cutting Suggestions: \n1. Reduce dining out\n2. Cancel unused subscriptions";
+        String monthlyAnalysis = "Monthly Budget Analysis: \n- Total Budget: ￥5000\n- Remaining: ￥3200";
+        String savingProgress = "Saving Goal Progress: \n- Target: ￥20000\n- Achieved: ￥12500";
+        String costCutSuggestions = "Cost-cutting Suggestions: \n1. Reduce dining out\n2. Cancel unused subscriptions";
 
-// 修改后的Button Listeners
+        // 修改后的Button Listeners
 
         btnMonthly.addActionListener(e -> {
             List<Record> records = mainFrame.getRecords(); // 从主窗口中获取记录
@@ -129,42 +126,42 @@ public class aiAssistant extends JFrame {
         panel.setPreferredSize(new Dimension(800, 120));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 5, 0, 5);  // 按钮间距减少到10px
-        gbc.weightx = 0.5;                       // 调整权重分配
+        gbc.insets = new Insets(0, 5, 0, 5); // 按钮间距减少到10px
+        gbc.weightx = 0.5; // 调整权重分配
         gbc.fill = GridBagConstraints.NONE;
 
-        JButton btnAIAssistant = new JButton("AI Assistant");
+        btnAIAssistant = new JButton("AI Assistant");
         styleNavButton(btnAIAssistant);
 
-        RoundButton btnHomePage = new RoundButton("Homepage");
+        btnHomePage = new RoundButton("Homepage");
 
-        JButton btnRecordsView = new JButton("Records View");
+        btnRecordsView = new JButton("Records View");
         styleNavButton(btnRecordsView);
 
         // 添加按钮时设置权重
         gbc.gridx = 0;
-        gbc.weightx = 0.3;  // 分配30%宽度
+        gbc.weightx = 0.3; // 分配30%宽度
         panel.add(btnAIAssistant, gbc);
 
         gbc.gridx = 1;
-        gbc.weightx = 0.4;  // 中间按钮分配40%宽度
+        gbc.weightx = 0.4; // 中间按钮分配40%宽度
         panel.add(btnHomePage, gbc);
 
         gbc.gridx = 2;
-        gbc.weightx = 0.3;  // 右侧按钮分配30%宽度
+        gbc.weightx = 0.3; // 右侧按钮分配30%宽度
         panel.add(btnRecordsView, gbc);
 
-        // 添加按钮监听器
-        btnHomePage.addActionListener(e -> {
-            this.setVisible(false);
-            mainFrame.setVisible(true); // 返回主页面
-        });
+        // // 添加按钮监听器
+        // btnHomePage.addActionListener(e -> {
+        // this.setVisible(false);
+        // mainFrame.setVisible(true); // 返回主页面
+        // });
 
-        btnRecordsView.addActionListener(e -> {
-            Main.initRecordsView();       // 初始化记录视图
-            this.setVisible(false);
-            Main.recordsFrame.setVisible(true); // 跳转
-        });
+        // btnRecordsView.addActionListener(e -> {
+        // Main.initRecordsView(); // 初始化记录视图
+        // this.setVisible(false);
+        // Main.recordsFrame.setVisible(true); // 跳转
+        // });
 
         return panel;
     }
@@ -173,8 +170,8 @@ public class aiAssistant extends JFrame {
         btn.setFont(new Font("Serif", Font.BOLD, 18));
 
         // 调整按钮尺寸和边距
-        btn.setPreferredSize(new Dimension(140, 40));  // 宽度增加20px
-        btn.setMargin(new Insets(2, 5, 2, 5));       // 左右边距减少10px
+        btn.setPreferredSize(new Dimension(140, 40)); // 宽度增加20px
+        btn.setMargin(new Insets(2, 5, 2, 5)); // 左右边距减少10px
 
         // 确保文本居中
         btn.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -210,8 +207,19 @@ public class aiAssistant extends JFrame {
         }
 
         @Override
-        protected void paintBorder(Graphics g) {}
+        protected void paintBorder(Graphics g) {
+        }
     }
+
+    /*
+     * Getters for Buttons
+     */
+    public JButton getBtnHomePage() {
+        return btnHomePage;
+    }
+
+    public JButton getBtnRecordsView() {
+        return btnRecordsView;
+    }
+
 }
-
-
