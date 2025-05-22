@@ -32,7 +32,7 @@ public class importData extends JFrame {
     public importData(List<Record> originRecords) {
 
         records = originRecords;
-        oldRecords = originRecords;
+        oldRecords = new ArrayList<>(originRecords);
         Font largerFont = new Font("Serif", Font.PLAIN, 20);
         largeAmountField = new JTextField(20);
         largeAmountField.setFont(largerFont);

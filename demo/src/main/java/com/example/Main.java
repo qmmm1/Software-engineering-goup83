@@ -11,6 +11,7 @@ import com.example.service.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -179,9 +180,25 @@ public class Main {
      * Add Logic to Show warning pup-up
      */
     private static void showWarningsIfNeeded() {
-        List<Record> newRecords = importFrame.getNewRecords();
-        List<Record> oldRecords = importFrame.getOldRecords();
-        List<Record> records = RecordControl.readRecordFromResource();
+        List<Record> newRecords = new ArrayList<>(importFrame.getNewRecords());
+        List<Record> oldRecords = new ArrayList<>(importFrame.getOldRecords());
+        List<Record> records = new ArrayList<>(RecordControl.readRecordFromResource());
+
+        System.out.println("New Records:");
+        for (Record record : newRecords) {
+            System.out.println(record.getPaymentId() +
+                    ", " + record.getPaymentDate() +
+                    ", " + record.getAmount() +
+                    ", " + record.getPayee());
+        }
+
+        System.out.println("Old Records:");
+        for (Record record : oldRecords) {
+            System.out.println(record.getPaymentId() +
+                    ", " + record.getPaymentDate() +
+                    ", " + record.getAmount() +
+                    ", " + record.getPayee());
+        }
 
         Map<String, Object> largeAmountResult = warning.large_amount_warning(setting, newRecords);
         Map<String, Object> sequentAmountResult = warning.sequent_amount_warning(setting, newRecords, oldRecords);
@@ -269,6 +286,28 @@ public class Main {
                 largeRemittanceWarning.showWarning(amount);
             }
         }
+
+        importFrame.clearNewRecords();
+
+        System.out.println("New Records:");
+        for (Record record : newRecords) {
+            System.out.println(record.getPaymentId() +
+                    ", " + record.getPaymentDate() +
+                    ", " + record.getAmount() +
+                    ", " + record.getPayee());
+        }
+
+        System.out.println("Old Records:");
+        for (Record record : oldRecords) {
+            System.out.println(record.getPaymentId() +
+                    ", " + record.getPaymentDate() +
+                    ", " + record.getAmount() +
+                    ", " + record.getPayee());
+        }
+    }
+
+    // method for checking
+    public void printRecords(List<Record> list) {
 
     }
 }

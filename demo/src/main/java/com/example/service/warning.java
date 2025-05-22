@@ -84,16 +84,24 @@ public class warning {
         // sort according to time
         newRecords.sort(Comparator.comparing(Record::getPaymentDate));
         records.addAll(newRecords);
-        // get records 5min ago, merge with newRecords
+        // get records 5min ago~5min after, merge with newRecords
         if (!oldRecords.isEmpty()) {
             Date endmin = newRecords.get(0).getPaymentDate();
+            Date startmin2 = newRecords.get(newRecords.size() - 1).getPaymentDate();
+
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(endmin);
             calendar.add(Calendar.MINUTE, -5);
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(startmin2);
+            calendar2.add(Calendar.MINUTE, 5);
+
             Date startmin = calendar.getTime();
+            Date endmin2 = calendar2.getTime();
             for (Record r : oldRecords) {
                 Date nowTime = r.getPaymentDate();
-                if (nowTime.after(startmin) || nowTime.equals(startmin)) {
+                if ((nowTime.after(startmin) || nowTime.equals(startmin))
+                        && (nowTime.before(endmin2) || nowTime.equals(endmin2))) {
                     records.add(r);
                 }
             }
@@ -156,20 +164,30 @@ public class warning {
         // sort according to time
         newRecords.sort(Comparator.comparing(Record::getPaymentDate));
         records.addAll(newRecords);
-        // get records tmin ago, merge with newRecords
+
+        // get records 5min ago~5min after, merge with newRecords
         if (!oldRecords.isEmpty()) {
             Date endmin = newRecords.get(0).getPaymentDate();
+            Date startmin2 = newRecords.get(newRecords.size() - 1).getPaymentDate();
+
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(endmin);
             calendar.add(Calendar.MINUTE, -setting.getSame_amount_warning());
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(startmin2);
+            calendar2.add(Calendar.MINUTE, setting.getSame_amount_warning());
+
             Date startmin = calendar.getTime();
+            Date endmin2 = calendar2.getTime();
             for (Record r : oldRecords) {
                 Date nowTime = r.getPaymentDate();
-                if (nowTime.after(startmin) || nowTime.equals(startmin)) {
+                if ((nowTime.after(startmin) || nowTime.equals(startmin))
+                        && (nowTime.before(endmin2) || nowTime.equals(endmin2))) {
                     records.add(r);
                 }
             }
             records.sort(Comparator.comparing(Record::getPaymentDate));
+
         }
 
         Map<String, Map<Double, List<Record>>> groupedRecords = records.stream()
