@@ -14,8 +14,6 @@ import java.util.List;
 import java.io.File;
 import java.text.SimpleDateFormat;
 
-
-
 public class importData extends JFrame {
     private JTextField largeAmountField;
     private JTextField frequentPaymentField;
@@ -26,19 +24,21 @@ public class importData extends JFrame {
     private String[] categoryOptions = {
             "food", "transportation", "entertainment", "education", "living expenses", "other"
     };
-     
+
+    // variables for warning pop up
+    private List<Record> newRecords = new ArrayList<>();
+    private List<Record> oldRecords = new ArrayList<>();
 
     public importData(List<Record> originRecords) {
 
-        records=originRecords;
+        records = originRecords;
+        oldRecords = originRecords;
         Font largerFont = new Font("Serif", Font.PLAIN, 20);
         largeAmountField = new JTextField(20);
         largeAmountField.setFont(largerFont);
-        
 
         frequentPaymentField = new JTextField(20);
         frequentPaymentField.setFont(largerFont);
-
 
         setTitle("Import Data");
 
@@ -67,8 +67,7 @@ public class importData extends JFrame {
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
         add(csvButton, gbc);
-        
-        
+
         csvButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,7 +78,8 @@ public class importData extends JFrame {
                     List<Record> imported = RecordControl.importRecordsFromCsv(selectedFile.getAbsolutePath());
 
                     if (imported != null && !imported.isEmpty()) {
-                        records=imported; // 把新导入的记录替换原有列表
+                        records = imported; // 把新导入的记录替换原有列表
+                        newRecords = getNewImport(oldRecords, records);
                         RecordControl.updateRecordsToCsv(records);
                         JOptionPane.showMessageDialog(importData.this,
                                 "Successfully imported " + imported.size() + " records.",
@@ -93,9 +93,7 @@ public class importData extends JFrame {
             }
         });
 
-
-
-     // 添加支付历史记录部分
+        // 添加支付历史记录部分
         JLabel paymentLabel = new JLabel("You can add payments history below:");
         paymentLabel.setFont(largerFont); // 设置字体
 
@@ -124,19 +122,24 @@ public class importData extends JFrame {
             JComboBox<String> categoryComboBox = new JComboBox<>(categoryOptions);
             categoryComboBox.setSelectedIndex(5); // 默认选中第一项
 
-
             JPanel panel = new JPanel(new GridLayout(0, 2));
-            panel.add(new JLabel("Hour:Minute (e.g. 14:00)")); panel.add(timeField);
-            panel.add(new JLabel("Day")); panel.add(dayField);
-            panel.add(new JLabel("Month")); panel.add(monthField);
-            panel.add(new JLabel("Year")); panel.add(yearField);
-            panel.add(new JLabel("Amount")); panel.add(amountField);
-            panel.add(new JLabel("Payee")); panel.add(payeeField);
+            panel.add(new JLabel("Hour:Minute (e.g. 14:00)"));
+            panel.add(timeField);
+            panel.add(new JLabel("Day"));
+            panel.add(dayField);
+            panel.add(new JLabel("Month"));
+            panel.add(monthField);
+            panel.add(new JLabel("Year"));
+            panel.add(yearField);
+            panel.add(new JLabel("Amount"));
+            panel.add(amountField);
+            panel.add(new JLabel("Payee"));
+            panel.add(payeeField);
             // 修改面板中的组件：
             panel.add(new JLabel("Category"));
             panel.add(categoryComboBox); // 替换原来的 categoryField
 
-            Object[] options = {"OK", "Cancel"}; // 自定义按钮文本
+            Object[] options = { "OK", "Cancel" }; // 自定义按钮文本
             int result = JOptionPane.showOptionDialog(
                     null,
                     panel,
@@ -150,9 +153,9 @@ public class importData extends JFrame {
             if (result == JOptionPane.YES_OPTION) {
                 try {
                     String dateTimeStr = yearField.getText().trim() + "-" +
-                                         monthField.getText().trim() + "-" +
-                                         dayField.getText().trim() + " " +
-                                         timeField.getText().trim();
+                            monthField.getText().trim() + "-" +
+                            dayField.getText().trim() + " " +
+                            timeField.getText().trim();
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     Date paymentDate = sdf.parse(dateTimeStr);
@@ -162,19 +165,16 @@ public class importData extends JFrame {
                     String category = categoryComboBox.getSelectedItem().toString();
                     // 调用后端添加记录
                     records = RecordControl.insertRecord(records, paymentDate, amount, category, payee);
+                    newRecords = RecordControl.insertRecord(newRecords, paymentDate, amount, category, payee);
                     RecordControl.updateRecordsToCsv(records);
                     JOptionPane.showMessageDialog(this, "Payment added. Total records: " + records.size());
-                    
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
                 }
             }
         });
-
-
-
-
 
         // 大金额提醒部分
         JLabel largeAmountLabel = new JLabel(
@@ -186,12 +186,12 @@ public class importData extends JFrame {
         gbc.weighty = 0.1;
         add(largeAmountLabel, gbc);
 
-// 创建包含文本框和按钮的面板
+        // 创建包含文本框和按钮的面板
         JPanel largeAmountPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        largeAmountField = new JTextField(60);  // 缩短文本框
+        largeAmountField = new JTextField(60); // 缩短文本框
         largeAmountPanel.add(largeAmountField);
 
-// 调整 Confirm 按钮高度与文本框一致，减小字体大小，并减小按钮内边距
+        // 调整 Confirm 按钮高度与文本框一致，减小字体大小，并减小按钮内边距
         JButton confirmLargeAmount = new JButton("Confirm");
         confirmLargeAmount.setFont(new Font("Serif", Font.PLAIN, 18)); // 减小字体大小
         confirmLargeAmount.setPreferredSize(new Dimension(80, largeAmountField.getPreferredSize().height)); // 设置按钮高度与文本框一致
@@ -202,9 +202,9 @@ public class importData extends JFrame {
         gbc.gridy = 5;
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
-        add(largeAmountPanel, gbc);  // 添加面板替代原文本框
+        add(largeAmountPanel, gbc); // 添加面板替代原文本框
 
-// 频繁支付提醒部分
+        // 频繁支付提醒部分
         JLabel frequentPaymentLabel = new JLabel(
                 "Fill in the figure that you think is the number of times you make payments too often so that we can remind you");
         frequentPaymentLabel.setFont(largerFont);
@@ -214,12 +214,12 @@ public class importData extends JFrame {
         gbc.weighty = 0.1;
         add(frequentPaymentLabel, gbc);
 
-// 创建包含文本框和按钮的面板
+        // 创建包含文本框和按钮的面板
         JPanel frequentPaymentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        frequentPaymentField = new JTextField(60);  // 缩短文本框
+        frequentPaymentField = new JTextField(60); // 缩短文本框
         frequentPaymentPanel.add(frequentPaymentField);
 
-// 调整 Confirm 按钮高度与文本框一致，减小字体大小，并减小按钮内边距
+        // 调整 Confirm 按钮高度与文本框一致，减小字体大小，并减小按钮内边距
         JButton confirmFrequentPayment = new JButton("Confirm");
         confirmFrequentPayment.setFont(new Font("Serif", Font.PLAIN, 18)); // 减小字体大小
         confirmFrequentPayment.setPreferredSize(new Dimension(80, frequentPaymentField.getPreferredSize().height)); // 设置按钮高度与文本框一致
@@ -230,7 +230,7 @@ public class importData extends JFrame {
         gbc.gridy = 7;
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
-        add(frequentPaymentPanel, gbc);  // 添加面板替代原文本框
+        add(frequentPaymentPanel, gbc); // 添加面板替代原文本框
 
         // 底部导航按钮
         JPanel bottomButtonPanel = new JPanel(new GridBagLayout()) {
@@ -320,5 +320,15 @@ public class importData extends JFrame {
 
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
+    }
+
+    // for warning
+    List<Record> getNewImport(List<Record> oldRecords, List<Record> records) {
+        List<Record> newRecords = new ArrayList<>();
+        int oldSize = oldRecords.size();
+        if (records.size() > oldSize) {
+            newRecords = records.subList(oldSize, records.size());
+        }
+        return new ArrayList<>(newRecords);
     }
 }
