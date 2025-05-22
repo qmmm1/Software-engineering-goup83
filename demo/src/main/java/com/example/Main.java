@@ -75,6 +75,7 @@ public class Main {
             initRecordsView();
             mainFrame.setVisible(false);
             recordsFrame.setVisible(true);
+            mainFrame.refreshAll(); // 新增刷新
         });
 
         // main -> aiAssistant
@@ -96,6 +97,7 @@ public class Main {
         // importData -> main
         importFrame.getBtnHomepage().addActionListener(e -> {
             importFrame.setVisible(false);
+            mainFrame.refreshAll(); // 新增刷新
             mainFrame.setVisible(true);
             showWarningsIfNeeded();
         });
@@ -128,6 +130,7 @@ public class Main {
         // budget -> main
         budgetFrame.getBtnHomepage().addActionListener(e -> {
             budgetFrame.setVisible(false);
+            mainFrame.refreshAll(); // 新增刷新
             mainFrame.setVisible(true);
         });
 
@@ -151,11 +154,16 @@ public class Main {
      */
 
     public static void initRecordsView() {
-        recordsFrame = new recordsView(mainFrame, RecordControl.readRecordFromResource());
+        if (recordsFrame == null) {
+            recordsFrame = new recordsView(mainFrame, RecordControl.readRecordFromResource());
+        } else {
+            recordsFrame.updateTableData(RecordControl.readRecordFromResource()); // 更新数据
+        }
 
         // recordsView -> main
         recordsFrame.getBtnHomepage().addActionListener(e -> {
             recordsFrame.setVisible(false);
+            mainFrame.refreshAll(); // 新增刷新
             mainFrame.setVisible(true);
         });
     }

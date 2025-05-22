@@ -15,6 +15,7 @@ import java.awt.*;
 import java.util.Map;
 import java.util.List;
 import com.example.model.Record;
+import com.example.utils.RecordControl;
 import com.example.model.Setting;
 
 public class mainWindows extends JFrame {
@@ -61,7 +62,7 @@ public class mainWindows extends JFrame {
         this.setting = setting;
         setTitle("记账软件");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 1000);
+        setSize(800, 600);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -70,21 +71,37 @@ public class mainWindows extends JFrame {
         gbc.weighty = 0;
 
         // 顶部按钮面板
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 80, 10)); // 增加水平和垂直间距
-        topPanel.setPreferredSize(new Dimension(800, 100)); // 增加高度以适应两行文本
+        // 顶部按钮面板（改用GridBagLayout）
+        JPanel topPanel = new JPanel(new GridBagLayout()); // 修改点：FlowLayout -> GridBagLayout
+        topPanel.setPreferredSize(new Dimension(800, 100));
 
+// 创建约束对象
+        GridBagConstraints topGbc = new GridBagConstraints();
+        topGbc.fill = GridBagConstraints.BOTH; // 允许按钮填充空间
+        topGbc.insets = new Insets(5, 20, 5, 20); // 设置左右间距为20
+        topGbc.weightx = 1.0; // 水平均匀分配权重
+        topGbc.gridy = 0; // 所有按钮位于第一行
+
+// 创建按钮（保持原有逻辑）
         JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records) + "元");
         btnBudget = createButton("Budget", "+");
-        btnImportData = createButton("Import Data", ""); // 初始化按钮
+        btnImportData = createButton("Import Data", "");
 
-        topPanel.add(btnTodayExpense);
-        topPanel.add(btnBudget);
-        topPanel.add(btnImportData);
+// 依次添加三个按钮到不同列
+        topGbc.gridx = 0; // 第一列
+        topPanel.add(btnTodayExpense, topGbc);
 
+        topGbc.gridx = 1; // 第二列
+        topPanel.add(btnBudget, topGbc);
+
+        topGbc.gridx = 2; // 第三列
+        topPanel.add(btnImportData, topGbc);
+
+// 主布局添加topPanel（保持原有约束）
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-        gbc.weighty = 0.1; // 增加顶部面板的权重
+        gbc.weighty = 0.1;
         add(topPanel, gbc);
 
         // 初始化数据集
@@ -210,26 +227,48 @@ public class mainWindows extends JFrame {
         return button;
     }
 
-    private void updateChart() {
-        Map<String, Double> categoryCounts = categoryPercentage.getCategoryCounts(records, 300);
-        String[] categories = categoryCounts.keySet().toArray(new String[0]);
-        double[] categoryValues = categoryCounts.values().stream().mapToDouble(Double::doubleValue).toArray();
+    private ChartPanel currentChartPanel; // 添加类成员变量保存当前图表
 
-        for (int i = 0; i < categories.length; i++) {
-            dataset.setValue(categories[i], categoryValues[i]);
+    private void updateChart() {
+        // 移除旧的图表
+        if (currentChartPanel != null) {
+            getContentPane().remove(currentChartPanel);
         }
 
-        JFreeChart chart = ChartFactory.createPieChart("Proportion of Expenses by Category", dataset, true, true,
-                false);
+        Map<String, Double> categoryCounts = categoryPercentage.getCategoryCounts(records, 300);
+        dataset.clear(); // 清空旧数据
+        categoryCounts.forEach(dataset::setValue);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Proportion of Expenses by Category",
+                dataset,
+                true,
+                true,
+                false // 这个参数确保图例不会被创建
+        );
         PiePlot plot = (PiePlot) chart.getPlot();
-        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {1} ({2})")); // 设置标签格式为百分比
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} = {1} ({2})"));
 
+        // 确保图例不会被显示
+        chart.getLegend().setVisible(false);
+
+        // 如果图例仍然存在，尝试从图表中移除它
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(500, 500)); // 增加饼图的大小
+        chartPanel.setMouseWheelEnabled(true);
+        chartPanel.setPreferredSize(new Dimension(500, 500));
 
-        getContentPane().add(chartPanel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
-                GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-        pack();
+        // 使用与初始布局一致的约束参数
+        GridBagConstraints gbcChart = new GridBagConstraints();
+        gbcChart.gridx = 0;
+        gbcChart.gridy = 1;
+        gbcChart.weightx = 1.0;
+        gbcChart.weighty = 0.7; // 与初始中间面板权重一致
+        gbcChart.fill = GridBagConstraints.BOTH;
+        gbcChart.insets = new Insets(5, 5, 5, 5);
+
+        getContentPane().add(chartPanel, gbcChart);
+        revalidate(); // 强制布局更新
+        repaint(); // 重绘界面
     }
 
     // 修改后的方法（移除 budget 参数）
@@ -258,5 +297,19 @@ public class mainWindows extends JFrame {
     }
 
     public List<Record> getRecords() {return records;}
+
+    // 在 mainWindows.java 中确认 refreshAll 方法包含以下逻辑
+    public void refreshAll() {
+        this.records = RecordControl.readRecordFromResource(); // 从CSV重新加载数据
+        updateChart(); // 更新饼图
+        updateExpenseBudgetDisplay(); // 更新进度条
+        revalidate();
+        repaint();
+    }
+    public void refreshProgressBar() {
+        // 强制重新从CSV加载最新数据（确保包含recordView的修改）
+        this.records = RecordControl.readRecordFromResource();
+        updateExpenseBudgetDisplay();
+    }
 
 }

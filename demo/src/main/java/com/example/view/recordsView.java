@@ -222,6 +222,7 @@ public class recordsView extends JFrame {
 
                 loadRecordObjects(); // 刷新显示
                 RecordControl.updateRecordsToCsv(recordList);
+                mainFrame.refreshAll();
             } catch (ParseException | NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Failed to update record. Check your input format.");
             }

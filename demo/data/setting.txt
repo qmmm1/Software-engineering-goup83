@@ -6,4 +6,4 @@ sequent_amount_warning=10
 same_amount_warning=5
 budget=50000.0
 duration=30
-startDate=2025-05-22
+startDate=2025-05-11
