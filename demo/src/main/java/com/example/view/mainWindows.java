@@ -256,4 +256,7 @@ public class mainWindows extends JFrame {
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
     }
+
+    public List<Record> getRecords() {return records;}
+
 }
