@@ -13,6 +13,7 @@ import java.util.Date;
 
 import com.example.model.Record;
 import com.example.utils.RecordControl;
+import com.example.utils.AIcontrol;
 
 public class recordsView extends JFrame {
     private mainWindows mainFrame;
@@ -161,9 +162,42 @@ public class recordsView extends JFrame {
         categoryComboBox.setSelectedItem(category);
         detailPanel.add(categoryComboBox);
 
+        // 创建按钮面板
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+        JButton aiButton = new JButton("AI classification");
+        JButton deleteButton = new JButton("Delete");
+
+        // AI分类按钮事件
+        aiButton.addActionListener(e -> {
+            AIcontrol.singalAIcategory(record);
+            categoryComboBox.setSelectedItem(record.getCategory());
+        });
+
+        // 删除按钮事件
+        deleteButton.addActionListener(e -> {
+            recordList.remove(record);
+            RecordControl.updateRecordsToCsv(recordList);
+            loadRecordObjects();
+            ((JDialog) SwingUtilities.getWindowAncestor(detailPanel)).dispose();
+        });
+
+        buttonPanel.add(aiButton);
+        buttonPanel.add(deleteButton);
+
+        // 创建包含垂直间距和按钮的面板
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
+        bottomPanel.add(Box.createVerticalStrut(25));  // 增大垂直间距至25像素
+        bottomPanel.add(buttonPanel);
+
+        // 主面板布局
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(detailPanel, BorderLayout.CENTER);
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH); // 将组合后的面板放在SOUTH区域
+
         int option = JOptionPane.showOptionDialog(
                 this,
-                detailPanel,
+                mainPanel,
                 "Record Details",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
@@ -171,7 +205,7 @@ public class recordsView extends JFrame {
                 new String[] { "OK", "Cancel" },
                 "OK");
 
-        if (option == 0) {
+        if (option == 0 && recordList.contains(record)) {
             try {
                 String newTime = timeField.getText();
                 String newDate = dateField.getText();
