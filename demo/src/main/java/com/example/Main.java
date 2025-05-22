@@ -1,11 +1,5 @@
 package com.example;
 
-import com.example.view.mainWindows;
-import com.example.view.setBudget;
-import com.example.view.importData;
-import com.example.view.recordsView;
-import com.example.view.happyFestival;
-import com.example.view.aiAssistant;
 import com.example.view.*;
 
 import com.example.utils.RecordControl;
@@ -28,6 +22,7 @@ public class Main {
     private static importData importFrame;
     private static setBudget budgetFrame;
     public static recordsView recordsFrame;
+    public static aiAssistant aiFrame;
     private static List<Record> originRecords;
     private static Setting setting;
 
@@ -84,7 +79,7 @@ public class Main {
 
         // main -> aiAssistant
         mainFrame.getBtnAIAssistant().addActionListener(e -> {
-            aiAssistant aiFrame = new aiAssistant(mainFrame);
+            aiFrame = new aiAssistant(mainFrame);
             mainFrame.setVisible(false);
             aiFrame.setVisible(true);
         });
@@ -102,6 +97,7 @@ public class Main {
         importFrame.getBtnHomepage().addActionListener(e -> {
             importFrame.setVisible(false);
             mainFrame.setVisible(true);
+            showWarningsIfNeeded();
         });
 
         // importData -> recordsView
@@ -109,13 +105,15 @@ public class Main {
             initRecordsView();
             importFrame.setVisible(false);
             recordsFrame.setVisible(true);
+            showWarningsIfNeeded();
         });
 
         // importData -> aiAssistant
         importFrame.getBtnAIAssistant().addActionListener(e -> {
-            aiAssistant aiFrame = new aiAssistant(mainFrame);
+            aiFrame = new aiAssistant(mainFrame);
             importFrame.setVisible(false);
             aiFrame.setVisible(true);
+            showWarningsIfNeeded();
         });
 
     }
@@ -142,7 +140,7 @@ public class Main {
 
         // budget -> aiAssistant
         budgetFrame.getBtnAIAssistant().addActionListener(e -> {
-            aiAssistant aiFrame = new aiAssistant(mainFrame);
+            aiFrame = new aiAssistant(mainFrame);
             budgetFrame.setVisible(false);
             aiFrame.setVisible(true);
         });
@@ -188,12 +186,28 @@ public class Main {
             frequentPaymentsWarning frequentPOP = new frequentPaymentsWarning();
             List<Record> sequentRecords = (List<Record>) sequentAmountResult.get("records");
             frequentPOP.showWarning(sequentRecords);
+            frequentPOP.getBtnRecordsView().addActionListener(e -> {
+                initRecordsView();
+
+                frequentPOP.close();
+                mainFrame.setVisible(false);
+                aiFrame.setVisible(false);
+                recordsFrame.setVisible(true);
+            });
 
         }
         if ("catch".equals(sameAmountResult.get("code"))) {
             sameAmountWarning samePOP = new sameAmountWarning();
             List<Record> sameRecords = (List<Record>) sameAmountResult.get("records");
             samePOP.showWarning(sameRecords);
+            samePOP.getBtnRecordsView().addActionListener(e -> {
+                initRecordsView();
+
+                samePOP.close();
+                mainFrame.setVisible(false);
+                aiFrame.setVisible(false);
+                recordsFrame.setVisible(true);
+            });
         }
         if ("max".equals(nearBudgetResult) || "high".equals(nearBudgetResult)) {
             double percentage = budgetCount.calculateBudget(setting, records);

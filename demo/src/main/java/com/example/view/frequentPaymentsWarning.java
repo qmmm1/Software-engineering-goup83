@@ -10,6 +10,7 @@ import com.example.model.Record;
 public class frequentPaymentsWarning {
 
   private static JButton btnRecordsView;
+  private JFrame frame;
 
   public void showWarning(List<Record> frequentRecords) {
     // convert frequentRecords to String
@@ -23,7 +24,7 @@ public class frequentPaymentsWarning {
     }
 
     // build a frame
-    JFrame frame = new JFrame();
+    frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setSize(700, 600);
     frame.setLocationRelativeTo(null);
@@ -137,6 +138,13 @@ public class frequentPaymentsWarning {
 
     // set visible
     frame.setVisible(true);
+  }
+
+  // method to close the pop up
+  public void close() {
+    if (frame != null && frame.isDisplayable()) {
+      frame.dispose();
+    }
   }
 
   /**

@@ -9,6 +9,7 @@ import com.example.model.Record;
 
 public class sameAmountWarning {
   private static JButton btnRecordsView;
+  private JFrame frame;
 
   public void showWarning(List<Record> sameAmountRecords) {
     // convert frequentRecords to String
@@ -21,7 +22,7 @@ public class sameAmountWarning {
       sameAmountRecords_String.add(displayText);
     }
     // build a frame
-    JFrame frame = new JFrame();
+    frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setSize(700, 600);
     frame.setLocationRelativeTo(null);
@@ -135,6 +136,13 @@ public class sameAmountWarning {
 
     // set visible
     frame.setVisible(true);
+  }
+
+  // method to close the pop up
+  public void close() {
+    if (frame != null && frame.isDisplayable()) {
+      frame.dispose();
+    }
   }
 
   /**
