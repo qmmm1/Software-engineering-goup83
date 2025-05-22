@@ -61,7 +61,7 @@ public class nearBudgetWarning {
 
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-      showWarning(1, 0.6);
+      showWarning(1, 60);
     });
   }
 }

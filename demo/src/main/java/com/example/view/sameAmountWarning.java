@@ -3,17 +3,14 @@ package com.example.view;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import com.example.model.Record;
 
 public class sameAmountWarning {
   private static JButton btnRecordsView;
 
-  public static void showWarning(List<Record> sameAmountRecords) {
+  public void showWarning(List<Record> sameAmountRecords) {
     // convert frequentRecords to String
     List<String> sameAmountRecords_String = new ArrayList<>();
     for (Record record : sameAmountRecords) {
@@ -140,6 +137,13 @@ public class sameAmountWarning {
     frame.setVisible(true);
   }
 
+  /**
+   * Getter for Button
+   */
+  public JButton getBtnRecordsView() {
+    return btnRecordsView;
+  }
+
   public static void main(String[] args) {
     List<Record> sameAmountRecords = new ArrayList<>();
 
@@ -156,6 +160,7 @@ public class sameAmountWarning {
       Record record = new Record(paymentId, fixedDate, amount, category, payee);
       sameAmountRecords.add(record);
     }
-    showWarning(sameAmountRecords);
+    sameAmountWarning popup = new sameAmountWarning();
+    popup.showWarning(sameAmountRecords);
   }
 }

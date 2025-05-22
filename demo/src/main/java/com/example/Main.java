@@ -6,16 +6,20 @@ import com.example.view.importData;
 import com.example.view.recordsView;
 import com.example.view.happyFestival;
 import com.example.view.aiAssistant;
+import com.example.view.*;
 
 import com.example.utils.RecordControl;
 import com.example.utils.SettingControl;
 
 import com.example.model.Record;
 import com.example.model.Setting;
+import com.example.service.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.JButton; // 新增导入
 import javax.swing.SwingUtilities;
 
@@ -158,5 +162,49 @@ public class Main {
             mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
             mainFrame.updateExpenseBudgetDisplay(); // 假设当前支出为 1000，需替换为实际值
         }
+    }
+
+    /**
+     * Add Logic to Show warning pup-up
+     */
+    private static void showWarningsIfNeeded() {
+        List<Record> newRecords = importFrame.getNewRecords();
+        List<Record> oldRecords = importFrame.getOldRecords();
+        List<Record> records = RecordControl.readRecordFromResource();
+
+        Map<String, Object> largeAmountResult = warning.large_amount_warning(setting, newRecords);
+        Map<String, Object> sequentAmountResult = warning.sequent_amount_warning(setting, newRecords, oldRecords);
+        Map<String, Object> sameAmountResult = warning.same_amount_warning(setting, newRecords, oldRecords);
+        String nearBudgetResult = warning.budgetWarning(setting,
+                budgetCount.calculateBudget(setting, records));
+
+        if ("catch".equals(largeAmountResult.get("code"))) {
+            List<Double> amountList = (List<Double>) largeAmountResult.get("amountList");
+            for (Double amount : amountList) {
+                largeRemittanceWarning.showWarning(amount);
+            }
+        }
+        if ("catch".equals(sequentAmountResult.get("code"))) {
+            frequentPaymentsWarning frequentPOP = new frequentPaymentsWarning();
+            List<Record> sequentRecords = (List<Record>) sequentAmountResult.get("records");
+            frequentPOP.showWarning(sequentRecords);
+
+        }
+        if ("catch".equals(sameAmountResult.get("code"))) {
+            sameAmountWarning samePOP = new sameAmountWarning();
+            List<Record> sameRecords = (List<Record>) sameAmountResult.get("records");
+            samePOP.showWarning(sameRecords);
+        }
+        if ("max".equals(nearBudgetResult) || "high".equals(nearBudgetResult)) {
+            double percentage = budgetCount.calculateBudget(setting, records);
+            int duration = setting.getDuration();
+            int is_Week_Month;
+            if (duration == 7)
+                is_Week_Month = 0;
+            else
+                is_Week_Month = 1;
+            nearBudgetWarning.showWarning(is_Week_Month, percentage);
+        }
+
     }
 }

@@ -11,7 +11,7 @@ public class frequentPaymentsWarning {
 
   private static JButton btnRecordsView;
 
-  public static void showWarning(List<Record> frequentRecords) {
+  public void showWarning(List<Record> frequentRecords) {
     // convert frequentRecords to String
     List<String> frequentRecords_String = new ArrayList<>();
     for (Record record : frequentRecords) {
@@ -140,6 +140,13 @@ public class frequentPaymentsWarning {
   }
 
   /**
+   * Getter for Button
+   */
+  public JButton getBtnRecordsView() {
+    return btnRecordsView;
+  }
+
+  /**
    * Test
    */
   public static void main(String[] args) {
@@ -158,6 +165,7 @@ public class frequentPaymentsWarning {
       Record record = new Record(paymentId, fixedDate, amount, category, payee);
       frequentRecords.add(record);
     }
-    showWarning(frequentRecords);
+    frequentPaymentsWarning popup = new frequentPaymentsWarning();
+    popup.showWarning(frequentRecords);
   }
 }

@@ -322,7 +322,7 @@ public class importData extends JFrame {
         return btnAIAssistant;
     }
 
-    // for warning
+    // methods for warning
     List<Record> getNewImport(List<Record> oldRecords, List<Record> records) {
         List<Record> newRecords = new ArrayList<>();
         int oldSize = oldRecords.size();
@@ -330,5 +330,18 @@ public class importData extends JFrame {
             newRecords = records.subList(oldSize, records.size());
         }
         return new ArrayList<>(newRecords);
+    }
+
+    public List<Record> getNewRecords() {
+        return newRecords;
+    }
+
+    public List<Record> getOldRecords() {
+        return oldRecords;
+    }
+
+    public void clearNewRecords() {
+        oldRecords.addAll(newRecords);
+        newRecords.clear();
     }
 }
