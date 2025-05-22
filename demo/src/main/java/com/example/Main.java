@@ -91,7 +91,7 @@ public class Main {
      */
 
     private static void initImportData() {
-        importFrame = new importData(originRecords);
+        importFrame = new importData(RecordControl.readRecordFromResource());
 
         // importData -> main
         importFrame.getBtnHomepage().addActionListener(e -> {
@@ -146,9 +146,14 @@ public class Main {
         });
     }
 
-    public static void initRecordsView() {
-        recordsFrame = new recordsView(mainFrame, originRecords);
+    /**
+     * Page Navigation Logic for recordsView
+     */
 
+    public static void initRecordsView() {
+        recordsFrame = new recordsView(mainFrame, RecordControl.readRecordFromResource());
+
+        // recordsView -> main
         recordsFrame.getBtnHomepage().addActionListener(e -> {
             recordsFrame.setVisible(false);
             mainFrame.setVisible(true);
@@ -174,41 +179,71 @@ public class Main {
         Map<String, Object> sequentAmountResult = warning.sequent_amount_warning(setting, newRecords, oldRecords);
         Map<String, Object> sameAmountResult = warning.same_amount_warning(setting, newRecords, oldRecords);
         String nearBudgetResult = warning.budgetWarning(setting,
-                budgetCount.calculateBudget(setting, records));
+                budgetCount.calculateBudget(setting, records) / 100);
 
-        if ("catch".equals(largeAmountResult.get("code"))) {
-            List<Double> amountList = (List<Double>) largeAmountResult.get("amountList");
-            for (Double amount : amountList) {
-                largeRemittanceWarning.showWarning(amount);
-            }
-        }
         if ("catch".equals(sequentAmountResult.get("code"))) {
+            System.out.println("main: catch sequent amount payment");
             frequentPaymentsWarning frequentPOP = new frequentPaymentsWarning();
             List<Record> sequentRecords = (List<Record>) sequentAmountResult.get("records");
             frequentPOP.showWarning(sequentRecords);
             frequentPOP.getBtnRecordsView().addActionListener(e -> {
-                initRecordsView();
 
-                frequentPOP.close();
+                // set other frame invisible
                 mainFrame.setVisible(false);
-                aiFrame.setVisible(false);
-                recordsFrame.setVisible(true);
+                if (aiFrame != null) {
+                    aiFrame.setVisible(false);
+                }
+
+                // show recordsView
+                if (recordsFrame == null || !recordsFrame.isVisible()) {
+                    initRecordsView();
+                    SwingUtilities.invokeLater(() -> {
+                        recordsFrame.validate();
+                        recordsFrame.repaint();
+                        recordsFrame.setVisible(true);
+                        recordsFrame.toFront();
+                    });
+                } else {
+                    recordsFrame.toFront();
+                }
+
+                // close pop up
+                frequentPOP.close();
             });
 
         }
+
         if ("catch".equals(sameAmountResult.get("code"))) {
+            System.out.println("main: catch same amount to the same payee");
             sameAmountWarning samePOP = new sameAmountWarning();
             List<Record> sameRecords = (List<Record>) sameAmountResult.get("records");
             samePOP.showWarning(sameRecords);
             samePOP.getBtnRecordsView().addActionListener(e -> {
-                initRecordsView();
 
-                samePOP.close();
+                // set other frame invisible
                 mainFrame.setVisible(false);
-                aiFrame.setVisible(false);
-                recordsFrame.setVisible(true);
+                if (aiFrame != null) {
+                    aiFrame.setVisible(false);
+                }
+
+                // show recordsView
+                if (recordsFrame == null || !recordsFrame.isVisible()) {
+                    initRecordsView();
+                    SwingUtilities.invokeLater(() -> {
+                        recordsFrame.validate();
+                        recordsFrame.repaint();
+                        recordsFrame.setVisible(true);
+                        recordsFrame.toFront();
+                    });
+                } else {
+                    recordsFrame.toFront();
+                }
+
+                // close pop up
+                samePOP.close();
             });
         }
+
         if ("max".equals(nearBudgetResult) || "high".equals(nearBudgetResult)) {
             double percentage = budgetCount.calculateBudget(setting, records);
             int duration = setting.getDuration();
@@ -218,6 +253,13 @@ public class Main {
             else
                 is_Week_Month = 1;
             nearBudgetWarning.showWarning(is_Week_Month, percentage);
+        }
+
+        if ("catch".equals(largeAmountResult.get("code"))) {
+            List<Double> amountList = (List<Double>) largeAmountResult.get("amountList");
+            for (Double amount : amountList) {
+                largeRemittanceWarning.showWarning(amount);
+            }
         }
 
     }

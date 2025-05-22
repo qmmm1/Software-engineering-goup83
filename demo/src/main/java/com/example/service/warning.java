@@ -81,11 +81,6 @@ public class warning {
         List<Record> records = new ArrayList<>();
         Set<Record> recordSet = new LinkedHashSet<>(); // 使用 Set 去重，保持顺序
 
-        int threshold = setting.getSequent_payment_warning();
-        if (records.size() < threshold) {
-            return result;
-        }
-
         // sort according to time
         newRecords.sort(Comparator.comparing(Record::getPaymentDate));
         records.addAll(newRecords);
@@ -104,6 +99,11 @@ public class warning {
             }
             records.sort(Comparator.comparing(Record::getPaymentDate));
 
+        }
+
+        int threshold = setting.getSequent_payment_warning();
+        if (records.size() < threshold) {
+            return result;
         }
 
         // 滑动窗口：检测连续 threshold+1 次支付是否在 5 分钟内
@@ -133,6 +133,7 @@ public class warning {
 
         if (!recordSet.isEmpty()) {
             result.put("code", "catch");
+            System.out.println("warning: catch sequent payment");
             result.put("records", new ArrayList<>(recordSet));
         }
         return result;
@@ -208,6 +209,7 @@ public class warning {
         if (recordSet.size() != 0) {
             System.out.println("You have made the same amount of money in the past ");
             result.put("code", "catch");
+            System.out.println("warning: catch same amount to the same payee");
             result.put("records", new ArrayList<>(recordSet));
             return result;
         }
