@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.service.economySuggestion;
+
 
 public class aiAssistant extends JFrame {
     private mainWindows mainFrame;
@@ -93,9 +95,25 @@ public class aiAssistant extends JFrame {
                 "Cost-cutting Suggestions: \n1. Reduce dining out\n2. Cancel unused subscriptions";
 
 // 修改后的Button Listeners
-        btnMonthly.addActionListener(e -> outputArea.setText(monthlyAnalysis));
-        btnSaving.addActionListener(e -> outputArea.setText(savingProgress));
-        btnCostCut.addActionListener(e -> outputArea.setText(costCutSuggestions));
+
+        btnMonthly.addActionListener(e -> {
+            List<Record> records = mainFrame.getRecords(); // 从主窗口中获取记录
+            String suggestion = economySuggestion.BudgetSuggestion(records, 30); // 获取近30天预算建议
+            outputArea.setText(suggestion);
+        });
+
+        btnSaving.addActionListener(e -> {
+            List<Record> records = mainFrame.getRecords();
+            String suggestion = economySuggestion.SavingsSuggestion(records, 30); // 获取近30天储蓄建议
+            outputArea.setText(suggestion);
+        });
+
+        btnCostCut.addActionListener(e -> {
+            List<Record> records = mainFrame.getRecords();
+            String suggestion = economySuggestion.ExpensesSuggestion(records, 30); // 获取近30天消费建议
+            outputArea.setText(suggestion);
+        });
+
     }
 
     private JButton createFunctionButton(String text) {
@@ -195,3 +213,5 @@ public class aiAssistant extends JFrame {
         protected void paintBorder(Graphics g) {}
     }
 }
+
+
