@@ -7,12 +7,17 @@ import java.awt.event.ActionListener;
 import com.example.utils.RecordControl;
 import com.example.Main;
 import com.example.model.Record;
+import com.example.utils.SettingControl;
+import com.example.model.Setting;
+import com.example.model.Record;
+
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.io.IOException;
 
 public class importData extends JFrame {
     private JTextField largeAmountField;
@@ -178,7 +183,7 @@ public class importData extends JFrame {
 
         // 大金额提醒部分
         JLabel largeAmountLabel = new JLabel(
-                "Fill in the figure that you think is a large amount so that we can remind you");
+                "Enter a large amount so that we can remind you");
         largeAmountLabel.setFont(largerFont);
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -206,7 +211,7 @@ public class importData extends JFrame {
 
         // 频繁支付提醒部分
         JLabel frequentPaymentLabel = new JLabel(
-                "Fill in the figure that you think is the number of times you make payments too often so that we can remind you");
+                "Enter the number of times you think payments are too frequent so we can remind you.");
         frequentPaymentLabel.setFont(largerFont);
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -231,6 +236,58 @@ public class importData extends JFrame {
         gbc.gridwidth = 1;
         gbc.weighty = 0.1;
         add(frequentPaymentPanel, gbc); // 添加面板替代原文本框
+
+        // 大金额确认按钮事件
+        confirmLargeAmount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String input = largeAmountField.getText().trim();
+                    int value = Integer.parseInt(input);
+
+                    // 读取并更新设置
+                    Setting setting = SettingControl.readSettingFromFile();
+                    setting.setLarge_amount_warning(value);
+                    SettingControl.writeSettingToFile(setting);
+
+                    JOptionPane.showMessageDialog(importData.this,
+                            "Large amount warning updated to: " + value);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(importData.this,
+                            "Invalid number format", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(importData.this,
+                            "Failed to update settings: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // 频繁支付确认按钮事件
+        confirmFrequentPayment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String input = frequentPaymentField.getText().trim();
+                    int value = Integer.parseInt(input);
+
+                    // 读取并更新设置
+                    Setting setting = SettingControl.readSettingFromFile();
+                    setting.setSequent_payment_warning(value);
+                    SettingControl.writeSettingToFile(setting);
+
+                    JOptionPane.showMessageDialog(importData.this,
+                            "Frequent payment warning updated to: " + value);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(importData.this,
+                            "Invalid number format", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(importData.this,
+                            "Failed to update settings: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // 底部导航按钮
         JPanel bottomButtonPanel = new JPanel(new GridBagLayout()) {
