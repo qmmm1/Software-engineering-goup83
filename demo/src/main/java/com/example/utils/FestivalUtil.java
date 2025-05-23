@@ -7,6 +7,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Utility class for detecting known solar and lunar calendar festivals.
+ */
 public class FestivalUtil {
 
   private static final Map<String, String> FIXED_FESTIVALS = new HashMap<>();
@@ -26,6 +29,14 @@ public class FestivalUtil {
     FIXED_FESTIVALS.put("L08-15", "Mid-Autumn Festival");
   }
 
+  /**
+   * Returns the name of the festival (if any) corresponding to the given date.
+   * It checks solar calendar festivals, lunar calendar festivals, and
+   * Thanksgiving.
+   *
+   * @param date the date to check
+   * @return the name of the festival if matched; {@code null} otherwise
+   */
   public static String getFestivalName(LocalDate date) {
     // Solar
     String solarKey = String.format("%02d-%02d", date.getMonthValue(), date.getDayOfMonth());
@@ -49,8 +60,11 @@ public class FestivalUtil {
   }
 
   /**
-   * Method to tell Thanksgiving
-   * the 4th Wednesday of November
+   * Calculates the date of Thanksgiving for a given year.
+   * Thanksgiving is celebrated on the fourth Thursday of November.
+   *
+   * @param year the year to calculate Thanksgiving for
+   * @return the date of Thanksgiving in the given year
    */
   static LocalDate getThanksgivingDate(int year) {
     return LocalDate.of(year, Month.NOVEMBER, 1)

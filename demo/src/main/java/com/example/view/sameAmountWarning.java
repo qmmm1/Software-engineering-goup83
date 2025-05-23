@@ -7,10 +7,25 @@ import java.util.List;
 
 import com.example.model.Record;
 
+/**
+ * This class provides a graphical warning popup that notifies the user about
+ * multiple payments of the same amount made to the same recipient.
+ * <p>
+ * The popup displays a message and lists the records with identical payment
+ * amounts,
+ * helping the user to verify the legitimacy of these transactions.
+ * </p>
+ */
 public class sameAmountWarning {
   private static JButton btnRecordsView;
   private JFrame frame;
 
+  /**
+   * Displays the warning popup listing multiple payments of the same amount.
+   *
+   * @param sameAmountRecords a list of {@link Record} objects representing
+   *                          payments with the same amount to be displayed.
+   */
   public void showWarning(List<Record> sameAmountRecords) {
     // convert frequentRecords to String
     List<String> sameAmountRecords_String = new ArrayList<>();
@@ -37,7 +52,7 @@ public class sameAmountWarning {
     Color redColor = new Color(200, 50, 30);
     Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
-    /**
+    /*
      * Warning Content
      */
 
@@ -77,7 +92,7 @@ public class sameAmountWarning {
     gbc.gridy = 0;
     frame.add(contentPanel, gbc);
 
-    /**
+    /*
      * Show Records
      */
 
@@ -108,7 +123,7 @@ public class sameAmountWarning {
     gbc.gridy = 1;
     frame.add(scrollPane, gbc);
 
-    /**
+    /*
      * Records View Button
      */
 
@@ -138,7 +153,9 @@ public class sameAmountWarning {
     frame.setVisible(true);
   }
 
-  // method to close the pop up
+  /**
+   * Closes the warning popup window if it is currently visible.
+   */
   public void close() {
     if (frame != null && frame.isDisplayable()) {
       frame.dispose();
@@ -146,12 +163,27 @@ public class sameAmountWarning {
   }
 
   /**
-   * Getter for Button
+   * Returns the "Records View" button displayed on the popup.
+   * <p>
+   * This allows external code to add action listeners or perform other
+   * operations on the button.
+   * </p>
+   *
+   * @return the JButton used for "Records View"
    */
   public JButton getBtnRecordsView() {
     return btnRecordsView;
   }
 
+  /**
+   * Main method for testing the warning popup.
+   * <p>
+   * Creates a list of dummy {@link Record} objects with incremented amounts
+   * and displays the warning window.
+   * </p>
+   *
+   * @param args command-line arguments (not used)
+   */
   public static void main(String[] args) {
     List<Record> sameAmountRecords = new ArrayList<>();
 

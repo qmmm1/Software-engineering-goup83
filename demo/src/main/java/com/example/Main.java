@@ -323,22 +323,6 @@ public class Main {
         }
 
         importFrame.clearNewRecords();
-
-        // System.out.println("New Records:");
-        // for (Record record : newRecords) {
-        // System.out.println(record.getPaymentId() +
-        // ", " + record.getPaymentDate() +
-        // ", " + record.getAmount() +
-        // ", " + record.getPayee());
-        // }
-
-        // System.out.println("Old Records:");
-        // for (Record record : oldRecords) {
-        // System.out.println(record.getPaymentId() +
-        // ", " + record.getPaymentDate() +
-        // ", " + record.getAmount() +
-        // ", " + record.getPayee());
-        // }
     }
 
     // method for checking

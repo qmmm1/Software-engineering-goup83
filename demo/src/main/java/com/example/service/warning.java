@@ -9,16 +9,16 @@ import com.example.model.Setting;
 import com.example.model.Record;
 
 /**
- * @className warning
- * @description Warning pop-up recognition
+ * Warning pop-up recognition service.
  */
 public class warning {
     /**
-     * @methodName budgetWarning
-     * @description Budget warning detection
-     * @param setting    User Settings
-     * @param percentage Percentage of budget used
-     * @return budget warning level
+     * Detects the budget warning level based on the percentage of budget used.
+     *
+     * @param setting    the user settings containing threshold values
+     * @param percentage the percentage of budget already used
+     * @return a string indicating the budget warning level: "max", "high", "low",
+     *         or "normal"
      */
     public static String budgetWarning(Setting setting, double percentage) {
         if (percentage > setting.getBudegt_ratewarning_max()) {
@@ -36,11 +36,17 @@ public class warning {
     }
 
     /**
-     * @methodName large_amount_warning
-     * @description Large amount warning detection
-     * @param setting User Settings
-     * @param records signal import record
-     * @return whether large amount warning catched
+     * Detects if there are any records with amounts exceeding the large amount
+     * warning threshold.
+     *
+     * @param setting the user settings containing the large amount warning
+     *                threshold
+     * @param records the list of transaction records to check
+     * @return a map containing:
+     *         <ul>
+     *         <li>"code": "catch" if warning triggered, "normal" otherwise</li>
+     *         <li>"amountList": list of amounts exceeding the threshold</li>
+     *         </ul>
      */
     public static Map<String, Object> large_amount_warning(Setting setting, List<Record> records) {
         Map<String, Object> result = new HashMap<>();
@@ -65,15 +71,20 @@ public class warning {
     }
 
     /**
-     * 高频
-     * 
-     * @methodName sequent_amount_warning
-     * @description Sequent payment warning detection
-     * @param setting User Settings
-     * @param records Global billing records
-     * @return whether sequent payment warning catched
+     * Detects warnings for frequent (sequent) payments within a 5-minute window.
+     *
+     * @param setting    the user settings containing the threshold for frequent
+     *                   payments
+     * @param newRecords the new payment records to check
+     * @param oldRecords the old payment records for context to check overlap in
+     *                   time windows
+     * @return a map containing:
+     *         <ul>
+     *         <li>"code": "catch" if warning triggered, "normal" otherwise</li>
+     *         <li>"records": list of records that triggered the warning (if
+     *         any)</li>
+     *         </ul>
      */
-
     public static Map<String, Object> sequent_amount_warning(Setting setting, List<Record> newRecords,
             List<Record> oldRecords) {
         Map<String, Object> result = new HashMap<>();
@@ -148,11 +159,20 @@ public class warning {
     }
 
     /**
-     * @methodName same_amount_warning
-     * @description Same amount warning detection
-     * @param setting User Settings
-     * @param records Global billing records
-     * @return whether same amount warning catched
+     * Detects warnings for repeated payments of the same amount to the same payee
+     * within a configured time window.
+     *
+     * @param setting    the user settings containing the time window threshold in
+     *                   minutes
+     * @param newRecords the new payment records to check
+     * @param oldRecords the old payment records for context to check overlap in
+     *                   time windows
+     * @return a map containing:
+     *         <ul>
+     *         <li>"code": "catch" if warning triggered, "normal" otherwise</li>
+     *         <li>"records": list of records that triggered the warning (if
+     *         any)</li>
+     *         </ul>
      */
     public static Map<String, Object> same_amount_warning(Setting setting, List<Record> newRecords,
             List<Record> oldRecords) {

@@ -7,11 +7,24 @@ import java.util.List;
 
 import com.example.model.Record;
 
+/**
+ * A popup warning window that alerts users about frequent payments made from
+ * their account.
+ * Allows users to review the records and confirm their validity.
+ */
 public class frequentPaymentsWarning {
 
+  /** The button to navigate to the full records view. */
   private static JButton btnRecordsView;
+  /** The main frame for the warning popup. */
   private JFrame frame;
 
+  /**
+   * Displays a warning window listing frequent payment records.
+   *
+   * @param frequentRecords A list of {@link Record} objects that represent
+   *                        frequent payments.
+   */
   public void showWarning(List<Record> frequentRecords) {
     // convert frequentRecords to String
     List<String> frequentRecords_String = new ArrayList<>();
@@ -39,7 +52,7 @@ public class frequentPaymentsWarning {
     Color redColor = new Color(200, 50, 30);
     Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
-    /**
+    /*
      * Warning Content
      */
 
@@ -79,7 +92,7 @@ public class frequentPaymentsWarning {
     gbc.gridy = 0;
     frame.add(contentPanel, gbc);
 
-    /**
+    /*
      * Show Records
      */
 
@@ -110,7 +123,7 @@ public class frequentPaymentsWarning {
     gbc.gridy = 1;
     frame.add(scrollPane, gbc);
 
-    /**
+    /*
      * Records View Button
      */
 
@@ -140,7 +153,9 @@ public class frequentPaymentsWarning {
     frame.setVisible(true);
   }
 
-  // method to close the pop up
+  /**
+   * Closes the warning popup window if it is currently open.
+   */
   public void close() {
     if (frame != null && frame.isDisplayable()) {
       frame.dispose();
@@ -148,14 +163,20 @@ public class frequentPaymentsWarning {
   }
 
   /**
-   * Getter for Button
+   * Returns the "Records View" button, allowing external components to register
+   * actions.
+   *
+   * @return the {@link JButton} used to view records
    */
   public JButton getBtnRecordsView() {
     return btnRecordsView;
   }
 
   /**
-   * Test
+   * A test entry point that generates dummy records and displays the warning
+   * window.
+   *
+   * @param args Command-line arguments (not used)
    */
   public static void main(String[] args) {
     List<Record> frequentRecords = new ArrayList<>();
