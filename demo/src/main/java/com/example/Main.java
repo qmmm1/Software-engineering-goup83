@@ -18,6 +18,13 @@ import java.util.Map;
 import javax.swing.JButton; // 新增导入
 import javax.swing.SwingUtilities;
 
+/**
+ * The entry point for the budget management application.
+ * <p>
+ * This class initializes all major UI components and handles page navigation
+ * and pop-up warnings
+ * based on user actions and record analysis.
+ */
 public class Main {
     private static mainWindows mainFrame;
     private static importData importFrame;
@@ -27,6 +34,11 @@ public class Main {
     private static List<Record> originRecords;
     private static Setting setting;
 
+    /**
+     * Application entry point.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
 
         try {
@@ -49,9 +61,9 @@ public class Main {
     }
 
     /**
-     * Page Navigation Logic for mainWindows
+     * Initializes the main window and sets up navigation buttons and event
+     * listeners.
      */
-
     private static void initMainWindow() {
         mainFrame = new mainWindows(originRecords, setting);
 
@@ -90,9 +102,8 @@ public class Main {
     }
 
     /**
-     * Page Navigation Logic for importData
+     * Initializes the import data page and its navigation controls.
      */
-
     private static void initImportData() {
         importFrame = new importData(RecordControl.readRecordFromResource());
 
@@ -124,9 +135,8 @@ public class Main {
     }
 
     /**
-     * Page Navigation Logic for setBudget
+     * Initializes the budget setting page and its navigation controls.
      */
-
     private static void initBudgetFrame() {
         budgetFrame = new setBudget(setting);
 
@@ -154,9 +164,8 @@ public class Main {
     }
 
     /**
-     * Page Navigation Logic for recordsView
+     * Initializes the records view page and its navigation controls.
      */
-
     public static void initRecordsView() {
         if (recordsFrame == null) {
             recordsFrame = new recordsView(mainFrame, RecordControl.readRecordFromResource());
@@ -181,6 +190,11 @@ public class Main {
 
     }
 
+    /**
+     * Updates the budget button display text in the main window.
+     *
+     * @param userBudget the new budget value to display
+     */
     public static void updateBudgetButtonText(double userBudget) {
         if (mainFrame != null) {
             mainFrame.getBtnBudget().setText("<html>Budget<br><center>" + userBudget + "</center></html>");
@@ -189,9 +203,8 @@ public class Main {
     }
 
     /**
-     * Page Navigation Logic for aiAssistant
+     * Initializes the AI assistant window and its navigation controls.
      */
-
     public static void initAIAssistant() {
         aiFrame = new aiAssistant(mainFrame);
 
@@ -212,7 +225,10 @@ public class Main {
     }
 
     /**
-     * Add Logic to Show warning pup-up
+     * Shows warning pop-ups based on detected financial patterns in records.
+     * Includes large amount transfers, frequent/sequential payments, repeated
+     * amounts,
+     * and near-budget conditions.
      */
     private static void showWarningsIfNeeded() {
         List<Record> newRecords = new ArrayList<>(importFrame.getNewRecords());
@@ -325,8 +341,4 @@ public class Main {
         importFrame.clearNewRecords();
     }
 
-    // method for checking
-    public void printRecords(List<Record> list) {
-
-    }
 }

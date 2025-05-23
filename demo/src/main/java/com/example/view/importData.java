@@ -11,7 +11,6 @@ import com.example.utils.SettingControl;
 import com.example.model.Setting;
 import com.example.model.Record;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +18,28 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.io.IOException;
 
+/**
+ * The {@code importData} class represents a Swing-based UI frame that allows
+ * the user
+ * to import payment records from a CSV file, add individual payment records
+ * manually,
+ * and configure user-specific warnings such as large amount alerts and frequent
+ * payment alerts.
+ * <p>
+ * It integrates with {@code RecordControl} and {@code SettingControl} for
+ * backend record and setting management.
+ * </p>
+ *
+ * Main functionalities include:
+ * <ul>
+ * <li>CSV file import for records</li>
+ * <li>Manual payment record entry</li>
+ * <li>Configuration of large amount and frequent payment alerts</li>
+ * <li>Navigation buttons to AI Assistant, Homepage, and Records View</li>
+ * </ul>
+ *
+ * @author
+ */
 public class importData extends JFrame {
     private JTextField largeAmountField;
     private JTextField frequentPaymentField;
@@ -34,6 +55,12 @@ public class importData extends JFrame {
     private List<Record> newRecords = new ArrayList<>();
     private List<Record> oldRecords = new ArrayList<>();
 
+    /**
+     * Constructs the importData UI frame and initializes all components.
+     * 
+     * @param originRecords The existing list of records before importing or
+     *                      editing.
+     */
     public importData(List<Record> originRecords) {
 
         records = originRecords;
@@ -338,7 +365,16 @@ public class importData extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * A custom JButton implementation that renders the button in a circular shape.
+     * This is used for the Homepage button in the bottom navigation panel.
+     */
     static class RoundButton extends JButton {
+        /**
+         * Constructs a new {@code RoundButton} with the specified label text.
+         *
+         * @param text the label to display on the button.
+         */
         public RoundButton(String text) {
             super(text);
             setContentAreaFilled(false);
@@ -350,6 +386,11 @@ public class importData extends JFrame {
             setHorizontalTextPosition(SwingConstants.CENTER);
         }
 
+        /**
+         * Overrides the painting logic to render a circular background.
+         *
+         * @param g the {@code Graphics} context.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -360,6 +401,11 @@ public class importData extends JFrame {
             g2.dispose();
         }
 
+        /**
+         * Overrides the default border painting (does nothing).
+         *
+         * @param g the {@code Graphics} context.
+         */
         @Override
         protected void paintBorder(Graphics g) {
             // 不绘制默认边框
@@ -367,19 +413,42 @@ public class importData extends JFrame {
     }
 
     // 提供获取按钮的方法
+    /**
+     * Returns the navigation button that leads to the Homepage.
+     *
+     * @return the {@code JButton} for Homepage.
+     */
     public JButton getBtnHomepage() {
         return btnHomepage;
     }
 
+    /**
+     * Returns the navigation button that leads to the Records View.
+     *
+     * @return the {@code JButton} for Records View.
+     */
     public JButton getBtnRecordsView() {
         return btnRecordsView;
     }
 
+    /**
+     * Returns the navigation button that leads to the AI Assistant.
+     *
+     * @return the {@code JButton} for AI Assistant.
+     */
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
     }
 
     // methods for warning
+    /**
+     * Compares the original list of records with the updated list and returns
+     * only the newly added records.
+     *
+     * @param oldRecords The list of original records.
+     * @param records    The updated list of records.
+     * @return A list of {@code Record} instances that were newly added.
+     */
     List<Record> getNewImport(List<Record> oldRecords, List<Record> records) {
         List<Record> newRecords = new ArrayList<>();
         int oldSize = oldRecords.size();
@@ -389,14 +458,28 @@ public class importData extends JFrame {
         return new ArrayList<>(newRecords);
     }
 
+    /**
+     * Returns the list of records that were newly imported or added manually.
+     *
+     * @return a list of new {@code Record} objects.
+     */
     public List<Record> getNewRecords() {
         return newRecords;
     }
 
+    /**
+     * Returns the original list of records before any import or additions.
+     *
+     * @return a list of old {@code Record} objects.
+     */
     public List<Record> getOldRecords() {
         return oldRecords;
     }
 
+    /**
+     * Appends the new records to the old list and clears the new records list.
+     * This is useful for resetting the import state.
+     */
     public void clearNewRecords() {
         oldRecords.addAll(newRecords);
         newRecords.clear();

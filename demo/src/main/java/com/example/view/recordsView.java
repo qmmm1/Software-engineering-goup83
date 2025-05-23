@@ -15,6 +15,12 @@ import com.example.model.Record;
 import com.example.utils.RecordControl;
 import com.example.utils.AIcontrol;
 
+/**
+ * The recordsView class displays a detailed list of spending records.
+ * It allows users to view, edit, delete, and classify records using an AI
+ * assistant.
+ * It is designed as a standalone JFrame with interactive UI components.
+ */
 public class recordsView extends JFrame {
     private mainWindows mainFrame;
     private JButton btnAIAssistant;
@@ -29,6 +35,12 @@ public class recordsView extends JFrame {
             "food", "transportation", "entertainment", "education", "living expenses", "other"
     };
 
+    /**
+     * Constructs the recordsView window.
+     *
+     * @param mainFrame  The main window to return to.
+     * @param recordList A list of records to display.
+     */
     public recordsView(mainWindows mainFrame, List<Record> recordList) {
         this.mainFrame = mainFrame;
         this.recordList = (recordList != null) ? recordList : new ArrayList<>();
@@ -93,6 +105,11 @@ public class recordsView extends JFrame {
         scrollPane.getVerticalScrollBar().setBlockIncrement(100);
     }
 
+    /**
+     * Loads the records into the recordsPanel for display.
+     * Each record is shown with summary information and clickable for detailed
+     * view.
+     */
     private void loadRecordObjects() {
         recordsPanel.removeAll();
         Font recordFont = new Font("Serif", Font.PLAIN, 18);
@@ -131,6 +148,13 @@ public class recordsView extends JFrame {
         recordsPanel.repaint();
     }
 
+    /**
+     * Opens a detailed dialog for a specific record.
+     * Allows the user to view and modify the record details, including
+     * reclassification and deletion.
+     *
+     * @param record The record to display in detail.
+     */
     private void showRecordDetail(Record record) {
         // 使用 Locale.ENGLISH 格式化日期和时间
         String time = String.format(Locale.ENGLISH, "%tR", record.getPaymentDate());
@@ -229,7 +253,15 @@ public class recordsView extends JFrame {
         }
     }
 
+    /**
+     * A custom round JButton used for the homepage button.
+     */
     static class RoundButton extends JButton {
+        /**
+         * Constructs a round-style button with specified label text.
+         *
+         * @param text the button label
+         */
         public RoundButton(String text) {
             super(text);
             setContentAreaFilled(false);
@@ -241,6 +273,11 @@ public class recordsView extends JFrame {
             setHorizontalTextPosition(SwingConstants.CENTER);
         }
 
+        /**
+         * Paints the background of the button as a circle.
+         *
+         * @param g the Graphics context
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -251,11 +288,21 @@ public class recordsView extends JFrame {
             g2.dispose();
         }
 
+        /**
+         * Suppresses painting the border.
+         *
+         * @param g the Graphics context
+         */
         @Override
         protected void paintBorder(Graphics g) {
         }
     }
 
+    /**
+     * Updates the displayed record list and reloads the user interface.
+     *
+     * @param records the new list of records
+     */
     public void updateTableData(List<Record> records) {
         this.recordList.clear();
         this.recordList.addAll(records);
@@ -263,14 +310,20 @@ public class recordsView extends JFrame {
         loadRecordObjects();
     }
 
-    /*
-     * Getter for Buttons
+    /**
+     * Gets the homepage button.
+     *
+     * @return the homepage JButton
      */
-
     public JButton getBtnHomepage() {
         return btnHomePage;
     }
 
+    /**
+     * Gets the AI assistant button.
+     *
+     * @return the AI assistant JButton
+     */
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
     }
