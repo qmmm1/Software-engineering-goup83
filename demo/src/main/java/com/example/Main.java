@@ -234,6 +234,12 @@ public class Main {
         List<Record> newRecords = new ArrayList<>(importFrame.getNewRecords());
         List<Record> oldRecords = new ArrayList<>(importFrame.getOldRecords());
         List<Record> records = new ArrayList<>(RecordControl.readRecordFromResource());
+        // update setting
+        try {
+            setting = SettingControl.readSettingFromFile();
+        } catch (IOException e) {
+            System.out.println("Failed to reload setting: " + e.getMessage());
+        }
 
         // System.out.println("New Records:");
         // for (Record record : newRecords) {
