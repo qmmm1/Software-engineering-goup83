@@ -1,8 +1,5 @@
 # Software-engineering-goup83
-# 分工：
-# 前端GUI：胡孜砚（hhh659） 陈颖欣（chenyx2004）
-# 后端、前后端连接： 魏青蓝（qmmm1） 郑今铭（xggggwqafsfasda）
-# 测试：李晨（lichenxd） 齐心玫（qixinmei）
+# 
 # AI-Empowered Personal Finance Tracker- Software Development Using Agile Methods
 # I. Project Overview
 # This project is a prototype AI-based personal finance management app designed to help users track spending, categorize spending, and make budget recommendations more efficiently. The software combines AI automated analysis with manual user verification to improve the intelligence and reliability of financial management. Adapt to local festivals and consumption habits in China, such as seasonal consumption peaks such as the Spring Festival, to improve practicality and scalability. This software has completed the implementation of core functions, adopted Java + Swing development, and uses local csv files for data interaction.
