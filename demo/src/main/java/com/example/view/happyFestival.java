@@ -7,9 +7,25 @@ import java.util.HashMap;
 import java.util.Map;
 import com.example.utils.FestivalUtil;
 
+/**
+ * This class provides a UI popup reminder if tomorrow is a recognized festival.
+ * It displays a message encouraging users to adjust their budget accordingly.
+ */
 public class happyFestival {
+  /**
+   * Displays a reminder popup if the given date's next day is a recognized
+   * festival.
+   * <p>
+   * The popup includes the festival name and a short advisory message about
+   * budgeting.
+   * If there is no festival the next day, the method exits without showing
+   * anything.
+   * </p>
+   *
+   * @param todayDate the current date used to determine if tomorrow is a festival
+   */
   public static void showReminder(LocalDate todayDate) {
-    /**
+    /*
      * If Tomorrow is a Festival, Show the Reminder
      * Otherwise, Do Not Show
      */
@@ -19,7 +35,7 @@ public class happyFestival {
     if (festivalName == null)
       return;
 
-    /**
+    /*
      * Build the Reminder Frame
      */
 
@@ -41,7 +57,7 @@ public class happyFestival {
     // set font
     Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
-    /**
+    /*
      * Warning Content
      */
 
@@ -71,6 +87,14 @@ public class happyFestival {
     frame.setVisible(true);
   }
 
+  /**
+   * Main method for testing the festival reminder popup.
+   * <p>
+   * This uses a fixed date to simulate the reminder.
+   * </p>
+   *
+   * @param args command-line arguments (not used)
+   */
   public static void main(String[] args) {
     // LocalDate todayDate = LocalDate.now();
     LocalDate perticularDate = LocalDate.of(2025, 2, 13);

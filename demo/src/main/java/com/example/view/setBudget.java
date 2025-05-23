@@ -13,13 +13,37 @@ import com.example.model.Setting;
 import com.example.Main; // 新增导入
 import com.example.utils.SettingControl;
 
+/**
+ * The {@code setBudget} class represents a Swing JFrame
+ * that allows users to select a budget period (one week or one month),
+ * enter a budget amount, and save the budget settings.
+ * <p>
+ * It provides UI components for selecting duration, displaying start and end
+ * dates,
+ * inputting the budget amount, and buttons to navigate to Homepage, AI
+ * Assistant, and Records View.
+ * </p>
+ * <p>
+ * The class uses GridBagLayout for flexible component placement
+ * and includes custom RoundButton for homepage navigation.
+ * </p>
+ *
+ * @author
+ * @version 1.0
+ * @since 2025-05-23
+ */
 public class setBudget extends JFrame {
 
   /**
-   * Define a RoundButton for Homepage Button
+   * RoundButton is a custom JButton with circular shape
+   * and customized font and size.
    */
-
   static class RoundButton extends JButton {
+    /**
+     * Constructs a RoundButton with specified text.
+     * 
+     * @param text The text displayed on the button.
+     */
     public RoundButton(String text) {
       super(text);
       setContentAreaFilled(false);
@@ -47,7 +71,7 @@ public class setBudget extends JFrame {
     }
   }
 
-  /**
+  /*
    * Define the Variables
    */
 
@@ -66,10 +90,18 @@ public class setBudget extends JFrame {
   private JButton btnRecordsView;
   private Setting setting;
 
+  /**
+   * Constructs the setBudget JFrame window with the given Setting object.
+   * Initializes UI components, layouts, and event listeners.
+   * 
+   * @param orignSetting The Setting object to store and persist budget
+   *                     configurations.
+   */
   public setBudget(Setting orignSetting) {
+
     this.setting = orignSetting;
 
-    /**
+    /*
      * Set the Frame
      */
 
@@ -91,7 +123,7 @@ public class setBudget extends JFrame {
     // set format of date
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
 
-    /**
+    /*
      * Today is MONTH DAY YEAR
      */
 
@@ -116,7 +148,7 @@ public class setBudget extends JFrame {
     gbc.anchor = GridBagConstraints.CENTER;
     add(todayDatePanel, gbc);
 
-    /**
+    /*
      * Choose Your Length of Time
      */
 
@@ -152,7 +184,7 @@ public class setBudget extends JFrame {
     gbc.gridx = 0;
     gbc.gridy = 1;
 
-    /**
+    /*
      * So Your End Date Is
      */
 
@@ -179,7 +211,7 @@ public class setBudget extends JFrame {
     gbc.gridy = 2;
     add(cylotPanel, gbc);
 
-    /**
+    /*
      * Set Your Budget Below
      */
 
@@ -213,7 +245,7 @@ public class setBudget extends JFrame {
     gbc.gridy = 3;
     add(sybbPanel, gbc);
 
-    /**
+    /*
      * AI Assistant & Homepage & Record View
      */
 
@@ -259,7 +291,7 @@ public class setBudget extends JFrame {
     gbc.insets = new Insets(5, 0, 5, 0); // reduce bottom margin
     add(bottomButtonPanel, gbc);
 
-    /**
+    /*
      * Define listeners
      */
 
@@ -371,61 +403,87 @@ public class setBudget extends JFrame {
       }
     });
 
-    /**
+    /*
      * Set Visible
      */
 
     setVisible(true);
   }
 
-  /**
+  /*
    * Methods
    */
 
-  // a method to update end date label
+  /**
+   * Updates the end date label to show the formatted end date.
+   */
   private void updateEndDateLabel() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("  MMMM  d,   yyyy  ", Locale.ENGLISH);
     lblEndDate.setText(endDate.format(formatter));
     lblEndDate.setFont(new Font("Serif", Font.BOLD, 24));
   }
 
-  // btnHomepage getter
+  /**
+   * Returns the homepage button component.
+   * 
+   * @return the homepage RoundButton.
+   */
   public JButton getBtnHomepage() {
     return btnHomepage;
   }
 
-  // btnAIAssistant getter
+  /**
+   * Returns the AI Assistant button component.
+   * 
+   * @return the AI Assistant JButton.
+   */
   public JButton getBtnAIAssistant() {
     return btnAIAssistant;
   }
 
-  // btnAIAssistant getter
+  /**
+   * Returns the Records View button component.
+   * 
+   * @return the Records View JButton.
+   */
   public JButton getBtnRecordsView() {
     return btnRecordsView;
   }
 
-  // get week or month
+  /**
+   * Returns whether the user selected week or month duration.
+   * 
+   * @return 0 for week, 1 for month.
+   */
   public int get_is_Week_Month() {
     return is_Week_Month;
   }
 
-  // budget getter
+  /**
+   * Returns the budget amount input by the user.
+   * 
+   * @return budget as double.
+   */
   public double getUserBudget() {
     return userBudget;
   }
 
-  // start date getter
+  /**
+   * Returns the start date of the budget period.
+   * 
+   * @return start date as LocalDate.
+   */
   public LocalDate getStartDate() {
     return startDate;
   }
 
-  // start date getter
+  /**
+   * Returns the end date of the budget period.
+   * 
+   * @return end date as LocalDate.
+   */
   public LocalDate getEndDate() {
     return endDate;
   }
-
-  /**
-   * Main Entry
-   */
 
 }

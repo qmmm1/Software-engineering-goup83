@@ -3,8 +3,24 @@ package com.example.view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class provides a graphical warning interface to notify users
+ * about a large remittance they have made.
+ * <p>
+ * The UI advises users to confirm the transaction and be cautious of potential
+ * scams.
+ * </p>
+ */
 public class largeRemittanceWarning {
-
+  /**
+   * Displays a warning popup indicating that a large remittance has been made.
+   * <p>
+   * The popup provides visual cues and strong wording to prompt the user
+   * to verify the transaction and consider the possibility of fraud.
+   * </p>
+   *
+   * @param moneyAmount the amount of the remittance in Chinese Yuan (¥)
+   */
   public static void showWarning(double moneyAmount) {
     // build a frame
     JFrame frame = new JFrame();
@@ -25,7 +41,7 @@ public class largeRemittanceWarning {
     Color redColor = new Color(200, 50, 30);
     Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
-    /**
+    /*
      * Warning Content
      */
 
@@ -71,6 +87,11 @@ public class largeRemittanceWarning {
     frame.setVisible(true);
   }
 
+  /**
+   * Main method to test the large remittance warning popup.
+   *
+   * @param args command-line arguments (not used)
+   */
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
       showWarning(10000);

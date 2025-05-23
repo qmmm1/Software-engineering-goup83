@@ -4,8 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+/**
+ * This class provides a graphical warning popup to inform users when they are
+ * approaching their weekly or monthly budget limit.
+ * <p>
+ * The popup displays a warning message and the percentage of the budget that
+ * has
+ * already been spent, helping users to manage their spending.
+ * </p>
+ */
 public class nearBudgetWarning {
-
+  /**
+   * Displays a warning popup indicating how much of the weekly or monthly budget
+   * has already been spent.
+   *
+   * @param is_Week_Month an integer indicating the time period:
+   *                      0 for "week", 1 for "month"
+   * @param percentage    the percentage of the budget that has already been spent
+   *                      (0–100)
+   */
   public static void showWarning(int is_Week_Month, double percentage) {
     DecimalFormat df = new DecimalFormat("0.0");
 
@@ -27,7 +44,7 @@ public class nearBudgetWarning {
     // set font
     Font regularFont = new Font("Serif", Font.PLAIN, 28);
 
-    /**
+    /*
      * Warning Content
      */
 
@@ -59,6 +76,11 @@ public class nearBudgetWarning {
     frame.setVisible(true);
   }
 
+  /**
+   * Main method to test the near budget warning popup.
+   *
+   * @param args command-line arguments (not used)
+   */
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
       showWarning(1, 60);
