@@ -2,91 +2,101 @@ package com.example.service;
 
 import com.example.model.Record;
 import com.example.model.Setting;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-class BudgetCountTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @Test
-    void testCalculateBudget_WithValidData() {
-        // 创建一个 Setting 对象
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(2025, Calendar.APRIL, 10); // 2025年4月10日
-        Date startDate = startCalendar.getTime();
-        Setting setting = new Setting();
-        setting.setStartDate(startDate);
-        setting.setAmount(1000.0); // 预算金额为 1000.0
-        setting.setduration(30); // 预算持续时间为 30 天
+public class BudgetCountTest {
 
-        // 创建一些 Record 对象
-        List<Record> records = new ArrayList<>();
-        Calendar recordCalendar = Calendar.getInstance();
-        recordCalendar.set(2025, Calendar.APRIL, 15); // 2025年4月15日
-        records.add(new Record("1", recordCalendar.getTime(), 200.0, "food", "Alice"));
-        recordCalendar.set(2025, Calendar.APRIL, 20); // 2025年4月20日
-        records.add(new Record("2", recordCalendar.getTime(), 300.0, "transportation", "Bob"));
-        recordCalendar.set(2025, Calendar.MAY, 5); // 2025年5月5日
-        records.add(new Record("3", recordCalendar.getTime(), 150.0, "entertainment", "Charlie"));
+    private Setting setting;
+    private List<Record> records;
 
-        // 创建 BudgetCount 对象并调用 calculateBudget 方法
-        budgetCount budgetCount = new budgetCount();
-        double result = budgetCount.calculateBudget(setting, records);
+    @BeforeEach
+    public void setUp() {
+        // 初始化测试数据
+        setting = new Setting();
+        setting.setStartDate(dateFromLocalDate(LocalDate.now().minusDays(10))); // 设置开始日期为10天前
+        setting.setduration(5); // 设置持续时间为5天
+        setting.setAmount(1000.0); // 设置总预算为1000.0
 
-        // 验证结果
-        assertEquals(65.0, result, "Total consumed should be 65.0%");
+        records = new ArrayList<>();
     }
 
     @Test
-    void testCalculateBudget_WithNoRecords() {
-        // 创建一个 Setting 对象
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(2025, Calendar.APRIL, 10); // 2025年4月10日
-        Date startDate = startCalendar.getTime();
-        Setting setting = new Setting();
-        setting.setStartDate(startDate);
-        setting.setAmount(1000.0); // 预算金额为 1000.0
-        setting.setduration(30); // 预算持续时间为 30 天
+    public void testCalculateBudgetWithRecordsWithinRange() {
+        // 添加在时间范围内的记录
+        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(5)), 200.0, "food", "Alice"));
+        records.add(new Record("2", dateFromLocalDate(LocalDate.now().minusDays(4)), 300.0, "transportation", "Bob"));
+        records.add(new Record("3", dateFromLocalDate(LocalDate.now().minusDays(3)), 100.0, "entertainment", "Charlie"));
 
-        // 创建一个空的 Record 列表
-        List<Record> records = new ArrayList<>();
-
-        // 创建 BudgetCount 对象并调用 calculateBudget 方法
-        budgetCount budgetCount = new budgetCount();
+        // 调用方法并获取结果
         double result = budgetCount.calculateBudget(setting, records);
 
         // 验证结果
-        assertEquals(0.0, result, "Total consumed should be 0.0%");
+        assertEquals(60.0, result, 0.01, "预算消耗百分比应为60.0%");
     }
 
     @Test
-    void testCalculateBudget_WithRecordsOutsideRange() {
-        // 创建一个 Setting 对象
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(2025, Calendar.APRIL, 10); // 2025年4月10日
-        Date startDate = startCalendar.getTime();
-        Setting setting = new Setting();
-        setting.setStartDate(startDate);
-        setting.setAmount(1000.0); // 预算金额为 1000.0
-        setting.setduration(30); // 预算持续时间为 30 天
+    public void testCalculateBudgetWithRecordsOutsideRange() {
+        // 添加超出时间范围的记录
+        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(15)), 200.0, "food", "Alice")); // 超出时间范围
+        records.add(new Record("2", dateFromLocalDate(LocalDate.now()), 300.0, "transportation", "Bob")); // 超出时间范围
 
-        // 创建一些 Record 对象，这些记录的日期在设置的范围之外
-        List<Record> records = new ArrayList<>();
-        Calendar recordCalendar = Calendar.getInstance();
-        recordCalendar.set(2025, Calendar.APRIL, 5); // 2025年4月5日
-        records.add(new Record("1", recordCalendar.getTime(), 200.0, "food", "Alice"));
-        recordCalendar.set(2025, Calendar.MAY, 15); // 2025年5月15日
-        records.add(new Record("2", recordCalendar.getTime(), 300.0, "transportation", "Bob"));
-
-        // 创建 BudgetCount 对象并调用 calculateBudget 方法
-        budgetCount budgetCount = new budgetCount();
+        // 调用方法并获取结果
         double result = budgetCount.calculateBudget(setting, records);
 
         // 验证结果
-        assertEquals(0.0, result, "Total consumed should be 0.0%");
+        assertEquals(0.0, result, 0.01, "预算消耗百分比应为0.0%");
+    }
+
+    @Test
+    public void testCalculateBudgetWithEmptyRecords() {
+        // 测试空记录的情况
+        records = new ArrayList<>();
+
+        // 调用方法并获取结果
+        double result = budgetCount.calculateBudget(setting, records);
+
+        // 验证结果
+        assertEquals(0.0, result, 0.01, "预算消耗百分比应为0.0%");
+    }
+
+    @Test
+    public void testCalculateBudgetWithPartialRecords() {
+        // 添加部分在时间范围内，部分超出时间范围的记录
+        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(5)), 200.0, "food", "Alice")); // 在范围内
+        records.add(new Record("2", dateFromLocalDate(LocalDate.now().minusDays(15)), 300.0, "transportation", "Bob")); // 超出范围
+        records.add(new Record("3", dateFromLocalDate(LocalDate.now().minusDays(3)), 100.0, "entertainment", "Charlie")); // 在范围内
+
+        // 调用方法并获取结果
+        double result = budgetCount.calculateBudget(setting, records);
+
+        // 验证结果
+        assertEquals(30.0, result, 0.01, "预算消耗百分比应为30.0%");
+    }
+
+    @Test
+    public void testCalculateBudgetWithExactBoundaryRecords() {
+        // 添加在边界上的记录
+        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(10)), 200.0, "food", "Alice")); // 开始日期
+        records.add(new Record("2", dateFromLocalDate(LocalDate.now().minusDays(5)), 300.0, "transportation", "Bob")); // 结束日期
+
+        // 调用方法并获取结果
+        double result = budgetCount.calculateBudget(setting, records);
+
+        // 验证结果
+        assertEquals(50.0, result, 0.01, "预算消耗百分比应为50.0%");
+    }
+
+    // 辅助方法：将 LocalDate 转换为 Date
+    private Date dateFromLocalDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 }
