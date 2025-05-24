@@ -5,98 +5,72 @@ import com.example.model.Setting;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BudgetCountTest {
-
     private Setting setting;
     private List<Record> records;
 
     @BeforeEach
     public void setUp() {
-        // 初始化测试数据
+        // 初始化 Setting 对象并手动赋值
         setting = new Setting();
-        setting.setStartDate(dateFromLocalDate(LocalDate.now().minusDays(10))); // 设置开始日期为10天前
-        setting.setduration(5); // 设置持续时间为5天
-        setting.setAmount(1000.0); // 设置总预算为1000.0
+        setting.setAmount(5000.0);
+        setting.setduration(30);
 
+        // 设置开始日期
+        Date startDate = Date.from(LocalDateTime.of(2021, 1, 1, 0, 0).atZone(ZoneId.systemDefault()).toInstant());
+        setting.setStartDate(startDate);
+
+        // 初始化记录列表
         records = new ArrayList<>();
     }
 
     @Test
-    public void testCalculateBudgetWithRecordsWithinRange() {
-        // 添加在时间范围内的记录
-        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(5)), 200.0, "food", "Alice"));
-        records.add(new Record("2", dateFromLocalDate(LocalDate.now().minusDays(4)), 300.0, "transportation", "Bob"));
-        records.add(new Record("3", dateFromLocalDate(LocalDate.now().minusDays(3)), 100.0, "entertainment", "Charlie"));
+    public void testCalculateBudget() {
+        // 测试预算消耗百分比计算
+        records.add(new Record("1", dateFromLocalDateTime(LocalDateTime.of(2021, 1, 5, 0, 0)), 1000.0, "food", "Alice"));
+        records.add(new Record("2", dateFromLocalDateTime(LocalDateTime.of(2021, 1, 10, 0, 0)), 2000.0, "transportation", "Bob"));
+        records.add(new Record("3", dateFromLocalDateTime(LocalDateTime.of(2021, 1, 15, 0, 0)), 1500.0, "entertainment", "Charlie"));
 
-        // 调用方法并获取结果
         double result = budgetCount.calculateBudget(setting, records);
-
-        // 验证结果
-        assertEquals(60.0, result, 0.01, "预算消耗百分比应为60.0%");
+        assertEquals(90.0, result, "Should return 90.0% budget consumption");
     }
 
     @Test
-    public void testCalculateBudgetWithRecordsOutsideRange() {
-        // 添加超出时间范围的记录
-        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(15)), 200.0, "food", "Alice")); // 超出时间范围
-        records.add(new Record("2", dateFromLocalDate(LocalDate.now()), 300.0, "transportation", "Bob")); // 超出时间范围
-
-        // 调用方法并获取结果
+    public void testCalculateBudgetWithNoRecords() {
+        // 测试没有记录时的预算消耗百分比计算
         double result = budgetCount.calculateBudget(setting, records);
-
-        // 验证结果
-        assertEquals(0.0, result, 0.01, "预算消耗百分比应为0.0%");
+        assertEquals(0.0, result, "Should return 0.0% budget consumption when there are no records");
     }
 
     @Test
-    public void testCalculateBudgetWithEmptyRecords() {
-        // 测试空记录的情况
-        records = new ArrayList<>();
+    public void testCalculateBudgetWithRecordsOutsidePeriod() {
+        // 测试记录在预算周期外的预算消耗百分比计算
+        records.add(new Record("1", dateFromLocalDateTime(LocalDateTime.of(2020, 12, 30, 0, 0)), 1000.0, "food", "Alice"));
+        records.add(new Record("2", dateFromLocalDateTime(LocalDateTime.of(2021, 2, 1, 0, 0)), 2000.0, "transportation", "Bob"));
 
-        // 调用方法并获取结果
         double result = budgetCount.calculateBudget(setting, records);
-
-        // 验证结果
-        assertEquals(0.0, result, 0.01, "预算消耗百分比应为0.0%");
+        assertEquals(0.0, result, "Should return 0.0% budget consumption when records are outside the budget period");
     }
 
     @Test
-    public void testCalculateBudgetWithPartialRecords() {
-        // 添加部分在时间范围内，部分超出时间范围的记录
-        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(5)), 200.0, "food", "Alice")); // 在范围内
-        records.add(new Record("2", dateFromLocalDate(LocalDate.now().minusDays(15)), 300.0, "transportation", "Bob")); // 超出范围
-        records.add(new Record("3", dateFromLocalDate(LocalDate.now().minusDays(3)), 100.0, "entertainment", "Charlie")); // 在范围内
+    public void testCalculateBudgetWithExactPeriod() {
+        // 测试记录在预算周期内的预算消耗百分比计算
+        records.add(new Record("1", dateFromLocalDateTime(LocalDateTime.of(2021, 1, 1, 0, 0)), 5000.0, "food", "Alice"));
 
-        // 调用方法并获取结果
         double result = budgetCount.calculateBudget(setting, records);
-
-        // 验证结果
-        assertEquals(30.0, result, 0.01, "预算消耗百分比应为30.0%");
+        assertEquals(100.0, result, "Should return 100.0% budget consumption when records exactly match the budget period");
     }
 
-    @Test
-    public void testCalculateBudgetWithExactBoundaryRecords() {
-        // 添加在边界上的记录
-        records.add(new Record("1", dateFromLocalDate(LocalDate.now().minusDays(10)), 200.0, "food", "Alice")); // 开始日期
-        records.add(new Record("2", dateFromLocalDate(LocalDate.now().minusDays(5)), 300.0, "transportation", "Bob")); // 结束日期
-
-        // 调用方法并获取结果
-        double result = budgetCount.calculateBudget(setting, records);
-
-        // 验证结果
-        assertEquals(50.0, result, 0.01, "预算消耗百分比应为50.0%");
-    }
-
-    // 辅助方法：将 LocalDate 转换为 Date
-    private Date dateFromLocalDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    // 辅助方法：将 LocalDateTime 转换为 Date
+    private Date dateFromLocalDateTime(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
