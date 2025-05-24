@@ -18,6 +18,13 @@ import com.example.model.Record;
 import com.example.utils.RecordControl;
 import com.example.model.Setting;
 
+/**
+ * Main GUI window for the expense tracking application.
+ * This class displays today's expenses, budget information, pie charts of
+ * categorized expenses,
+ * and various control buttons for navigating and interacting with the
+ * application.
+ */
 public class mainWindows extends JFrame {
     private DefaultPieDataset dataset;
     private JProgressBar progressBar;
@@ -29,7 +36,21 @@ public class mainWindows extends JFrame {
     private List<Record> records; // 原始数据集
     private Setting setting; // 全局设置
 
+    /**
+     * A custom JButton implementation that displays as a round button.
+     * This button is visually distinct from standard rectangular buttons and
+     * supports
+     * enhanced font styling and sizing. It is useful for navigation or emphasis in
+     * GUI applications.
+     */
     static class RoundButton extends JButton {
+        /**
+         * Constructs a RoundButton with the specified text label.
+         * The button has a circular appearance, no default border, and increased font
+         * size.
+         *
+         * @param text the text to display on the button
+         */
         public RoundButton(String text) {
             super(text);
             setContentAreaFilled(false);
@@ -41,6 +62,13 @@ public class mainWindows extends JFrame {
             setHorizontalTextPosition(SwingConstants.CENTER);
         }
 
+        /**
+         * Paints the circular background of the button.
+         * This overrides the default rectangular painting behavior to draw a filled
+         * oval.
+         *
+         * @param g the Graphics object used for painting
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
@@ -51,12 +79,25 @@ public class mainWindows extends JFrame {
             g2.dispose();
         }
 
+        /**
+         * Overrides the default border painting to do nothing.
+         * This ensures the button retains its round, borderless style.
+         *
+         * @param g the Graphics object used for painting
+         */
         @Override
         protected void paintBorder(Graphics g) {
             // 不绘制默认边框
         }
     }
 
+    /**
+     * Constructs the main window of the application with the given records and
+     * settings.
+     *
+     * @param records the list of financial records to display
+     * @param setting the global setting configuration
+     */
     public mainWindows(List<Record> records, Setting setting) {
         this.records = records;
         this.setting = setting;
@@ -75,19 +116,19 @@ public class mainWindows extends JFrame {
         JPanel topPanel = new JPanel(new GridBagLayout()); // 修改点：FlowLayout -> GridBagLayout
         topPanel.setPreferredSize(new Dimension(800, 100));
 
-// 创建约束对象
+        // 创建约束对象
         GridBagConstraints topGbc = new GridBagConstraints();
         topGbc.fill = GridBagConstraints.BOTH; // 允许按钮填充空间
         topGbc.insets = new Insets(5, 20, 5, 20); // 设置左右间距为20
         topGbc.weightx = 1.0; // 水平均匀分配权重
         topGbc.gridy = 0; // 所有按钮位于第一行
 
-// 创建按钮（保持原有逻辑）
+        // 创建按钮（保持原有逻辑）
         JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records) + "元");
         btnBudget = createButton("Budget", "+");
         btnImportData = createButton("Import Data", "");
 
-// 依次添加三个按钮到不同列
+        // 依次添加三个按钮到不同列
         topGbc.gridx = 0; // 第一列
         topPanel.add(btnTodayExpense, topGbc);
 
@@ -97,7 +138,7 @@ public class mainWindows extends JFrame {
         topGbc.gridx = 2; // 第三列
         topPanel.add(btnImportData, topGbc);
 
-// 主布局添加topPanel（保持原有约束）
+        // 主布局添加topPanel（保持原有约束）
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -220,6 +261,13 @@ public class mainWindows extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Creates a custom-styled JButton with main and sub text stacked vertically.
+     *
+     * @param mainText the main label of the button
+     * @param subText  the sub-label displayed below the main label
+     * @return a customized JButton
+     */
     private JButton createButton(String mainText, String subText) {
         JButton button = new JButton("<html>" + mainText + "<br><center>" + subText + "</center></html>");
         button.setFont(new Font("Serif", Font.BOLD, 18));
@@ -229,6 +277,10 @@ public class mainWindows extends JFrame {
 
     private ChartPanel currentChartPanel; // 添加类成员变量保存当前图表
 
+    /**
+     * Updates the pie chart to reflect the latest category distribution of
+     * expenses.
+     */
     private void updateChart() {
         // 移除旧的图表
         if (currentChartPanel != null) {
@@ -272,6 +324,11 @@ public class mainWindows extends JFrame {
     }
 
     // 修改后的方法（移除 budget 参数）
+    /**
+     * Updates the progress bar to show the percentage of expenses relative to the
+     * budget.
+     * This method uses the budget calculation logic to determine the current ratio.
+     */
     public void updateExpenseBudgetDisplay() {
         double percentage = budgetCount.calculateBudget(setting, records);
         progressBar.setValue((int) percentage);
@@ -280,25 +337,58 @@ public class mainWindows extends JFrame {
     }
 
     // 提供获取按钮的方法
+    /**
+     * Returns the "Import Data" button for adding event listeners externally.
+     *
+     * @return the import data button
+     */
     public JButton getBtnImportData() {
         return btnImportData;
     }
 
+    /**
+     * Returns the "Records View" button for navigation to detailed record view.
+     *
+     * @return the records view button
+     */
     public JButton getBtnRecordsView() {
         return btnRecordsView;
     }
 
+    /**
+     * Returns the "Budget" button for accessing budget setting functionality.
+     *
+     * @return the budget button
+     */
     public JButton getBtnBudget() {
         return btnBudget;
     }
 
+    /**
+     * Returns the "AI Assistant" button for interacting with the AI assistant
+     * feature.
+     *
+     * @return the AI assistant button
+     */
     public JButton getBtnAIAssistant() {
         return btnAIAssistant;
     }
 
-    public List<Record> getRecords() {return records;}
+    /**
+     * Returns the current list of financial records used in the view.
+     *
+     * @return list of records
+     */
+    public List<Record> getRecords() {
+        return records;
+    }
 
     // 在 mainWindows.java 中确认 refreshAll 方法包含以下逻辑
+    /**
+     * Reloads the financial records from the CSV resource and refreshes all visual
+     * components,
+     * including the pie chart and the progress bar.
+     */
     public void refreshAll() {
         this.records = RecordControl.readRecordFromResource(); // 从CSV重新加载数据
         updateChart(); // 更新饼图
@@ -306,6 +396,12 @@ public class mainWindows extends JFrame {
         revalidate();
         repaint();
     }
+
+    /**
+     * Reloads records from CSV and updates only the progress bar.
+     * Useful for scenarios where records are modified elsewhere and progress needs
+     * reflecting.
+     */
     public void refreshProgressBar() {
         // 强制重新从CSV加载最新数据（确保包含recordView的修改）
         this.records = RecordControl.readRecordFromResource();

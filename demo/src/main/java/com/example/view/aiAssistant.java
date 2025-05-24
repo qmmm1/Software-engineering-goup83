@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import com.example.service.economySuggestion;
 
+/**
+ * The aiAssistant class defines a graphical interface for an AI Assistant
+ * feature,
+ * which provides economic suggestions based on the user's spending records.
+ */
 public class aiAssistant extends JFrame {
     private mainWindows mainFrame;
     private JTextArea outputArea;
@@ -19,6 +24,12 @@ public class aiAssistant extends JFrame {
     private JButton btnRecordsView;
     private JButton btnAIAssistant;
 
+    /**
+     * Constructs the AI Assistant window.
+     *
+     * @param mainFrame Reference to the main application window to allow navigation
+     *                  and access to data.
+     */
     public aiAssistant(mainWindows mainFrame) {
         this.mainFrame = mainFrame;
 
@@ -113,6 +124,12 @@ public class aiAssistant extends JFrame {
 
     }
 
+    /**
+     * Creates a styled feature button.
+     *
+     * @param text The label text for the button.
+     * @return A JButton instance with standardized style.
+     */
     private JButton createFunctionButton(String text) {
         JButton btn = new JButton(text);
         btn.setFont(new Font("Serif", Font.BOLD, 20));
@@ -121,6 +138,12 @@ public class aiAssistant extends JFrame {
         return btn;
     }
 
+    /**
+     * Creates the bottom navigation panel with Home, Records View, and AI Assistant
+     * buttons.
+     *
+     * @return JPanel containing the navigation buttons.
+     */
     private JPanel createBottomPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setPreferredSize(new Dimension(800, 120));
@@ -166,6 +189,11 @@ public class aiAssistant extends JFrame {
         return panel;
     }
 
+    /**
+     * Applies consistent styling to navigation buttons.
+     *
+     * @param btn The button to style.
+     */
     private void styleNavButton(JButton btn) {
         btn.setFont(new Font("Serif", Font.BOLD, 18));
 
@@ -183,6 +211,9 @@ public class aiAssistant extends JFrame {
         btn.setBorderPainted(true);
     }
 
+    /**
+     * RoundButton is a custom JButton with a circular appearance.
+     */
     static class RoundButton extends JButton {
         public RoundButton(String text) {
             super(text);
@@ -214,10 +245,20 @@ public class aiAssistant extends JFrame {
     /*
      * Getters for Buttons
      */
+    /**
+     * Returns the homepage button.
+     *
+     * @return JButton instance for navigating to the homepage.
+     */
     public JButton getBtnHomePage() {
         return btnHomePage;
     }
 
+    /**
+     * Returns the records view button.
+     *
+     * @return JButton instance for navigating to the records view.
+     */
     public JButton getBtnRecordsView() {
         return btnRecordsView;
     }
