@@ -124,7 +124,7 @@ public class mainWindows extends JFrame {
         topGbc.gridy = 0; // 所有按钮位于第一行
 
         // 创建按钮（保持原有逻辑）
-        JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records) + "元");
+        JButton btnTodayExpense = createButton("Today Expense", categoryPercentage.getDailyAmountSum(records) + " yuan");
         btnBudget = createButton("Budget", "+");
         btnImportData = createButton("Import Data", "");
 
@@ -227,7 +227,7 @@ public class mainWindows extends JFrame {
         // 设置按钮点击事件
         btnHomepage.addActionListener(e -> {
             // 添加具体的点击处理逻辑
-            JOptionPane.showMessageDialog(this, "已返回主界面");
+            //JOptionPane.showMessageDialog(this, "已返回主界面");
         });
 
         // 统一按钮样式
