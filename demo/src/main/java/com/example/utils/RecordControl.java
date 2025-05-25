@@ -25,14 +25,13 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 
 /**
- * @className RecordControl
- * @description Tool class for managing Record objects
+ * Tool class for managing Record objects
  */
 public class RecordControl {
 
     /**
-     * @methodName importRecordsFromCsv
-     * @description Import records from CSV file and rename them to "record. csv" in
+     * importRecordsFromCsv.
+     * mport records from CSV file and rename them to "record. csv" in
      *              the resources folder
      * @param filePath CSV file path
      * @return List of Record objects
@@ -54,19 +53,17 @@ public class RecordControl {
                 return Collections.emptyList();
             }
 
-            // 2. 构造目标路径并确保目录存在
+
             // Get the path of the resource folder
             String projectRoot = System.getProperty("user.dir");
             // Build a complete file path
             Path targetFilePath = Paths.get(projectRoot, "demo", "data", "record.csv");
             Files.createDirectories(targetFilePath.getParent());
 
-            // 3. 复制文件到项目资源目录
             // Copy the source file to the resource folder and rename it to record.csv
             Files.copy(sourceFile.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("✅ 已复制文件到: " + targetFilePath);
 
-            // 4. 打开 CSV 文件，使用 UTF-8 编码（也可替换为 GBK 试试）
             // Read CSV file from the target file path
             try (CSVReader reader = new CSVReader(
                     new InputStreamReader(new FileInputStream(targetFilePath.toFile()), StandardCharsets.UTF_8))) {
@@ -122,8 +119,8 @@ public class RecordControl {
     }
 
     /**
-     * @methodName readRecordFromResource
-     * @description Read records from the data folder and return a list of Record
+     * readRecordFromResource.
+     *  Read records from the data folder and return a list of Record
      *              objects, When the application is launched, it should be called
      * @return List of Record objects from the data folder
      */
@@ -168,8 +165,8 @@ public class RecordControl {
     }
 
     /**
-     * @methodName insertRecord
-     * @description Insert a new record to the records list and return the updated
+     *  insertRecord.
+     * Insert a new record to the records list and return the updated
      *              list
      * @param records     original records list
      * @param paymentDate
@@ -194,8 +191,8 @@ public class RecordControl {
     }
 
     /**
-     * @methodName deleteRecord
-     * @description Delete a record from the records list and return the updated
+     * deleteRecord.
+     * Delete a record from the records list and return the updated
      *              list
      * @param records
      * @param paymentId paymentId of the record to be deleted
@@ -215,8 +212,8 @@ public class RecordControl {
     }
 
     /**
-     * @methodName updateRecord
-     * @dscrpition Update records and store them in the data folder, After modifying
+     * updateRecord.
+     * Update records and store them in the data folder, After modifying
      *             the billing record, it should be called
      * @param records Global records list
      */

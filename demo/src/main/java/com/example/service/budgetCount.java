@@ -8,13 +8,12 @@ import com.example.model.Setting;
 import com.example.model.Record;
 
 /**
- * @className budgetCount
- * @Description Budget consumption percentage calculation category
+ * Budget consumption percentage calculation category
  */
     public class budgetCount {
 /**
- * @methodName calculateBudget
- * @Description Calculate the percentage of budget consumption
+ * calculateBudget.
+ * Calculate the percentage of budget consumption
  * @param setting User Settings
  * @param records Global billing records
  * @return Budget consumption percentage

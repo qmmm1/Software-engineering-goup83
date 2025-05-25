@@ -7,8 +7,7 @@ import java.util.Map;
 import com.github.heqiao2010.lunar.LunarCalendar;
 
 /**
- * @className: festivalSuggestion
- * @description: Discriminant function for holiday reminder pop ups
+ * Discriminant function for holiday reminder pop ups
  */
 public class festivalSuggestion {
     private Map<Date, String> festivals = new HashMap<>();
@@ -48,8 +47,8 @@ public class festivalSuggestion {
                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
     }
 /**
- * @methodName getSuggestionForToday
- * @description Discriminant function for holiday reminder pop ups
+ * getSuggestionForToday.
+ * Discriminant function for holiday reminder pop ups
  * @param percentage the percentage of budget used 
  * @return the suggestion for today
  */

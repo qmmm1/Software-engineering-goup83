@@ -14,41 +14,39 @@ import com.alibaba.dashscope.exception.NoApiKeyException;
 
 import com.example.model.Record;
 /**
- * @className AIcontrol
- * @description AI control class, used to call AI models and obtain classification results
+ * AI control class, used to call AI models and obtain classification results
  */
 public class AIcontrol {
 /**
- * @methodName categoryAppCall
- * @description call AI model to classify payee information
+ * categoryAppCall.
+ * call AI model to classify payee information
  * @param text payee information
  * @return classification result of payee information
- * @throws ApiException
- * @throws NoApiKeyException
- * @throws InputRequiredException
+ * @exception ApiException
+ * @exception NoApiKeyException
+ * @exception InputRequiredException
  */
     public static String categoryAppCall(String text)
     throws ApiException, NoApiKeyException, InputRequiredException {
 ApplicationParam param = ApplicationParam.builder()
-        // 若没有配置环境变量，可用百炼API Key将下行替换为：.apiKey("sk-xxx")。但不建议在生产环境中直接将API Key硬编码到代码中，以减少API Key泄露风险。
         .apiKey("sk-56a0710b710448e49dca7a9789a6a29e")
         .appId("5a2fc67e573b48b9bdb983065f1e4054")
         .prompt(text)
         .build(); 
-// 配置私网终端节点
+// create an application instance
 Application application = new Application("https://dashscope.aliyuncs.com/api/v1/");
 ApplicationResult result = application.call(param);
 return  result.getOutput().getText();
 }
 /**
- * @methodName suggestionAppCall
- * @description call AI model to suggest
+ * suggestionAppCall.
+ * call AI model to suggest
  * @param records Global billing records
  * @param suggestion suggestion request
  * @return suggestion result
- * @throws ApiException
- * @throws NoApiKeyException
- * @throws InputRequiredException
+ * @exception ApiException
+ * @exception NoApiKeyException
+ * @exception InputRequiredException
  */
 public static String suggestionAppCall(List<Record> records,String suggestion) throws ApiException, NoApiKeyException, InputRequiredException{
     String text=records.stream()
@@ -64,8 +62,8 @@ public static String suggestionAppCall(List<Record> records,String suggestion) t
     return  result.getOutput().getText();
    }
 /**
- * @methodName singalAIcategory
- * @description call AI model to classify payee information for a single record
+ * singalAIcategory.
+ * n call AI model to classify payee information for a single record
  * @param record single record to be classified
  */
 public static void singalAIcategory(Record record){
@@ -80,8 +78,8 @@ public static void singalAIcategory(Record record){
     }
 }
 /**
- * @methodName AIcategory
- * @description call AI model to classify payee information for records within a certain duration
+ * AIcategory.
+ * call AI model to classify payee information for records within a certain duration
  * @param records Global billing records
  * @param duration duration of records to be classified
  */

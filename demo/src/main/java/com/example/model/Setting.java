@@ -3,8 +3,6 @@ package com.example.model;
 import java.util.Date;
 
 /**
- * @className Setting
- * @Description
  * This class represents the setting of the user.
  * It contains the following attributes:
  * 1. budget_rate_warning_low: the low budget rate warning
@@ -91,7 +89,7 @@ public double getAmount() {
     return amount;
 }
 
-// 设置金额的方法
+// method to set the amount of the budget
 public void setAmount(double amount) {
     if (amount >= 0) {
         this.amount = amount;
@@ -100,12 +98,12 @@ public void setAmount(double amount) {
     }
 }
 
-// 获取持续时间的方法
+// method to get the duration of the budget
 public int getDuration() {
     return duration;
 }
 
-// 设置持续时间的方法
+// method to set the duration of the budget
 public void setduration(int duration) {
     if (duration >= 0) {
         this.duration = duration;

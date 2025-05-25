@@ -11,13 +11,12 @@ import java.util.stream.Collectors;
 import com.example.model.Record;
 
 /**
- * @className categoryPercentage
- * @Dscription Calculate the proportion and total amount of each type within a specified time period
+ * Calculate the proportion and total amount of each type within a specified time period
  */
 public class categoryPercentage {
 /**
- * @methodName calculatePercentage
- * @Description: Calculate the proportion of each type within a specified time period
+ * calculatePercentage.
+ * Calculate the proportion of each type within a specified time period
  * @param records Global billing records
  * @param duration Time period (days)
  * @return A map of category and percentage
@@ -48,8 +47,8 @@ public class categoryPercentage {
         return categoryPercentages;
     }
 /**
- * @methodName getCategoryCounts
- * @Description: Calculate the total amount of each type within a specified time period
+ * getCategoryCounts.
+ * Calculate the total amount of each type within a specified time period
  * @param records Global billing records
  * @param duration Time period (days)
  * @return A map of category and total amount
@@ -68,8 +67,8 @@ public static Map<String, Double> getCategoryCounts(List<Record> records, int du
     .collect(Collectors.groupingBy(Record::getCategory, Collectors.summingDouble(Record::getAmount)));
 }
 /**
- * @methodName getDailyAmountSum
- * @Description: Calculate the total amount of today's records
+ * getDailyAmountSum.
+ * Calculate the total amount of today's records
  * @param records Global billing records
  * @return A double value of total amount of today's records
  */

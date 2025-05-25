@@ -17,13 +17,12 @@ import java.util.Date;
 import com.example.model.Setting;
 
 /**
- * @className SettingControl
- * @description Used to read the settings. txt file and write the Setting object to the settings. txt file.
+ * Used to read the settings. txt file and write the Setting object to the settings. txt file.
  */
 public class SettingControl {
     /**
-     * @methodName readSettingFromFile
-     * @description Read the Setting object from the data/settings. txt file, which should be called when the application is launched.
+     * readSettingFromFile.
+     * Read the Setting object from the data/settings. txt file, which should be called when the application is launched.
      * @return Setting object
      * @throws IOException
      */
@@ -89,16 +88,14 @@ public class SettingControl {
     return setting;
 }
 /**
- * @methodName writeSettingToFile
- * @description Write the Setting object to the data/settings. txt file.When the setting is modified, it should be called.
+ * writeSettingToFile.
+ *  Write the Setting object to the data/settings. txt file.When the setting is modified, it should be called.
  * @param setting 
  * @throws IOException
  */
 public static void writeSettingToFile(Setting setting) throws IOException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    // 获取资源文件的路径
     String projectRoot = System.getProperty("user.dir");
-    // 构建完整文件路径
     String filePath = Paths.get(projectRoot, "demo","data", "setting.txt").toString();
     BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
     

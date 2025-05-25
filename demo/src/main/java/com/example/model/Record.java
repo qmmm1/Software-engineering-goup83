@@ -5,8 +5,7 @@ import java.util.Calendar;
 
 
 /**
- * @className Record.java
- * @Dsecription This class represents a record of a payment made by a user.
+ * This class represents a record of a payment made by a user.
  * It contains the payment ID, payment date, amount, category, and payee.
  * It also provides methods to get and update the payment details, and to validate the payment information.
  */
@@ -17,7 +16,7 @@ public class Record {
     private String category;
     private String payee;
 
-    // 构造方法
+    // constructor
     public Record(String paymentId, Date paymentDate, double amount, String category,String payee) {
         this.paymentId = paymentId;
         this.paymentDate = paymentDate;
@@ -26,20 +25,19 @@ public class Record {
         this.payee = payee;
     }
 
-    // 获取支付详情
+    // get payment details
     public String getDetails() {
         return "Payment ID: " + paymentId + ", Date: " + paymentDate + ", Amount: " + amount + ", Type: " + category + ", Account ID: " + payee;
     }
 
-    // 更新支付信息
+    // update payment details
     public void updatePayment(Date newPaymentDate,double newAmount, String newcategory, String payee) {
         this.paymentDate = newPaymentDate;
         this.amount = newAmount;
         this.category = newcategory;
         this.payee = payee;
     }
-
-    // 验证支付信息
+    // validate payment details
     public boolean validatePayment() {
        if (amount <= 0 )
             return false;
@@ -52,7 +50,6 @@ public class Record {
         else
             return true;
     }
-       // 这里可以添加各种验证逻辑，例如支付金额是否大于0，支付类型和方式是否在预设范围内等
     // Getters and Setters
     public String getPaymentId() {
         return paymentId;
